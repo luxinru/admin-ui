@@ -89,6 +89,7 @@ import HouseImgs from "./components/house-imgs.vue";
 import HouseInfo from "./components/house-info.vue";
 import HouseTable from "./components/house-table.vue";
 import Map from "./components/map.vue";
+import { onMounted } from "vue-demi";
 
 const isShowModal = ref(false);
 const type = ref(1);
@@ -103,6 +104,12 @@ bus.on("onModalShow", () => {
 
 bus.on("onTopbarClick", (value) => {
   type.value = value;
+});
+
+onMounted(() => {
+  window.onresize = () => {
+    location.reload();
+  };
 });
 </script>
 
