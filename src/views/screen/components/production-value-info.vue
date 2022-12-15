@@ -3,7 +3,7 @@
     <Box title="产值信息">
       <div class="container">
         <div class="imgs">
-          <img class="img1" src="@/assets/images/screen/oil drum.png" alt="" />
+          <img class="img1" src="@/assets/images/screen/oildrum.png" alt="" />
           <img class="img2" src="@/assets/images/screen/building.png" alt="" />
         </div>
 
