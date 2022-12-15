@@ -1,42 +1,47 @@
 <template>
   <div class="page_root">
-    <section class="map"></section>
-
-    <section class="mask">
-      <img class="top" src="@/assets/images/screen/on.png" alt="" />
-      <img v-if="type === 1" class="right" src="@/assets/images/screen/right.png" alt="" />
-      <img class="bottom" src="@/assets/images/screen/Under.png" alt="" />
-      <img class="left" src="@/assets/images/screen/left.png" alt="" />
-
-      <div class="top_img">
-        <img src="@/assets/images/screen/top.png" alt="" />
-        <span> 西南石油房屋可视化 </span>
-      </div>
-      <img class="bottom_img" src="@/assets/images/screen/bottom.png" alt="" />
-      <img class="left_img" src="@/assets/images/screen/edge-2.png" alt="" />
-      <img class="right_img" src="@/assets/images/screen/edge-2.png" alt="" />
-
-      <img
-        class="border_left_top"
-        src="@/assets/images/screen/edge-1.png"
-        alt=""
-      />
-      <img
-        class="border_right_top"
-        src="@/assets/images/screen/edge-1.png"
-        alt=""
-      />
-      <img
-        class="border_left_bottom"
-        src="@/assets/images/screen/edge-1.png"
-        alt=""
-      />
-      <img
-        class="border_right_bottom"
-        src="@/assets/images/screen/edge-1.png"
-        alt=""
-      />
+    <section class="map">
+      <Map />
     </section>
+
+    <img class="top" src="@/assets/images/screen/on.png" alt="" />
+    <img
+      v-if="type === 1"
+      class="right"
+      src="@/assets/images/screen/right.png"
+      alt=""
+    />
+    <img class="bottom" src="@/assets/images/screen/Under.png" alt="" />
+    <img class="left" src="@/assets/images/screen/left.png" alt="" />
+
+    <div class="top_img">
+      <img src="@/assets/images/screen/top.png" alt="" />
+      <span> 西南石油房屋可视化 </span>
+    </div>
+    <img class="bottom_img" src="@/assets/images/screen/bottom.png" alt="" />
+    <img class="left_img" src="@/assets/images/screen/edge-2.png" alt="" />
+    <img class="right_img" src="@/assets/images/screen/edge-2.png" alt="" />
+
+    <img
+      class="border_left_top"
+      src="@/assets/images/screen/edge-1.png"
+      alt=""
+    />
+    <img
+      class="border_right_top"
+      src="@/assets/images/screen/edge-1.png"
+      alt=""
+    />
+    <img
+      class="border_left_bottom"
+      src="@/assets/images/screen/edge-1.png"
+      alt=""
+    />
+    <img
+      class="border_right_bottom"
+      src="@/assets/images/screen/edge-1.png"
+      alt=""
+    />
 
     <section class="search_box">
       <SearchInput />
@@ -83,6 +88,7 @@ import HouseLedgerDetails from "./components/house-ledger-details.vue";
 import HouseImgs from "./components/house-imgs.vue";
 import HouseInfo from "./components/house-info.vue";
 import HouseTable from "./components/house-table.vue";
+import Map from "./components/map.vue";
 
 const isShowModal = ref(false);
 const type = ref(1);
@@ -106,6 +112,7 @@ bus.on("onTopbarClick", (value) => {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -115,134 +122,120 @@ bus.on("onTopbarClick", (value) => {
     height: 100%;
     top: 0;
     left: 0;
-    background-size: 100% 100%;
-    background: url("@/assets/images/screen/bj.png") no-repeat;
   }
 
-  .mask {
+  .top {
     position: absolute;
     width: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .right {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
+  }
+
+  .bottom {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+  }
+
+  .left {
+    position: absolute;
     height: 100%;
     top: 0;
     left: 0;
+  }
+
+  .top_img {
+    position: absolute;
+    width: 1825px;
+    height: 106px;
+    top: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
 
-    .top {
+    img {
       position: absolute;
       width: 100%;
-      top: 0;
-      left: 0;
-    }
-
-    .right {
-      position: absolute;
-      height: 100%;
-      top: 0;
-      right: 0;
-    }
-
-    .bottom {
-      position: absolute;
-      width: 100%;
-      bottom: 0;
-      left: 0;
-    }
-
-    .left {
-      position: absolute;
       height: 100%;
       top: 0;
       left: 0;
     }
 
-    .top_img {
-      position: absolute;
-      width: 1825px;
-      height: 106px;
-      top: 0;
-      display: flex;
-      justify-content: center;
+    span {
+      position: relative;
+      font-size: 45px;
+      font-family: YouSheBiaoTiHei;
+      font-weight: 400;
 
-      img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-      }
-
-      span {
-        position: relative;
-        font-size: 45px;
-        font-family: YouSheBiaoTiHei;
-        font-weight: 400;
-
-        background: linear-gradient(0deg, #82c1ff 40%, #ffffff 80%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-top: 7px;
-      }
+      background: linear-gradient(0deg, #82c1ff 40%, #ffffff 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-top: 7px;
     }
+  }
 
-    .bottom_img {
-      position: absolute;
-      width: 1816px;
-      height: 63px;
-      bottom: 0;
-    }
+  .bottom_img {
+    position: absolute;
+    width: 1816px;
+    height: 63px;
+    bottom: 0;
+  }
 
-    .left_img {
-      position: absolute;
-      width: 64px;
-      height: 811px;
-      left: 0;
-    }
+  .left_img {
+    position: absolute;
+    width: 64px;
+    height: 811px;
+    left: 0;
+  }
 
-    .right_img {
-      position: absolute;
-      width: 64px;
-      height: 811px;
-      right: 0;
-      transform: rotate(180deg);
-    }
+  .right_img {
+    position: absolute;
+    width: 64px;
+    height: 811px;
+    right: 0;
+    transform: rotate(180deg);
+  }
 
-    .border_left_top {
-      position: absolute;
-      width: 154px;
-      height: 127px;
-      top: 21px;
-      left: 16px;
-    }
+  .border_left_top {
+    position: absolute;
+    width: 154px;
+    height: 127px;
+    top: 21px;
+    left: 16px;
+  }
 
-    .border_right_top {
-      position: absolute;
-      width: 154px;
-      height: 127px;
-      top: 21px;
-      right: 14px;
-      transform: rotateY(180deg);
-    }
+  .border_right_top {
+    position: absolute;
+    width: 154px;
+    height: 127px;
+    top: 21px;
+    right: 14px;
+    transform: rotateY(180deg);
+  }
 
-    .border_left_bottom {
-      position: absolute;
-      width: 154px;
-      height: 127px;
-      bottom: 18px;
-      left: 16px;
-      transform: rotateX(180deg);
-    }
+  .border_left_bottom {
+    position: absolute;
+    width: 154px;
+    height: 127px;
+    bottom: 18px;
+    left: 16px;
+    transform: rotateX(180deg);
+  }
 
-    .border_right_bottom {
-      position: absolute;
-      width: 154px;
-      height: 127px;
-      bottom: 18px;
-      right: 14px;
-      transform: rotate(180deg);
-    }
+  .border_right_bottom {
+    position: absolute;
+    width: 154px;
+    height: 127px;
+    bottom: 18px;
+    right: 14px;
+    transform: rotate(180deg);
   }
 
   .search_box {

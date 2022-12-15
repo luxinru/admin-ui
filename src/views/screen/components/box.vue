@@ -43,6 +43,7 @@ function onMoreClick() {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .title {
     position: absolute;

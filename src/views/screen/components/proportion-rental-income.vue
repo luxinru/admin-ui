@@ -2,7 +2,21 @@
   <div class="proportion_rental_income_root">
     <Box title="租金收入占比">
       <div class="container">
-        <div class="labels labels1"></div>
+        <div class="labels labels1">
+          <div class="item">
+            <span>25%</span>
+            <p>成都</p>
+          </div>
+          <div class="item">
+            <span>10%</span>
+            <p>重庆</p>
+          </div>
+          <div class="item">
+            <span>20%</span>
+            <p>南充</p>
+          </div>
+        </div>
+
         <div class="chart_box">
           <div id="chart3" class="chart3"></div>
           <div class="info">
@@ -15,7 +29,21 @@
             </span>
           </div>
         </div>
-        <div class="labels labels2"></div>
+
+        <div class="labels labels2">
+          <div class="item">
+            <p>广元</p>
+            <span>10%</span>
+          </div>
+          <div class="item">
+            <p>遂宁</p>
+            <span>10%</span>
+          </div>
+          <div class="item">
+            <p>内江</p>
+            <span>10%</span>
+          </div>
+        </div>
       </div>
     </Box>
   </div>
@@ -24,62 +52,94 @@
 <script setup name="ProportionRentalIncome">
 import Box from "./box.vue";
 import * as echarts from "echarts";
+import "echarts-gl";
 
 function initChart() {
   const myChart = echarts.init(document.getElementById("chart3"));
 
+  let colorList = [
+    "#00A3F0",
+    "#00FED2",
+    "#FFD37A",
+    "#F08200",
+    "#F04900",
+    "#F00000",
+    "#F000A9",
+    "#8200F0",
+    "#ea7ccc",
+  ];
+  let result = {
+    data: [
+      { key: "3", value: "数据1", count: 444761, rate: "44.1" },
+      { key: "11", value: "数据2", count: 447702, rate: "44.4" },
+      { key: "2", value: "数据3", count: 519717, rate: "5.2" },
+      { key: "1", value: "数据4", count: 320120, rate: "3.2" },
+    ],
+    total: 11393722,
+  };
+  let baseData = [];
+  for (var i = 0; i < result.data.length; i++) {
+    baseData.push({
+      value: result.data[i].count,
+      name: result.data[i].value,
+      itemStyle: {
+        normal: {
+          shadowBlur: 20,
+          shadowColor: colorList[i],
+        },
+      },
+    });
+  }
+
   myChart.setOption({
-    color: ["#Fb4035", "#dbdce5", "#162c7a", "#53b6be"],
+    title: {
+      show: false,
+    },
+    color: colorList,
+    tooltip: {
+      show: true,
+      trigger: "item",
+      padding: [8, 15],
+      backgroundColor: "rgba(12, 51, 115,0.8)",
+      borderColor: "rgba(3, 11, 44, 0.5)",
+      textStyle: {
+        color: "rgba(255, 255, 255, 1)",
+      },
+    },
+    legend: {
+      show: false,
+    },
+    grid: {
+      top: 0,
+      left: 10,
+      right: 0,
+      bottom: 10,
+    },
     series: [
       {
-        name: "访问来源",
+        startAngle: -90,
+        name: "分布",
         type: "pie",
-        radius: ["50%", "80%"],
-        avoidLabelOverlap: false,
+        radius: ["68%", "85%"],
+        center: ["50%", "50%"],
+        hoverAnimation: false,
         label: {
           show: false,
-          position: "center",
         },
-        emphasis: {
-          label: {
-            show: true,
-            fontSize: "30",
-            fontWeight: "bold",
+        data: baseData,
+        itemStyle: {
+          normal: {
+            borderRadius: 80,
+            borderCap: "round",
           },
         },
-        labelLine: {
-          show: false,
-        },
-        data: [
-          {
-            value: 205,
-            name: "直接访问",
-          },
-          {
-            value: 310,
-            name: "邮件营销",
-          },
-          {
-            value: 234,
-            name: "联盟广告",
-          },
-          {
-            value: 135,
-            name: "视频广告学习相",
-          },
-          {
-            value: 400,
-            name: "搜索引擎",
-          },
-        ],
-        roundCap: 1, //可选项为1和2，不填则采用原有拼接方式
       },
     ],
   });
 }
 
 onMounted(() => {
-  // initChart();
+  initChart();
 });
 </script>
 
@@ -97,12 +157,50 @@ onMounted(() => {
     justify-content: center;
 
     .labels {
+      flex: 1 0;
+      display: flex;
+      flex-direction: column;
+      .item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #ffffff;
+
+        span {
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #4bb9f4;
+        }
+      }
     }
 
     .labels1 {
+      align-items: flex-end;
+
+      .item {
+        span {
+          margin-right: 5px;
+        }
+
+        &:nth-child(2) {
+          margin-right: 20px;
+        }
+      }
     }
 
     .labels2 {
+      .item {
+        span {
+          margin-left: 5px;
+        }
+
+        &:nth-child(2) {
+          margin-left: 20px;
+        }
+      }
     }
 
     .chart_box {
