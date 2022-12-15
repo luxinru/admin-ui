@@ -30,6 +30,7 @@
     "vue": "3.2.37",
     "vue-cropper": "1.0.3",
     "vue-router": "4.0.14",
+    "vue3-eventbus": "^2.0.0",
     "vue3-treeselect": "^0.1.10"
   },
   "devDependencies": {

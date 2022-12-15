@@ -1,6 +1,13 @@
 import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
+import pxtovw from "postcss-px-to-viewport";
+
+const loder_pxtovw = pxtovw({
+  viewportWidth: 1920,
+  viewportUnit: 'vw',
+  include: /\/src\/views\/\/screen\//,
+})
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
@@ -50,7 +57,8 @@ export default defineConfig(({ mode, command }) => {
                 }
               }
             }
-          }
+          },
+          loder_pxtovw
         ]
       }
     }

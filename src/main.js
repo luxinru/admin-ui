@@ -43,8 +43,11 @@ import TreeSelect from '@/components/TreeSelect'
 import DictTag from '@/components/DictTag'
 //导入自定义指令
 
+import eventBus from 'vue3-eventbus'
 
 const app = createApp(App)
+
+app.use(eventBus)
 
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
