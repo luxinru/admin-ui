@@ -45,6 +45,7 @@ function initChart() {
     },
     yAxis: {
       type: "value",
+      max: 60,
       axisLine: {
         show: true,
         lineStyle: {

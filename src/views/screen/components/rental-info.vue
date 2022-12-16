@@ -234,14 +234,10 @@ onMounted(() => {
           font-weight: 400;
           font-style: italic;
           color: rgba(222, 237, 255, 0);
-          text-shadow: 0px -6px 11px rgba(56, 156, 60, 0.18),
-            0px 2px 1px rgba(0, 3, 4, 0.45);
-          -webkit-text-stroke: 1px #0c2f45;
-          text-stroke: 1px #0c2f45;
 
           background: linear-gradient(
             180deg,
-            #eafff5 10%,
+            #eafff5 30%,
             rgba(153, 227, 127, 0.76) 100%
           );
           -webkit-background-clip: text;

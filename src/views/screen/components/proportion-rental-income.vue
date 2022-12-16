@@ -114,7 +114,7 @@ function initChart() {
         startAngle: -90,
         name: "分布",
         type: "pie",
-        radius: ["68%", "85%"],
+        radius: ["75%", "85%"],
         center: ["50%", "50%"],
         hoverAnimation: false,
         label: {
