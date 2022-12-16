@@ -110,7 +110,7 @@ function onItemClick(value) {
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-left: 16px;
+      margin-left: 5px;
       cursor: pointer;
       height: 42px;
       padding: 0 13px;
