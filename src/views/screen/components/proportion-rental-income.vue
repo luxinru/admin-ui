@@ -82,12 +82,6 @@ function initChart() {
     baseData.push({
       value: result.data[i].count,
       name: result.data[i].value,
-      itemStyle: {
-        normal: {
-          shadowBlur: 20,
-          shadowColor: colorList[i],
-        },
-      },
     });
   }
 

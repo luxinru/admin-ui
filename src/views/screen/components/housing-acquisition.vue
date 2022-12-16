@@ -74,8 +74,10 @@ function initChart() {
             value: 30,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
+                { offset: 0, color: "rgba(78, 137, 255, 1)" },
+                { offset: 0.2, color: "rgba(78, 137, 255, 1)" },
                 { offset: 0.5, color: "rgba(78, 137, 255, 0.8)" },
-                { offset: 1, color: "rgba(78, 137, 255, 0)" },
+                { offset: 0.9, color: "rgba(78, 137, 255, 0)" },
               ]),
             },
           },
@@ -83,8 +85,10 @@ function initChart() {
             value: 20,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
+                { offset: 0, color: "rgba(97, 252, 156, 1)" },
+                { offset: 0.2, color: "rgba(97, 252, 156, 1)" },
                 { offset: 0.5, color: "rgba(97, 252, 156, 0.8)" },
-                { offset: 1, color: "rgba(78, 137, 255, 0)" },
+                { offset: 0.9, color: "rgba(78, 137, 255, 0)" },
               ]),
             },
           },
@@ -92,8 +96,10 @@ function initChart() {
             value: 30,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
+                { offset: 0, color: "rgba(254, 222, 113, 1)" },
+                { offset: 0.2, color: "rgba(254, 222, 113, 1)" },
                 { offset: 0.5, color: "rgba(254, 222, 113, 0.8)" },
-                { offset: 1, color: "rgba(254, 222, 113, 0)" },
+                { offset: 0.9, color: "rgba(254, 222, 113, 0)" },
               ]),
             },
           },
@@ -101,46 +107,68 @@ function initChart() {
             value: 20,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
+                { offset: 0, color: "rgba(43, 173, 248, 1)" },
+                { offset: 0.2, color: "rgba(43, 173, 248, 1)" },
                 { offset: 0.5, color: "rgba(43, 173, 248, 0.8)" },
-                { offset: 1, color: "rgba(43, 173, 248, 0)" },
+                { offset: 0.9, color: "rgba(43, 173, 248, 0)" },
               ]),
             },
           },
           {
-            value: 45,
+            value: 20,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
+                { offset: 0, color: "rgba(159, 125, 255, 1)" },
+                { offset: 0.2, color: "rgba(159, 125, 255, 1)" },
                 { offset: 0.5, color: "rgba(159, 125, 255, 0.8)" },
-                { offset: 1, color: "rgba(159, 125, 255, 0)" },
+                { offset: 0.9, color: "rgba(159, 125, 255, 0)" },
               ]),
             },
           },
         ],
         barWidth: "16",
-        itemStyle: {
-          normal: {
-            color: new echarts.graphic.LinearGradient(
-              0,
-              0,
-              0,
-              1,
-              [
-                {
-                  offset: 0,
-                  color: "rgba(0,244,255,1)", // 0% 处的颜色
-                },
-                {
-                  offset: 1,
-                  color: "rgba(0,77,167,1)", // 100% 处的颜色
-                },
-              ],
-              false
-            ),
-            barBorderRadius: [0, 50, 0, 0],
-            shadowColor: "rgba(0,160,221,1)",
-            shadowBlur: 4,
+      },
+      {
+        z: 1,
+        type: "pictorialBar",
+        symbolPosition: "end",
+        symbolRotate: "-90",
+        symbolSize: [16, 15],
+        color: "rgb(4,128,224)",
+        data: [
+          {
+            value: 30,
+            itemStyle: {
+              color: "rgba(78, 137, 255, 1)",
+            },
           },
-        },
+          {
+            value: 20,
+            itemStyle: {
+              color: "rgba(97, 252, 156, 1)",
+            },
+          },
+          {
+            value: 30,
+            itemStyle: {
+              color: "rgba(254, 222, 113, 1)",
+            },
+          },
+          {
+            value: 20,
+            itemStyle: {
+              color: "rgba(43, 173, 248, 1)",
+            },
+          },
+          {
+            value: 20,
+            itemStyle: {
+              color: "rgba(159, 125, 255, 1",
+            },
+          },
+        ],
+        symbol: "triangle",
+        symbolOffset: [-0.5, -8],
       },
     ],
   });
