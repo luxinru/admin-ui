@@ -139,7 +139,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .rental_growth_rate_root {
   width: 100%;
-  height: 215px;
+  flex: 1 0;
 
   .container {
     position: relative;

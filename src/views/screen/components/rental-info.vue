@@ -159,7 +159,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .rental_info_root {
   width: 100%;
-  height: 365px;
+  height: 375px;
 
   .container {
     width: 100%;
@@ -237,8 +237,8 @@ onMounted(() => {
 
           background: linear-gradient(
             180deg,
-            #eafff5 30%,
-            rgba(153, 227, 127, 0.76) 100%
+            #eafff5 50%,
+            rgba(153, 227, 127, 0.76) 80%
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;

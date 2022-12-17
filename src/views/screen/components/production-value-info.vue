@@ -53,7 +53,7 @@ function goTarget(url) {
 <style scoped lang="scss">
 .production_value_info_root {
   width: 100%;
-  height: 295px;
+  flex: 290;
 
   .container {
     position: relative;
@@ -103,7 +103,6 @@ function goTarget(url) {
     .list {
       display: flex;
       flex-direction: column;
-      margin-left: 11px;
 
       .item {
         width: 264px;
@@ -124,8 +123,8 @@ function goTarget(url) {
         }
 
         img {
-          height: 9px;
-          margin-left: 46px;
+          height: 16px;
+          margin-left: 36px;
           transform: rotate(-90deg);
         }
 

@@ -39,37 +39,78 @@
         </div>
       </div>
 
-      <table border="1">
-        <tr class="th">
-          <td rowspan="2"></td>
-          <td rowspan="2">房屋名称</td>
-          <td rowspan="2">使用单位</td>
-          <td colspan="3">价值信息</td>
-          <td colspan="3">用途信息</td>
-        </tr>
-        <tr class="th">
-          <td>原值</td>
-          <td>净值</td>
-          <td>折旧</td>
-          <td>使用性质</td>
-          <td>实际用途</td>
-          <td>使用状态</td>
-        </tr>
-
-        <tr class="td" v-for="index in 4" :key="index">
-          <td>
-            <div class="check" @click="onCheck(index)"></div>
-          </td>
-          <td>101</td>
-          <td>川中油气矿射洪作业区</td>
-          <td>5200</td>
-          <td>0.36</td>
-          <td>13.36</td>
-          <td>办公用房</td>
-          <td>办公用房</td>
-          <td>使用中</td>
-        </tr>
+      <table class="table1" border="1" style="z-index: 3;">
+        <thead>
+          <tr>
+            <td rowspan="2"></td>
+            <td rowspan="2">房屋名称</td>
+            <td rowspan="2">使用单位</td>
+            <td colspan="3">价值信息</td>
+            <td colspan="3">用途信息</td>
+          </tr>
+          <tr>
+            <td>原值</td>
+            <td>净值</td>
+            <td>折旧</td>
+            <td>使用性质</td>
+            <td>实际用途</td>
+            <td>使用状态</td>
+          </tr>
+        </thead>
+        <tbody style="opacity: 0">
+          <tr class="td">
+            <td>
+              <div class="check" @click="onCheck(index)"></div>
+            </td>
+            <td>101</td>
+            <td>川中油气矿射洪作业区</td>
+            <td>5200</td>
+            <td>0.36</td>
+            <td>13.36</td>
+            <td>办公用房</td>
+            <td>办公用房</td>
+            <td>使用中</td>
+          </tr>
+        </tbody>
       </table>
+
+      <section class="table_body">
+        <table border="1">
+          <thead style="opacity: 0">
+            <tr>
+              <td rowspan="2"></td>
+              <td rowspan="2">房屋名称</td>
+              <td rowspan="2">使用单位</td>
+              <td colspan="3">价值信息</td>
+              <td colspan="3">用途信息</td>
+            </tr>
+            <tr>
+              <td>原值</td>
+              <td>净值</td>
+              <td>折旧</td>
+              <td>使用性质</td>
+              <td>实际用途</td>
+              <td>使用状态</td>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="td" v-for="index in 20" :key="index">
+              <td>
+                <div class="check" @click="onCheck(index)"></div>
+              </td>
+              <td>101</td>
+              <td>川中油气矿射洪作业区</td>
+              <td>5200</td>
+              <td>0.36</td>
+              <td>13.36</td>
+              <td>办公用房</td>
+              <td>办公用房</td>
+              <td>使用中</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </section>
   </div>
 </template>
@@ -78,7 +119,7 @@
 const type = ref(1);
 
 function onCheck(index) {
-  console.log('index :>> ', index);
+  console.log("index :>> ", index);
 }
 </script>
 
@@ -101,6 +142,7 @@ function onCheck(index) {
   border-radius: 6px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
   .title {
     position: absolute;
@@ -156,13 +198,12 @@ function onCheck(index) {
 
   .table {
     width: 100%;
-    flex: 1 0;
+    height: calc(100% - 62px);
     display: flex;
     flex-direction: column;
     margin-top: 62px;
     padding: 16px 13px 24px 29px;
     box-sizing: border-box;
-    overflow: hidden;
 
     .tabs {
       width: 100%;
@@ -237,10 +278,9 @@ function onCheck(index) {
 
     table {
       width: 100%;
-      flex: 1 0;
       border: 1px solid rgba(57, 158, 233, 0.2);
       border-collapse: collapse;
-      overflow-y: scroll;
+      overflow: hidden;
       tr {
         td {
           height: 34px;
@@ -252,20 +292,21 @@ function onCheck(index) {
         }
       }
 
-      .th {
-        background-color: rgba(51, 133, 238, 0.2);
+      thead {
+        background-color: #153456;
       }
 
-      .td {
+      tbody {
+        tr {
+          &:nth-child(2n) {
+            background-color: rgba(51, 133, 238, 0.1);
+          }
+        }
         td {
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #ffffff;
-        }
-
-        &:nth-child(2n) {
-          background-color: rgba(51, 133, 238, 0.1);
         }
 
         .check {
@@ -275,6 +316,21 @@ function onCheck(index) {
           margin: 0 auto;
         }
       }
+    }
+
+    .table1 {
+      width: calc(100% - 7px);
+    }
+  }
+
+  .table_body {
+    width: 100%;
+    flex: 1 0;
+    margin-top: calc(-34px * 3);
+    overflow-y: scroll;
+
+    table {
+      height: 100%;
     }
   }
 }

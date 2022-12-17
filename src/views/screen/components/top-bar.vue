@@ -87,7 +87,7 @@ function onItemClick(value) {
       }
 
       img {
-        height: 21px;
+        height: 24px;
       }
 
       span {
@@ -120,7 +120,7 @@ function onItemClick(value) {
       }
 
       img {
-        height: 21px;
+        height: 24px;
       }
 
       span {

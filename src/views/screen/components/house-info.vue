@@ -196,7 +196,7 @@
         align-items: center;
 
         .label {
-          width: 60px;
+          width: 68px;
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
@@ -205,11 +205,15 @@
         }
 
         .value {
+          flex: 1 0;
           margin-left: 10px;
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: rgba(255, 255, 255, 1);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
     }

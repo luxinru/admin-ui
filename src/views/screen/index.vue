@@ -91,7 +91,7 @@ import HouseTable from "./components/house-table.vue";
 import Map from "./components/map.vue";
 import { onMounted } from "vue-demi";
 
-const isShowModal = ref(true);
+const isShowModal = ref(false);
 const type = ref(1);
 
 bus.on("onModalClose", () => {
@@ -294,9 +294,10 @@ onMounted(() => {
   .house_table {
     position: absolute;
     width: 1402px;
-    height: 361px;
-    bottom: 65px;
+    height: 370px;
+    bottom: 63px;
     right: 51px;
+    overflow: hidden;
   }
 
   .modal {

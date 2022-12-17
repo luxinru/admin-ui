@@ -140,7 +140,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .proportion_rental_income_root {
   width: 100%;
-  height: 215px;
+  flex: 1 0;
 
   .container {
     position: relative;

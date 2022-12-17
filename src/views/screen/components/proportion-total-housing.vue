@@ -305,7 +305,7 @@ onMounted(() => {
 <style scoped lang="scss">
 .housing_info_root {
   width: 100%;
-  height: 215px;
+  flex: 1 0;
 
   .container {
     position: relative;
@@ -339,7 +339,7 @@ onMounted(() => {
     .labels {
       display: flex;
       flex-direction: column;
-      margin-left: 16px;
+      margin-left: 10px;
 
       .item {
         display: flex;
@@ -356,7 +356,7 @@ onMounted(() => {
         }
 
         span {
-          width: 80px;
+          width: 90px;
           display: flex;
           align-items: center;
           font-size: 14px;

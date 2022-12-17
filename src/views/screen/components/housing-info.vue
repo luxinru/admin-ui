@@ -50,7 +50,7 @@ function goTarget(url) {
 <style scoped lang="scss">
 .housing_info_root {
   width: 100%;
-  height: 214px;
+  flex: 209;
 
   .container {
     width: 100%;
