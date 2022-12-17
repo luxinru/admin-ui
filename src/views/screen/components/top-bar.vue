@@ -1,7 +1,7 @@
 <template>
   <div class="top_bar_root">
     <section class="left">
-      <div class="item">
+      <div class="item" @click="onBackToPlatform">
         <img src="@/assets/images/screen/system.png" alt="" />
         <span> 系统平台 </span>
       </div>
@@ -54,11 +54,17 @@
 
 <script setup name="ScreenIndex">
 import bus from "vue3-eventbus";
+const router = useRouter();
+
 const type = ref(1);
 
 function onItemClick(value) {
   type.value = value
   bus.emit("onTopbarClick", value);
+}
+
+function onBackToPlatform() {
+  router.replace('/index')
 }
 </script>
 
