@@ -67,7 +67,7 @@
       <HouseInfo />
     </section>
 
-    <section v-if="type === 2" class="house_table">
+    <section v-if="type === 2" id="house_table" class="house_table">
       <HouseTable />
     </section>
 
@@ -104,6 +104,22 @@ bus.on("onModalShow", () => {
 
 bus.on("onTopbarClick", (value) => {
   type.value = value;
+
+  if (value === 2) {
+    nextTick(() => {
+      const elements = document.getElementsByClassName("rental_info_root");
+      console.log("elements :>> ", elements);
+      if (elements && elements.length) {
+        const element = elements[0];
+        const height = element.clientHeight;
+        const houseTable = document.getElementById("house_table");
+        console.log("houseTable :>> ", houseTable);
+        if (houseTable) {
+          houseTable.style.height = height + "px";
+        }
+      }
+    });
+  }
 });
 
 onMounted(() => {
@@ -278,7 +294,7 @@ onMounted(() => {
   .house_imgs {
     position: absolute;
     width: 435px;
-    height: 461px;
+    height: 42.68518%;
     top: 189px;
     left: 507px;
   }
@@ -286,7 +302,7 @@ onMounted(() => {
   .house_info {
     position: absolute;
     width: 435px;
-    height: 461px;
+    height: 42.68518%;
     top: 189px;
     right: 51px;
   }
@@ -294,7 +310,7 @@ onMounted(() => {
   .house_table {
     position: absolute;
     width: 1402px;
-    height: 370px;
+    margin-top: 5px;
     bottom: 63px;
     right: 51px;
     overflow: hidden;
@@ -308,6 +324,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.9);
+    z-index: 999;
   }
 }
 </style>

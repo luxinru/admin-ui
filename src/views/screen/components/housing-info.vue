@@ -51,6 +51,7 @@ function goTarget(url) {
 .housing_info_root {
   width: 100%;
   flex: 209;
+  margin-top: 11px;
 
   .container {
     width: 100%;

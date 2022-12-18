@@ -159,7 +159,8 @@ onMounted(() => {
 <style scoped lang="scss">
 .rental_info_root {
   width: 100%;
-  height: 375px;
+  height: 40.17857%;
+  margin-top: 11px;
 
   .container {
     width: 100%;

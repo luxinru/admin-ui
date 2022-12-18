@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <table class="table1" border="1" style="z-index: 3;">
+      <table class="table1" border="1" style="z-index: 3">
         <thead>
           <tr>
             <td rowspan="2"></td>

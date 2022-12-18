@@ -140,6 +140,7 @@ onMounted(() => {
 .rental_growth_rate_root {
   width: 100%;
   flex: 1 0;
+  margin-top: 11px;
 
   .container {
     position: relative;

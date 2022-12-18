@@ -100,7 +100,6 @@ function onMoreClick() {
   .content {
     width: 100%;
     height: 100%;
-    margin-top: 5px;
     background: linear-gradient(
       0deg,
       rgba(5, 45, 110, 0.66),

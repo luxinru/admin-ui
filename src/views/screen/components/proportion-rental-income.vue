@@ -141,6 +141,7 @@ onMounted(() => {
 .proportion_rental_income_root {
   width: 100%;
   flex: 1 0;
+  margin-top: 11px;
 
   .container {
     position: relative;
