@@ -4,15 +4,15 @@
       <div class="container">
         <div class="labels labels1">
           <div class="item">
-            <span>25%</span>
+            <span><CountTo :start="0" :end="25" />%</span>
             <p>成都</p>
           </div>
           <div class="item">
-            <span>10%</span>
+            <span><CountTo :start="0" :end="10" />%</span>
             <p>重庆</p>
           </div>
           <div class="item">
-            <span>20%</span>
+            <span><CountTo :start="0" :end="20" />%</span>
             <p>南充</p>
           </div>
         </div>
@@ -24,7 +24,7 @@
 
             <span class="label"> 共计 </span>
             <span class="value">
-              <p>26</p>
+              <p><CountTo :start="0" :end="26" /></p>
               <span>笔</span>
             </span>
           </div>
@@ -33,15 +33,15 @@
         <div class="labels labels2">
           <div class="item">
             <p>广元</p>
-            <span>10%</span>
+            <span><CountTo :start="0" :end="10" />%</span>
           </div>
           <div class="item">
             <p>遂宁</p>
-            <span>10%</span>
+            <span><CountTo :start="0" :end="10" />%</span>
           </div>
           <div class="item">
             <p>内江</p>
-            <span>10%</span>
+            <span><CountTo :start="0" :end="10" />%</span>
           </div>
         </div>
       </div>
@@ -70,10 +70,12 @@ function initChart() {
   ];
   let result = {
     data: [
-      { key: "3", value: "数据1", count: 444761, rate: "44.1" },
-      { key: "11", value: "数据2", count: 447702, rate: "44.4" },
-      { key: "2", value: "数据3", count: 519717, rate: "5.2" },
-      { key: "1", value: "数据4", count: 320120, rate: "3.2" },
+      { value: "成都", count: 25 },
+      { value: "广元", count: 10 },
+      { value: "重庆", count: 10 },
+      { value: "遂宁", count: 10 },
+      { value: "南充", count: 20 },
+      { value: "内江", count: 10 },
     ],
     total: 11393722,
   };
@@ -116,7 +118,6 @@ function initChart() {
         type: "pie",
         radius: ["75%", "85%"],
         center: ["50%", "50%"],
-        hoverAnimation: false,
         label: {
           show: false,
         },

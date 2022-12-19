@@ -20,6 +20,10 @@ function initChart() {
     legend: {
       show: false,
     },
+    tooltip: {
+      show: true,
+      trigger: 'axis'
+    },
     grid: {
       top: "10%",
       left: "3%",

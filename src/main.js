@@ -45,7 +45,11 @@ import DictTag from '@/components/DictTag'
 
 import eventBus from 'vue3-eventbus'
 
+import CountTo from './components/count-to/index.js';
+
 const app = createApp(App)
+
+app.use(CountTo)
 
 app.use(eventBus)
 

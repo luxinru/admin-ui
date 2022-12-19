@@ -12,7 +12,9 @@
             <span class="label"> 原值 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
-              <span>6967</span>
+              <span>
+                <CountTo :start="0" :end="6967" />
+              </span>
               <p>万元</p>
             </div>
           </div>
@@ -21,7 +23,7 @@
             <span class="label"> 净值 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
-              <span>5036</span>
+              <span><CountTo :start="0" :end="5036" /></span>
               <p>万元</p>
             </div>
           </div>
@@ -30,7 +32,7 @@
             <span class="label"> 折旧 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
-              <span>5621</span>
+              <span><CountTo :start="0" :end="5621" /></span>
               <p>万元</p>
             </div>
           </div>
@@ -134,6 +136,7 @@ function goTarget(url) {
           margin-left: 9px;
 
           span {
+            width: 76px;
             font-size: 22px;
             font-family: YouSheBiaoTiHei;
             font-weight: 400;

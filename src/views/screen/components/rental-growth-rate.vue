@@ -6,7 +6,7 @@
           <div class="part">
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <span class="label"> 年同比 </span>
-            <p>37.6%</p>
+            <p><CountTo :start="0" :end="37.6" />%</p>
           </div>
 
           <div class="part">
@@ -37,6 +37,10 @@ function initChart() {
   myChart.setOption({
     legend: {
       show: false,
+    },
+    tooltip: {
+      show: true,
+      trigger: "axis",
     },
     grid: {
       top: "10%",
@@ -91,8 +95,8 @@ function initChart() {
         symbol: "none",
         smooth: true,
         lineStyle: {
-          color: 'rgba(125, 237, 155, 1)'
-        }
+          color: "rgba(125, 237, 155, 1)",
+        },
       },
 
       {
@@ -102,8 +106,8 @@ function initChart() {
         symbol: "none",
         smooth: true,
         lineStyle: {
-          color: 'RGBA(9, 29, 54, 1)'
-        }
+          color: "RGBA(9, 29, 54, 1)",
+        },
       },
 
       {
@@ -113,8 +117,8 @@ function initChart() {
         symbol: "none",
         smooth: true,
         lineStyle: {
-          color: 'rgba(75, 185, 244, 1)'
-        }
+          color: "rgba(75, 185, 244, 1)",
+        },
       },
 
       {
@@ -124,8 +128,8 @@ function initChart() {
         symbol: "none",
         smooth: true,
         lineStyle: {
-          color: 'RGBA(9, 29, 54, 1)'
-        }
+          color: "RGBA(9, 29, 54, 1)",
+        },
       },
     ],
   });

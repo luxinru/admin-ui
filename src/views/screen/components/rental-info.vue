@@ -16,7 +16,7 @@
           <div class="info">
             <span> 出租总收入 </span>
 
-            <p>795</p>
+            <p><CountTo :start="0" :end="765" /></p>
 
             <span> 万元 </span>
           </div>
@@ -26,11 +26,11 @@
           <div id="chart" class="chart"></div>
           <div class="legend">
             <div class="item">
-              <img src="" alt="" />
+              <img src="@/assets/images/screen/icon-1.png" alt="" />
               <span>同比增长</span>
             </div>
             <div class="item">
-              <img src="" alt="" />
+              <img src="@/assets/images/screen/icon-2.png" alt="" />
               <span>环比增长</span>
             </div>
           </div>
@@ -77,6 +77,10 @@ function initChart() {
     ],
     legend: {
       show: false,
+    },
+    tooltip: {
+      show: true,
+      trigger: 'axis'
     },
     grid: {
       top: "22%",
@@ -230,6 +234,7 @@ onMounted(() => {
         }
 
         p {
+          width: 80px;
           font-size: 36px;
           font-family: YouSheBiaoTiHei;
           font-weight: 400;

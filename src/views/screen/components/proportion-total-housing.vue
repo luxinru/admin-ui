@@ -11,22 +11,22 @@
           <div class="item">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> 水电气中心 </span>
-            <p>2456</p>
+            <p><CountTo :start="0" :end="2456" /></p>
           </div>
           <div class="item">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> 南充协调组 </span>
-            <p>5314</p>
+            <p><CountTo :start="0" :end="5314" /></p>
           </div>
           <div class="item">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> 物管中心 </span>
-            <p>3547</p>
+            <p><CountTo :start="0" :end="3547" /></p>
           </div>
           <div class="item">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> 其他 </span>
-            <p>3025</p>
+            <p><CountTo :start="0" :end="3025" /></p>
           </div>
         </div>
       </div>
@@ -199,7 +199,7 @@ function getPie3D(
 
 const optionsData = [
   {
-    name: "aa",
+    name: "水电气中心",
     value: 11,
     itemStyle: {
       color: "RGBA(64, 96, 240, 1)",
@@ -207,18 +207,26 @@ const optionsData = [
     },
   },
   {
-    name: "cc",
-    value: 30,
+    name: "南充协调组",
+    value: 20,
     itemStyle: {
       color: "RGBA(51, 243, 218, 1)",
       // opacity: 1,
     },
   },
   {
-    name: "bb",
-    value: 15,
+    name: "物管中心",
+    value: 30,
     itemStyle: {
       color: "RGBA(63, 194, 243, 1)",
+      // opacity: 1,
+    },
+  },
+  {
+    name: "其他",
+    value: 3,
+    itemStyle: {
+      color: "RGBA(109, 230, 142, 1)",
       // opacity: 1,
     },
   },
@@ -230,42 +238,6 @@ series.push();
 
 function initChart() {
   const myChart = echarts.init(document.getElementById("chart7"));
-
-  let colorList = [
-    "#00A3F0",
-    "#00FED2",
-    "#FFD37A",
-    "#F08200",
-    "#F04900",
-    "#F00000",
-    "#F000A9",
-    "#8200F0",
-    "#ea7ccc",
-  ];
-  let result = {
-    data: [
-      { key: "3", value: "水电气中心", count: 2, rate: "44.1" },
-      { key: "11", value: "南充协调组", count: 2, rate: "44.4" },
-      { key: "2", value: "物管中心", count: 3, rate: "5.2" },
-      { key: "1", value: "其他", count: 3, rate: "3.2" },
-    ],
-    total: 10,
-  };
-  let baseData = [];
-  for (var i = 0; i < result.data.length; i++) {
-    baseData.push({
-      value: result.data[i].count,
-      name: result.data[i].value,
-      itemStyle: {
-        normal: {
-          shadowBlur: 20,
-          shadowColor: colorList[i],
-        },
-      },
-    });
-  }
-
-  console.log('series :>> ', series);
 
   myChart.setOption({
     xAxis3D: {
@@ -290,7 +262,7 @@ function initChart() {
         rotateSensitivity: 0, // 设置为0无法旋转
         zoomSensitivity: 0, // 设置为0无法缩放
         panSensitivity: 0, // 设置为0无法平移
-        autoRotate: false, // 自动旋转
+        autoRotate: true, // 自动旋转
       },
     },
     series: series,

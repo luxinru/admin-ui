@@ -14,7 +14,7 @@
           <div class="info">
             <span>房屋总量</span>
             <span>
-              <p>45</p>
+              <p><CountTo :start="0" :end="45" /></p>
               <p>幢</p>
             </span>
           </div>
@@ -28,7 +28,7 @@
           <div class="info">
             <span>房屋面积</span>
             <span>
-              <p>98.23</p>
+              <p><CountTo :start="0" :end="98.23" /></p>
               <p>万元</p>
             </span>
           </div>
@@ -109,6 +109,7 @@ function goTarget(url) {
 
             p {
               &:first-child {
+                width: 40px;
                 font-size: 24px;
                 font-family: YouSheBiaoTiHei;
                 font-weight: 400;
