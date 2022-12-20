@@ -44,12 +44,18 @@
 
 <script setup name="ProductionValueInfo">
 import Box from "./box.vue";
+import { fetchBasicStats } from "@/api/screen";
 
-const version = ref("3.6.0");
-
-function goTarget(url) {
-  window.open(url, "__blank");
+async function fetchBasicStatsFun() {
+  const { data } = await fetchBasicStats({
+    departCode: 11510,
+  });
+  console.log("data :>> ", data);
 }
+
+onMounted(() => {
+  fetchBasicStatsFun();
+});
 </script>
 
 <style scoped lang="scss">
