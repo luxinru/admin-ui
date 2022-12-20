@@ -4,10 +4,10 @@
       <img class="bac" src="@/assets/images/screen/title-1.png" alt="" />
       <span class="name">{{ title }}</span>
 
-      <div class="more" @click="onMoreClick">
+      <!-- <div class="more" @click="onMoreClick">
         <span>More</span>
         <img src="@/assets/images/screen/more-1.png" alt="" />
-      </div>
+      </div> -->
     </section>
 
     <section class="content">
@@ -71,7 +71,7 @@ function onMoreClick() {
       background: linear-gradient(0deg, #82c1ff 10%, #ffffff 80%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-left: 66px;
+      margin-left: 50px;
     }
 
     .more {
