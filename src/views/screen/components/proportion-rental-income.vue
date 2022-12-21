@@ -2,7 +2,7 @@
   <div class="proportion_rental_income_root">
     <Box title="租金收入占比">
       <div class="container">
-        <div class="labels labels1">
+        <!-- <div class="labels labels1">
           <div class="item">
             <span><CountTo :start="0" :end="25" />%</span>
             <p>成都</p>
@@ -15,7 +15,7 @@
             <span><CountTo :start="0" :end="20" />%</span>
             <p>南充</p>
           </div>
-        </div>
+        </div> -->
 
         <div class="chart_box">
           <div id="chart3" class="chart3"></div>
@@ -24,13 +24,13 @@
 
             <span class="label"> 共计 </span>
             <span class="value">
-              <p><CountTo :start="0" :end="26" /></p>
+              <p><CountTo :start="0" :end="all" /></p>
               <span>笔</span>
             </span>
           </div>
         </div>
 
-        <div class="labels labels2">
+        <!-- <div class="labels labels2">
           <div class="item">
             <p>广元</p>
             <span><CountTo :start="0" :end="10" />%</span>
@@ -43,7 +43,7 @@
             <p>内江</p>
             <span><CountTo :start="0" :end="10" />%</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </Box>
   </div>
@@ -53,9 +53,17 @@
 import Box from "./box.vue";
 import * as echarts from "echarts";
 import "echarts-gl";
+import { fetchVisualRentalIncome } from "@/api/screen";
 
-function initChart() {
+const all = ref(0);
+
+function initChart(data) {
+  console.log("data :>> ", data);
   const myChart = echarts.init(document.getElementById("chart3"));
+
+  const { areaName, areaNum, areaValue } = data;
+
+  all.value = areaNum || 0;
 
   let colorList = [
     "#00A3F0",
@@ -68,24 +76,13 @@ function initChart() {
     "#8200F0",
     "#ea7ccc",
   ];
-  let result = {
-    data: [
-      { value: "成都", count: 25 },
-      { value: "广元", count: 10 },
-      { value: "重庆", count: 10 },
-      { value: "遂宁", count: 10 },
-      { value: "南充", count: 20 },
-      { value: "内江", count: 10 },
-    ],
-    total: 11393722,
-  };
-  let baseData = [];
-  for (var i = 0; i < result.data.length; i++) {
-    baseData.push({
-      value: result.data[i].count,
-      name: result.data[i].value,
-    });
-  }
+  const results = areaName.map((item, index) => {
+    return {
+      name: item,
+      value: areaValue[index] || 0,
+      label: item,
+    };
+  });
 
   myChart.setOption({
     title: {
@@ -107,34 +104,65 @@ function initChart() {
     },
     grid: {
       top: 0,
-      left: 10,
+      left: 0,
       right: 0,
       bottom: 10,
     },
     series: [
       {
-        startAngle: -90,
-        name: "分布",
+        startAngle: 90,
+        name: "租金收入占比",
         type: "pie",
-        radius: ["75%", "85%"],
+        radius: ["70%", "80%"],
         center: ["50%", "50%"],
         label: {
           show: false,
         },
-        data: baseData,
+        data: results,
+        
         itemStyle: {
           normal: {
             borderRadius: 80,
             borderCap: "round",
           },
         },
+        label: {
+          show: true,
+          fontSize: 16,
+          // alignTo: "edge",
+          color: "#fff",
+          formatter: "{b|{b}：}{c|{d}%}",
+          rich: {
+            b: {
+              color: "#fff",
+              fontSize: 14,
+            },
+            c: {
+              color: "#4bb9f4",
+              fontSize: 14,
+            },
+          },
+        },
+        labelLine: {
+          show: false,
+          length: 10,
+          length2: 0
+        },
       },
     ],
   });
 }
 
+async function fetchVisualRentalIncomeFun() {
+  const { data } = await fetchVisualRentalIncome({
+    departCode: 11518,
+  });
+
+  initChart(data);
+}
+
 onMounted(() => {
-  initChart();
+  fetchVisualRentalIncomeFun();
 });
 </script>
 
@@ -201,8 +229,8 @@ onMounted(() => {
 
     .chart_box {
       position: relative;
-      width: 122px;
-      height: 122px;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;

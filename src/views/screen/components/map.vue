@@ -3,7 +3,9 @@
 </template>
 
 <script setup name="Map">
-const initMap = () => {
+import { fetchVisualList } from "@/api/screen";
+
+const initMap = (data) => {
   const Bmap = window.BMap;
   const map = new BMap.Map("map"); // 创建Map实例
   map.setMapType(BMAP_HYBRID_MAP);
@@ -46,11 +48,22 @@ const initMap = () => {
   }
 };
 
+async function fetchVisualListFun () {
+  const { data } = await fetchVisualList({
+    houseName: '',
+    houseCode: '',
+    departCode: '',
+    assetsCode: ''
+  })
+
+  console.log('data :>> ', data);
+
+  initMap(data);
+}
+
 onMounted(() => {
   nextTick(() => {
-    setTimeout(() => {
-      initMap();
-    }, 1000);
+    fetchVisualListFun()
   });
 });
 </script>

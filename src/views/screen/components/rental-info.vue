@@ -142,29 +142,26 @@ function initChart() {
         type: "line",
         data: [30, 20, 30, 20, 45, 20, 30],
         symbol: "none",
-        // lineStyle: {
-        //   color: 'rgba(59, 154, 255, 1)'
-        // }
       },
       {
         name: "环比增长",
         type: "line",
         data: [20, 10, 20, 10, 40, 10, 20],
         symbol: "none",
-        // lineStyle: {
-        //   color: 'rgba(79, 133, 247, 0.27)'
-        // }
       },
     ],
   });
 }
 
 onMounted(() => {
-  initChart();
+  
 
   bus.on("fetchBasicStatsFun", (data) => {
+    console.log('data :>> ', data);
     const { rentalIncome: value } = data;
     rentalIncome.value = value || 0;
+
+    initChart();
   });
 });
 </script>

@@ -8,25 +8,10 @@
         </div>
 
         <div class="labels">
-          <div class="item">
+          <div class="item" v-for="(item, index) in list" :key="index">
             <img src="@/assets/images/screen/mark.png" alt="" />
-            <span> 水电气中心 </span>
-            <p><CountTo :start="0" :end="2456" /></p>
-          </div>
-          <div class="item">
-            <img src="@/assets/images/screen/mark.png" alt="" />
-            <span> 南充协调组 </span>
-            <p><CountTo :start="0" :end="5314" /></p>
-          </div>
-          <div class="item">
-            <img src="@/assets/images/screen/mark.png" alt="" />
-            <span> 物管中心 </span>
-            <p><CountTo :start="0" :end="3547" /></p>
-          </div>
-          <div class="item">
-            <img src="@/assets/images/screen/mark.png" alt="" />
-            <span> 其他 </span>
-            <p><CountTo :start="0" :end="3025" /></p>
+            <span> {{ item.name }} </span>
+            <p><CountTo :start="0" :end="item.value" /></p>
           </div>
         </div>
       </div>
@@ -39,6 +24,8 @@ import Box from "./box.vue";
 import * as echarts from "echarts";
 
 import { fetchVisualAmount } from "@/api/screen";
+
+const list = ref([])
 
 // 生成扇形的曲面参数方程，用于 series-surface.parametricEquation
 function getParametricEquation(
@@ -199,47 +186,21 @@ function getPie3D(
   return series;
 }
 
-const optionsData = [
-  {
-    name: "水电气中心",
-    value: 11,
-    itemStyle: {
-      color: "RGBA(64, 96, 240, 1)",
-      // opacity: 1,
-    },
-  },
-  {
-    name: "南充协调组",
-    value: 20,
-    itemStyle: {
-      color: "RGBA(51, 243, 218, 1)",
-      // opacity: 1,
-    },
-  },
-  {
-    name: "物管中心",
-    value: 30,
-    itemStyle: {
-      color: "RGBA(63, 194, 243, 1)",
-      // opacity: 1,
-    },
-  },
-  {
-    name: "其他",
-    value: 3,
-    itemStyle: {
-      color: "RGBA(109, 230, 142, 1)",
-      // opacity: 1,
-    },
-  },
-];
+
+
+function initChart(data) {
+  const myChart = echarts.init(document.getElementById("chart7"));
+
+  const optionsData = data.map(item => {
+    return {
+      name: item.name,
+      value: Number(item.value)
+    }
+  });
 
 let series = getPie3D(optionsData, 0.8, 240, 28, 26, 0.5);
 
 series.push();
-
-function initChart() {
-  const myChart = echarts.init(document.getElementById("chart7"));
 
   myChart.setOption({
     xAxis3D: {
@@ -276,11 +237,11 @@ async function fetchVisualAmountFun () {
     departCode: 11518,
   })
 
-  console.log('data :>> ', data);
+  list.value = data
+  initChart(data);
 }
 
 onMounted(() => {
-  initChart();
   fetchVisualAmountFun()
 });
 </script>

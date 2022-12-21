@@ -10,11 +10,14 @@
 
 <script setup name="HousingAcquisition">
 import Box from "./box.vue";
+import { fetchVisualPaper } from "@/api/screen";
 
 import * as echarts from "echarts";
 
-function initChart() {
+function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart6"));
+
+  const { housePaperData, housePaperValue } = data
 
   myChart.setOption({
     legend: {
@@ -34,7 +37,7 @@ function initChart() {
     xAxis: {
       type: "category",
       boundaryGap: true,
-      data: ["已处理", "无法办理", "正在办理", "办理遗失", "其他"],
+      data: housePaperData.map(item => item),
       axisLine: {
         lineStyle: {
           color: "rgba(87, 107, 139, 0.66)",
@@ -45,6 +48,7 @@ function initChart() {
       },
       axisLabel: {
         color: "rgba(196, 225, 255, 1)",
+        interval: 0
       },
     },
     yAxis: {
@@ -76,7 +80,7 @@ function initChart() {
         type: "bar",
         data: [
           {
-            value: 30,
+            value: housePaperValue[0] || 0,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(78, 137, 255, 1)" },
@@ -87,7 +91,7 @@ function initChart() {
             },
           },
           {
-            value: 20,
+            value: housePaperValue[1] || 0,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(97, 252, 156, 1)" },
@@ -98,7 +102,7 @@ function initChart() {
             },
           },
           {
-            value: 30,
+            value: housePaperValue[2] || 0,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(254, 222, 113, 1)" },
@@ -109,7 +113,7 @@ function initChart() {
             },
           },
           {
-            value: 20,
+            value: housePaperValue[3] || 0,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(43, 173, 248, 1)" },
@@ -120,7 +124,7 @@ function initChart() {
             },
           },
           {
-            value: 20,
+            value: housePaperValue[4] || 0,
             itemStyle: {
               color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
                 { offset: 0, color: "rgba(159, 125, 255, 1)" },
@@ -142,31 +146,31 @@ function initChart() {
         color: "rgb(4,128,224)",
         data: [
           {
-            value: 30,
+            value: housePaperValue[0] || 0,
             itemStyle: {
               color: "rgba(78, 137, 255, 1)",
             },
           },
           {
-            value: 20,
+            value: housePaperValue[1] || 0,
             itemStyle: {
               color: "rgba(97, 252, 156, 1)",
             },
           },
           {
-            value: 30,
+            value: housePaperValue[2] || 0,
             itemStyle: {
               color: "rgba(254, 222, 113, 1)",
             },
           },
           {
-            value: 20,
+            value: housePaperValue[3] || 0,
             itemStyle: {
               color: "rgba(43, 173, 248, 1)",
             },
           },
           {
-            value: 20,
+            value: housePaperValue[4] || 0,
             itemStyle: {
               color: "rgba(159, 125, 255, 1",
             },
@@ -179,8 +183,16 @@ function initChart() {
   });
 }
 
+async function fetchVisualPaperFun () {
+  const { data } = await fetchVisualPaper({
+    departCode: 11518,
+  })
+
+  initChart(data);
+}
+
 onMounted(() => {
-  initChart();
+  fetchVisualPaperFun()
 });
 </script>
 

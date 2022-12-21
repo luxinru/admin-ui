@@ -6,7 +6,7 @@
           <div class="part">
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <span class="label"> 年同比 </span>
-            <p><CountTo :start="0" :end="37.6" />%</p>
+            <p><CountTo :start="0" :end="year" />%</p>
           </div>
 
           <div class="part">
@@ -30,11 +30,16 @@
 <script setup name="RentalGrowthRate">
 import Box from "./box.vue";
 import * as echarts from "echarts";
-
 import { fetchRentalGrowth } from "@/api/screen";
 
-function initChart() {
+const year = ref(0)
+
+function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart1"));
+
+  const { BasicData, xAreaData, yearData, yearOnYear } = data
+
+  year.value = yearOnYear || 0
 
   myChart.setOption({
     legend: {
@@ -54,7 +59,7 @@ function initChart() {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: ["重庆", "成都", "广元", "内江", "遂宁"],
+      data: xAreaData,
       axisLine: {
         lineStyle: {
           color: "rgba(87, 107, 139, 0.66)",
@@ -93,7 +98,7 @@ function initChart() {
       {
         name: "同比增长",
         type: "line",
-        data: [30, 20, 30, 20, 45],
+        data: BasicData,
         symbol: "none",
         smooth: true,
         lineStyle: {
@@ -104,7 +109,9 @@ function initChart() {
       {
         name: "同比增长",
         type: "line",
-        data: [25, 15, 25, 15, 40],
+        data: BasicData.map(item => {
+          return item - item * 0.2
+        }),
         symbol: "none",
         smooth: true,
         lineStyle: {
@@ -115,7 +122,7 @@ function initChart() {
       {
         name: "环比增长",
         type: "line",
-        data: [20, 10, 20, 10, 40],
+        data: yearData,
         symbol: "none",
         smooth: true,
         lineStyle: {
@@ -126,7 +133,9 @@ function initChart() {
       {
         name: "环比增长",
         type: "line",
-        data: [15, 5, 15, 5, 35],
+        data: yearData.map(item => {
+          return item - item * 0.2
+        }),
         symbol: "none",
         smooth: true,
         lineStyle: {
@@ -142,12 +151,10 @@ async function fetchRentalGrowthFun () {
     departCode: 11518,
   })
 
-  console.log('data :>> ', data);
+  initChart(data);
 }
 
 onMounted(() => {
-  initChart();
-
   fetchRentalGrowthFun()
 });
 </script>

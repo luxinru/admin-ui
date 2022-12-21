@@ -20,3 +20,25 @@ export function fetchRentalGrowth(params) {
     method: 'get',
   })
 }
+
+export function fetchVisualPaper(params) {
+  return request({
+    url: `data-visualization/house/visual/paper/${params.departCode}`,
+    method: 'get',
+  })
+}
+
+export function fetchVisualRentalIncome(params) {
+  return request({
+    url: `data-visualization/house/visual/rental/income/${params.departCode}`,
+    method: 'get',
+  })
+}
+
+export function fetchVisualList(params) {
+  return request({
+    url: `data-visualization/house/visual/list`,
+    method: 'get',
+    data: params,
+  })
+}
