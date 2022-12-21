@@ -1,10 +1,22 @@
 import request from '@/utils/request'
 
-// 登录方法
 export function fetchBasicStats(params) {
   return request({
-    url: 'query/house/visual/basic/stats',
+    url: `data-visualization/house/visual/basic/stats/${params.departCode}`,
     method: 'get',
-    params
+  })
+}
+
+export function fetchVisualAmount(params) {
+  return request({
+    url: `data-visualization/house/visual/amount/${params.departCode}`,
+    method: 'get',
+  })
+}
+
+export function fetchRentalGrowth(params) {
+  return request({
+    url: `data-visualization/house/visual/rental/growth/${params.departCode}`,
+    method: 'get',
   })
 }

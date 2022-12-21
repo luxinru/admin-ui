@@ -38,6 +38,8 @@
 import Box from "./box.vue";
 import * as echarts from "echarts";
 
+import { fetchVisualAmount } from "@/api/screen";
+
 // 生成扇形的曲面参数方程，用于 series-surface.parametricEquation
 function getParametricEquation(
   startRatio,
@@ -269,8 +271,17 @@ function initChart() {
   });
 }
 
+async function fetchVisualAmountFun () {
+  const { data } = await fetchVisualAmount({
+    departCode: 11518,
+  })
+
+  console.log('data :>> ', data);
+}
+
 onMounted(() => {
   initChart();
+  fetchVisualAmountFun()
 });
 </script>
 

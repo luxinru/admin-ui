@@ -13,7 +13,7 @@
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
               <span>
-                <CountTo :start="0" :end="6967" />
+                <CountTo :start="0" :end="original" />
               </span>
               <p>万元</p>
             </div>
@@ -23,7 +23,7 @@
             <span class="label"> 净值 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
-              <span><CountTo :start="0" :end="5036" /></span>
+              <span><CountTo :start="0" :end="now" /></span>
               <p>万元</p>
             </div>
           </div>
@@ -32,7 +32,7 @@
             <span class="label"> 折旧 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
-              <span><CountTo :start="0" :end="5621" /></span>
+              <span><CountTo :start="0" :end="acc" /></span>
               <p>万元</p>
             </div>
           </div>
@@ -43,18 +43,22 @@
 </template>
 
 <script setup name="ProductionValueInfo">
-import Box from "./box.vue";
-import { fetchBasicStats } from "@/api/screen";
+import bus from "vue3-eventbus";
 
-async function fetchBasicStatsFun() {
-  const { data } = await fetchBasicStats({
-    departCode: 11510,
-  });
-  console.log("data :>> ", data);
-}
+import Box from "./box.vue";
+
+const original = ref(0);
+const now = ref(0);
+const acc = ref(0);
 
 onMounted(() => {
-  fetchBasicStatsFun();
+  bus.on("fetchBasicStatsFun", (data) => {
+    const { originalValue, nowValue, accDepreciation } = data;
+
+    original.value = originalValue || 0;
+    now.value = nowValue || 0;
+    acc.value = accDepreciation || 0;
+  });
 });
 </script>
 

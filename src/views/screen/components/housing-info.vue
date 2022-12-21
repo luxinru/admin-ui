@@ -14,7 +14,7 @@
           <div class="info">
             <span>房屋总量</span>
             <span>
-              <p><CountTo :start="0" :end="45" /></p>
+              <p><CountTo :start="0" :end="totalHouseNum" /></p>
               <p>幢</p>
             </span>
           </div>
@@ -28,7 +28,7 @@
           <div class="info">
             <span>房屋面积</span>
             <span>
-              <p><CountTo :start="0" :end="98.23" /></p>
+              <p><CountTo :start="0" :end="totalHouseArea" /></p>
               <p>万元</p>
             </span>
           </div>
@@ -39,12 +39,21 @@
 </template>
 
 <script setup name="HousingInfo">
-import Box from "./box.vue";
-const version = ref("3.6.0");
+import bus from "vue3-eventbus";
 
-function goTarget(url) {
-  window.open(url, "__blank");
-}
+import Box from "./box.vue";
+
+const totalHouseNum = ref(0);
+const totalHouseArea = ref(0);
+
+onMounted(() => {
+  bus.on("fetchBasicStatsFun", (data) => {
+    const { totalHouseNum: value1, totalHouseArea: value2 } = data;
+
+    totalHouseNum.value = value1 || 0;
+    totalHouseArea.value = value2 || 0;
+  });
+});
 </script>
 
 <style scoped lang="scss">
@@ -95,7 +104,7 @@ function goTarget(url) {
       .info {
         display: flex;
         flex-direction: column;
-        margin:  0 0 14px 5px;
+        margin: 0 0 14px 5px;
 
         span {
           font-size: 16px;

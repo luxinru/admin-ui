@@ -16,7 +16,7 @@
           <div class="info">
             <span> 出租总收入 </span>
 
-            <p><CountTo :start="0" :end="765" /></p>
+            <p><CountTo :start="0" :end="rentalIncome" /></p>
 
             <span> 万元 </span>
           </div>
@@ -41,8 +41,12 @@
 </template>
 
 <script setup name="ScreenIndex">
-import Box from "./box.vue";
+import bus from "vue3-eventbus";
 import * as echarts from "echarts";
+
+import Box from "./box.vue";
+
+const rentalIncome = ref(0);
 
 function initChart() {
   const myChart = echarts.init(document.getElementById("chart"));
@@ -80,7 +84,7 @@ function initChart() {
     },
     tooltip: {
       show: true,
-      trigger: 'axis'
+      trigger: "axis",
     },
     grid: {
       top: "22%",
@@ -157,6 +161,11 @@ function initChart() {
 
 onMounted(() => {
   initChart();
+
+  bus.on("fetchBasicStatsFun", (data) => {
+    const { rentalIncome: value } = data;
+    rentalIncome.value = value || 0;
+  });
 });
 </script>
 

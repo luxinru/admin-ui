@@ -31,6 +31,8 @@
 import Box from "./box.vue";
 import * as echarts from "echarts";
 
+import { fetchRentalGrowth } from "@/api/screen";
+
 function initChart() {
   const myChart = echarts.init(document.getElementById("chart1"));
 
@@ -135,8 +137,18 @@ function initChart() {
   });
 }
 
+async function fetchRentalGrowthFun () {
+  const { data } = await fetchRentalGrowth({
+    departCode: 11518,
+  })
+
+  console.log('data :>> ', data);
+}
+
 onMounted(() => {
   initChart();
+
+  fetchRentalGrowthFun()
 });
 </script>
 
