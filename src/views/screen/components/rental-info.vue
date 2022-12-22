@@ -157,9 +157,8 @@ onMounted(() => {
   
 
   bus.on("fetchBasicStatsFun", (data) => {
-    console.log('data :>> ', data);
     const { rentalIncome: value } = data;
-    rentalIncome.value = value || 0;
+    rentalIncome.value = Number(value) || 0;
 
     initChart();
   });

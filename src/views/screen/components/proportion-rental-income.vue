@@ -63,7 +63,7 @@ function initChart(data) {
 
   const { areaName, areaNum, areaValue } = data;
 
-  all.value = areaNum || 0;
+  all.value = Number(areaNum) || 0;
 
   let colorList = [
     "#00A3F0",

@@ -39,7 +39,7 @@ function initChart(data) {
 
   const { BasicData, xAreaData, yearData, yearOnYear } = data
 
-  year.value = yearOnYear || 0
+  year.value = Number(yearOnYear) || 0
 
   myChart.setOption({
     legend: {

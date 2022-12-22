@@ -39,6 +39,6 @@ export function fetchVisualList(params) {
   return request({
     url: `data-visualization/house/visual/list`,
     method: 'get',
-    data: params,
+    params,
   })
 }

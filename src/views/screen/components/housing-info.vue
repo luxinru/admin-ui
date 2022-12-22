@@ -50,8 +50,8 @@ onMounted(() => {
   bus.on("fetchBasicStatsFun", (data) => {
     const { totalHouseNum: value1, totalHouseArea: value2 } = data;
 
-    totalHouseNum.value = value1 || 0;
-    totalHouseArea.value = value2 || 0;
+    totalHouseNum.value = Number(value1) || 0;
+    totalHouseArea.value = Number(value2) || 0;
   });
 });
 </script>

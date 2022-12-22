@@ -11,7 +11,7 @@
           <div class="item" v-for="(item, index) in list" :key="index">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> {{ item.name }} </span>
-            <p><CountTo :start="0" :end="item.value" /></p>
+            <p><CountTo :start="0" :end="Number(item.value)" /></p>
           </div>
         </div>
       </div>

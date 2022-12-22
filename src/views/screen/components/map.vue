@@ -48,22 +48,23 @@ const initMap = (data) => {
   }
 };
 
-async function fetchVisualListFun () {
-  const { data } = await fetchVisualList({
-    houseName: '',
-    houseCode: '',
-    departCode: '',
-    assetsCode: ''
-  })
+async function fetchVisualListFun() {
+  const { rows } = await fetchVisualList({
+    houseName: "",
+    houseCode: "",
+    departCode: "",
+    assetsCode: "",
+  });
 
-  console.log('data :>> ', data);
+  const list = rows.filter(item => item.longitude && item.latitude)
+  console.log("list :>> ", list);
 
-  initMap(data);
+  initMap(list);
 }
 
 onMounted(() => {
   nextTick(() => {
-    fetchVisualListFun()
+    fetchVisualListFun();
   });
 });
 </script>

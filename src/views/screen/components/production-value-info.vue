@@ -55,9 +55,9 @@ onMounted(() => {
   bus.on("fetchBasicStatsFun", (data) => {
     const { originalValue, nowValue, accDepreciation } = data;
 
-    original.value = originalValue || 0;
-    now.value = nowValue || 0;
-    acc.value = accDepreciation || 0;
+    original.value = Number(originalValue) || 0;
+    now.value = Number(nowValue) || 0;
+    acc.value = Number(accDepreciation) || 0;
   });
 });
 </script>
