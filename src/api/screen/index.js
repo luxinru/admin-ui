@@ -42,3 +42,11 @@ export function fetchVisualList(params) {
     params,
   })
 }
+
+export function fetchVisualHouseAccount(params) {
+  return request({
+    url: `data-visualization/house/visual/house/account`,
+    method: 'get',
+    params,
+  })
+}

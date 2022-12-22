@@ -19,7 +19,7 @@
 
         <div class="chart_box">
           <div id="chart3" class="chart3"></div>
-          <div class="info">
+          <div class="info" @click="onItemClick">
             <div class="bac"></div>
 
             <span class="label"> 共计 </span>
@@ -56,6 +56,10 @@ import "echarts-gl";
 import { fetchVisualRentalIncome } from "@/api/screen";
 
 const all = ref(0);
+
+function onItemClick() {
+  bus.emit('onModalShow')
+}
 
 function initChart(data) {
   console.log("data :>> ", data);

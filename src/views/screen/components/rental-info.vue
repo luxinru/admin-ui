@@ -13,7 +13,7 @@
             <img class="img2" src="@/assets/images/screen/income.png" alt="" />
           </div>
 
-          <div class="info">
+          <div class="info" @click="onItemClick">
             <span> 出租总收入 </span>
 
             <p><CountTo :start="0" :end="rentalIncome" /></p>
@@ -48,8 +48,14 @@ import Box from "./box.vue";
 
 const rentalIncome = ref(0);
 
-function initChart() {
+function onItemClick() {
+  bus.emit('onModalShow')
+}
+
+function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart"));
+
+  console.log('data :>> ', data);
 
   myChart.setOption({
     visualMap: [
@@ -160,7 +166,7 @@ onMounted(() => {
     const { rentalIncome: value } = data;
     rentalIncome.value = Number(value) || 0;
 
-    initChart();
+    initChart(data);
   });
 });
 </script>

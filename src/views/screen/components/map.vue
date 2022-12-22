@@ -3,9 +3,12 @@
 </template>
 
 <script setup name="Map">
-import { fetchVisualList } from "@/api/screen";
+import bus from "vue3-eventbus";
 
-const initMap = (data) => {
+import { fetchVisualList } from "@/api/screen";
+import useScreenStore from '@/store/modules/screen'
+
+const initMap = (list) => {
   const Bmap = window.BMap;
   const map = new BMap.Map("map"); // 创建Map实例
   map.setMapType(BMAP_HYBRID_MAP);
@@ -14,37 +17,41 @@ const initMap = (data) => {
   map.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
   map.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
   map.enableKeyboard(); //启用键盘上下左右键移动地图
-  map.centerAndZoom(new Bmap.Point(104.04263635868074, 30.556100647961866), 11);
-  const mapPoints = [
-    { x: 30.556100647961866, y: 104.04263635868074 },
-    { x: 30.686100237962366, y: 104.0826363586234 },
-    { x: 30.486100237962366, y: 104.0326363586234 },
-    { x: 30.386100237962366, y: 104.0726363586234 },
-    { x: 30.286100237962366, y: 104.0626363586234 },
-  ];
-  let i = 0;
+  map.centerAndZoom(new Bmap.Point(104.04263635868074, 30.556100647961866), 13);
+
   // 函数 创建多个标注
-  for (; i < mapPoints.length; i++) {
-    let points = new BMap.Point(mapPoints[i].y, mapPoints[i].x); //创建坐标点
-    if (i > 2) {
-      let icon = new BMap.Icon(
-        "/images/position-1.png",
-        new BMap.Size(67, 108)
-      );
-      let markers = new BMap.Marker(points, {
-        icon,
-      });
-      map.addOverlay(markers);
-    } else {
-      let icon = new BMap.Icon(
-        "/images/position-2.png",
-        new BMap.Size(67, 108)
-      );
-      let markers = new BMap.Marker(points, {
-        icon,
-      });
-      map.addOverlay(markers);
-    }
+  for (let i = 0; i < list.length; i++) {
+    let points = new BMap.Point(list[i].longitude, list[i].latitude); //创建坐标点
+    let icon = new BMap.Icon("/images/position-2.png", new BMap.Size(67, 108));
+    let markers = new BMap.Marker(points, {
+      icon,
+    });
+
+    markers.addEventListener('click', () => {
+      bus.emit('onTopbarClick', 2)
+    })
+
+    map.addOverlay(markers);
+
+    // if (i > 2) {
+    //   let icon = new BMap.Icon(
+    //     "/images/position-1.png",
+    //     new BMap.Size(67, 108)
+    //   );
+    //   let markers = new BMap.Marker(points, {
+    //     icon,
+    //   });
+    //   map.addOverlay(markers);
+    // } else {
+    //   let icon = new BMap.Icon(
+    //     "/images/position-2.png",
+    //     new BMap.Size(67, 108)
+    //   );
+    //   let markers = new BMap.Marker(points, {
+    //     icon,
+    //   });
+    //   map.addOverlay(markers);
+    // }
   }
 };
 
@@ -56,8 +63,9 @@ async function fetchVisualListFun() {
     assetsCode: "",
   });
 
-  const list = rows.filter(item => item.longitude && item.latitude)
-  console.log("list :>> ", list);
+  useScreenStore().setHouseList(rows)
+
+  const list = rows.filter((item) => item.longitude && item.latitude);
 
   initMap(list);
 }

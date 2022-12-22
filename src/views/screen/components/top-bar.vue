@@ -6,9 +6,9 @@
         <span> 系统平台 </span>
       </div>
 
-      <div class="item">
+      <div class="item" @click="onPlatformClick">
         <img src="@/assets/images/screen/unit.png" alt="" />
-        <span> 川中油气矿 </span>
+        <span> {{ area.areaName || '全部' }} </span>
       </div>
     </section>
 
@@ -57,15 +57,26 @@ import bus from "vue3-eventbus";
 const router = useRouter();
 
 const type = ref(1);
+const area = ref({})
 
 function onItemClick(value) {
   type.value = value
-  bus.emit("onTopbarClick", value);
+  // bus.emit("onTopbarClick", value);
 }
 
 function onBackToPlatform() {
   router.replace('/index')
 }
+
+function onPlatformClick() {
+  bus.emit("onTopbarClick", 1);
+}
+
+onMounted(() => {
+  bus.on('onAreaClick', (data) => {
+    area.value = data
+  })
+})
 </script>
 
 <style scoped lang="scss">

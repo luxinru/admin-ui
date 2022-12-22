@@ -8,7 +8,7 @@
         </div>
 
         <div class="list">
-          <div class="item">
+          <div class="item" @click="onItemClick">
             <span class="label"> 原值 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
@@ -19,7 +19,7 @@
             </div>
           </div>
 
-          <div class="item">
+          <div class="item" @click="onItemClick">
             <span class="label"> 净值 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
@@ -28,7 +28,7 @@
             </div>
           </div>
 
-          <div class="item">
+          <div class="item" @click="onItemClick">
             <span class="label"> 折旧 </span>
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <div class="value">
@@ -50,6 +50,10 @@ import Box from "./box.vue";
 const original = ref(0);
 const now = ref(0);
 const acc = ref(0);
+
+function onItemClick() {
+  bus.emit('onModalShow')
+}
 
 onMounted(() => {
   bus.on("fetchBasicStatsFun", (data) => {

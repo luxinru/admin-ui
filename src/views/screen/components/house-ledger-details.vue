@@ -140,23 +140,23 @@
             </thead>
 
             <tbody>
-              <tr v-for="index in 20" :key="index">
-                <td>101010101</td>
-                <td>0010101010</td>
-                <td>遂运工坊</td>
-                <td>154572316</td>
-                <td>混合结构</td>
-                <td>物管中心/行政办</td>
-                <td>1</td>
-                <td>四川省遂宁市</td>
-                <td>0102</td>
+              <tr v-for="(item, index) in list" :key="index">
+                <td>{{ item.assetsCode || "-" }}</td>
+                <td>{{ item.assetsType || "-" }}</td>
+                <td>{{ item.assetsName || "-" }}</td>
+                <td>{{ item.contentAssetsCode || "-" }}</td>
+                <td>{{ item.assetsStandard || "-" }}</td>
+                <td>{{ item.departName || "-" }}</td>
+                <td>{{ item.parcelCode || "-" }}</td>
+                <td>{{ item.ownershipConditionName || "-" }}</td>
+                <td>{{ item.usedrightTypeName || "-" }}</td>
               </tr>
             </tbody>
           </table>
 
           <div class="paging">
-            <div>1</div>
-            <div class="active">2</div>
+            <div class="active">1</div>
+            <div>2</div>
             <div>3</div>
             <div>…</div>
             <div>末页</div>
@@ -171,6 +171,14 @@
 import * as echarts from "echarts";
 import { onBeforeUnmount } from "vue-demi";
 import bus from "vue3-eventbus";
+import { fetchVisualHouseAccount } from "@/api/screen";
+
+const page = ref({
+  pageNum: 1,
+  pageSize: 20,
+});
+
+const list = ref([]);
 
 function initChart() {
   const myChart1 = echarts.init(document.getElementById("chart4"));
@@ -291,14 +299,29 @@ function onModalClose(params) {
   bus.emit("onModalClose");
 }
 
+async function fetchVisualHouseAccountFun() {
+  console.log("page :>> ", page);
+  const { rows } = await fetchVisualHouseAccount({
+    houseType: "",
+    areaName: "",
+    housePaperType: "",
+    pageNum: page.value.pageNum,
+    pageSize: page.value.pageSize,
+  });
+
+  list.value = rows || [];
+}
+
 onMounted(() => {
   initChart();
+
+  fetchVisualHouseAccountFun();
 });
 
 onBeforeUnmount(() => {
-  echarts.dispose(document.getElementById("chart4"))
-  echarts.dispose(document.getElementById("chart5"))
-})
+  echarts.dispose(document.getElementById("chart4"));
+  echarts.dispose(document.getElementById("chart5"));
+});
 </script>
 
 <style scoped lang="scss">

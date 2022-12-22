@@ -11,7 +11,7 @@
               alt=""
             />
           </div>
-          <div class="info">
+          <div class="info"  @click="onItemClick">
             <span>房屋总量</span>
             <span>
               <p><CountTo :start="0" :end="totalHouseNum" /></p>
@@ -20,7 +20,7 @@
           </div>
         </div>
 
-        <div class="item">
+        <div class="item"  @click="onItemClick">
           <div class="imgs">
             <img class="img1" src="@/assets/images/screen/icon-bj.png" alt="" />
             <img class="img2" src="@/assets/images/screen/area.png" alt="" />
@@ -45,6 +45,10 @@ import Box from "./box.vue";
 
 const totalHouseNum = ref(0);
 const totalHouseArea = ref(0);
+
+function onItemClick() {
+  bus.emit('onModalShow')
+}
 
 onMounted(() => {
   bus.on("fetchBasicStatsFun", (data) => {

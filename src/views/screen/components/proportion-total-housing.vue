@@ -8,7 +8,7 @@
         </div>
 
         <div class="labels">
-          <div class="item" v-for="(item, index) in list" :key="index">
+          <div class="item" v-for="(item, index) in list" :key="index" @click="onItemClick">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> {{ item.name }} </span>
             <p><CountTo :start="0" :end="Number(item.value)" /></p>
@@ -26,6 +26,10 @@ import * as echarts from "echarts";
 import { fetchVisualAmount } from "@/api/screen";
 
 const list = ref([])
+
+function onItemClick() {
+  bus.emit('onModalShow')
+}
 
 // 生成扇形的曲面参数方程，用于 series-surface.parametricEquation
 function getParametricEquation(
