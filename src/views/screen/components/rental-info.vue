@@ -57,6 +57,9 @@ function initChart(data) {
 
   console.log('data :>> ', data);
 
+  const { chainlGrowth, yearOnYearGrowth } = data
+  const labels = chainlGrowth.map(item => item.month + '月')
+
   myChart.setOption({
     visualMap: [
       {
@@ -102,7 +105,7 @@ function initChart(data) {
     xAxis: {
       type: "category",
       boundaryGap: false,
-      data: ["6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+      data: labels,
       axisLine: {
         lineStyle: {
           color: "rgba(87, 107, 139, 0.66)",
@@ -146,13 +149,13 @@ function initChart(data) {
       {
         name: "同比增长",
         type: "line",
-        data: [30, 20, 30, 20, 45, 20, 30],
+        data: yearOnYearGrowth.map(item => Number(item.value)),
         symbol: "none",
       },
       {
         name: "环比增长",
         type: "line",
-        data: [20, 10, 20, 10, 40, 10, 20],
+        data: chainlGrowth.map(item => Number(item.value)),
         symbol: "none",
       },
     ],
@@ -160,14 +163,16 @@ function initChart(data) {
 }
 
 onMounted(() => {
-  
-
   bus.on("fetchBasicStatsFun", (data) => {
     const { rentalIncome: value } = data;
     rentalIncome.value = Number(value) || 0;
 
     initChart(data);
   });
+});
+
+onBeforeUnmount(() => {
+  echarts.dispose(document.getElementById("chart"));
 });
 </script>
 
@@ -259,7 +264,9 @@ onMounted(() => {
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          margin: 0 8px 3px 5px;
+          margin: 0 10px 3px 5px;
+          text-align: right;
+          z-index: 1;
         }
       }
     }

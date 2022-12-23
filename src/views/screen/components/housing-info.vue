@@ -11,25 +11,23 @@
               alt=""
             />
           </div>
-          <div class="info"  @click="onItemClick">
-            <span>房屋总量</span>
+          <div class="info" @click="onItemClick">
+            <span>房屋总量(幢)</span>
             <span>
-              <p><CountTo :start="0" :end="totalHouseNum" /></p>
-              <p>幢</p>
+              <CountTo :start="0" :end="totalHouseNum" />
             </span>
           </div>
         </div>
 
-        <div class="item"  @click="onItemClick">
+        <div class="item" @click="onItemClick">
           <div class="imgs">
             <img class="img1" src="@/assets/images/screen/icon-bj.png" alt="" />
             <img class="img2" src="@/assets/images/screen/area.png" alt="" />
           </div>
           <div class="info">
-            <span>房屋面积</span>
+            <span>房屋面积(万㎡)</span>
             <span>
-              <p><CountTo :start="0" :end="totalHouseArea" /></p>
-              <p>万元</p>
+              <CountTo :start="0" :end="totalHouseArea" />
             </span>
           </div>
         </div>
@@ -47,7 +45,7 @@ const totalHouseNum = ref(0);
 const totalHouseArea = ref(0);
 
 function onItemClick() {
-  bus.emit('onModalShow')
+  bus.emit("onModalShow");
 }
 
 onMounted(() => {
@@ -55,7 +53,7 @@ onMounted(() => {
     const { totalHouseNum: value1, totalHouseArea: value2 } = data;
 
     totalHouseNum.value = Number(value1) || 0;
-    totalHouseArea.value = Number(value2) || 0;
+    totalHouseArea.value = Number(value2) / 10000 || 0;
   });
 });
 </script>
@@ -108,7 +106,7 @@ onMounted(() => {
       .info {
         display: flex;
         flex-direction: column;
-        margin: 0 0 14px 5px;
+        margin: 0 0 14px 0px;
 
         span {
           font-size: 16px;
@@ -117,39 +115,23 @@ onMounted(() => {
           color: #ffffff;
 
           &:last-child {
-            display: flex;
-            align-items: center;
+            font-size: 24px;
+            font-family: YouSheBiaoTiHei;
+            font-weight: 400;
+            color: #2177cf;
+            -webkit-text-stroke: 1px #ffffff;
+            text-stroke: 1px #ffffff;
 
-            p {
-              &:first-child {
-                width: 40px;
-                font-size: 24px;
-                font-family: YouSheBiaoTiHei;
-                font-weight: 400;
-                color: #2177cf;
-                -webkit-text-stroke: 1px #ffffff;
-                text-stroke: 1px #ffffff;
-
-                background: linear-gradient(
-                  0deg,
-                  rgba(137, 162, 172, 0.94) 0%,
-                  rgba(229, 245, 255, 0.94) 20.2880859375%,
-                  rgba(255, 255, 255, 0.94) 79.4189453125%,
-                  rgba(255, 255, 255, 0.94) 100%
-                );
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                margin: 16px 0 0 0;
-              }
-
-              &:last-child {
-                font-size: 14px;
-                font-family: Microsoft YaHei;
-                font-weight: 400;
-                color: #ffffff;
-                margin: 20px 0 0 3px;
-              }
-            }
+            background: linear-gradient(
+              0deg,
+              rgba(137, 162, 172, 0.94) 0%,
+              rgba(229, 245, 255, 0.94) 20.2880859375%,
+              rgba(255, 255, 255, 0.94) 79.4189453125%,
+              rgba(255, 255, 255, 0.94) 100%
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 16px 0 0 0;
           }
         }
       }

@@ -63,9 +63,8 @@ async function fetchVisualListFun() {
     assetsCode: "",
   });
 
-  useScreenStore().setHouseList(rows)
-
   const list = rows.filter((item) => item.longitude && item.latitude);
+  useScreenStore().setHouseList(list)
 
   initMap(list);
 }

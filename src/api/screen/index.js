@@ -16,8 +16,9 @@ export function fetchVisualAmount(params) {
 
 export function fetchRentalGrowth(params) {
   return request({
-    url: `data-visualization/house/visual/rental/growth/${params.departCode}`,
+    url: `data-visualization/house/visual/rental/growth`,
     method: 'get',
+    params,
   })
 }
 
@@ -30,8 +31,9 @@ export function fetchVisualPaper(params) {
 
 export function fetchVisualRentalIncome(params) {
   return request({
-    url: `data-visualization/house/visual/rental/income/${params.departCode}`,
+    url: `data-visualization/house/visual/rental/income`,
     method: 'get',
+    params,
   })
 }
 

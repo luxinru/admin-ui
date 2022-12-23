@@ -160,6 +160,7 @@ function initChart(data) {
 async function fetchVisualRentalIncomeFun() {
   const { data } = await fetchVisualRentalIncome({
     departCode: 11518,
+    groupType: '0'
   });
 
   initChart(data);

@@ -169,7 +169,6 @@
 
 <script setup name="HouseLedgerDetails">
 import * as echarts from "echarts";
-import { onBeforeUnmount } from "vue-demi";
 import bus from "vue3-eventbus";
 import { fetchVisualHouseAccount } from "@/api/screen";
 

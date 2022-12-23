@@ -149,6 +149,7 @@ function initChart(data) {
 async function fetchRentalGrowthFun () {
   const { data } = await fetchRentalGrowth({
     departCode: 11518,
+    groupType: 0,
   })
 
   initChart(data);

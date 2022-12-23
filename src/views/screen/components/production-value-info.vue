@@ -10,30 +10,27 @@
         <div class="list">
           <div class="item" @click="onItemClick">
             <span class="label"> 原值 </span>
-            <img src="@/assets/images/screen/more-1.png" alt="" />
-            <div class="value">
+            <div class="box">
+              <img src="@/assets/images/screen/more-1.png" alt="" />
               <span>
                 <CountTo :start="0" :end="original" />
               </span>
-              <p>万元</p>
             </div>
           </div>
 
           <div class="item" @click="onItemClick">
             <span class="label"> 净值 </span>
-            <img src="@/assets/images/screen/more-1.png" alt="" />
-            <div class="value">
+            <div class="box">
+              <img src="@/assets/images/screen/more-1.png" alt="" />
               <span><CountTo :start="0" :end="now" /></span>
-              <p>万元</p>
             </div>
           </div>
 
           <div class="item" @click="onItemClick">
             <span class="label"> 折旧 </span>
-            <img src="@/assets/images/screen/more-1.png" alt="" />
-            <div class="value">
+            <div class="box">
+              <img src="@/assets/images/screen/more-1.png" alt="" />
               <span><CountTo :start="0" :end="acc" /></span>
-              <p>万元</p>
             </div>
           </div>
         </div>
@@ -52,7 +49,7 @@ const now = ref(0);
 const acc = ref(0);
 
 function onItemClick() {
-  bus.emit('onModalShow')
+  bus.emit("onModalShow");
 }
 
 onMounted(() => {
@@ -117,52 +114,44 @@ onMounted(() => {
     }
 
     .list {
+      flex: 1 0;
       display: flex;
       flex-direction: column;
 
       .item {
-        width: 264px;
+        width: 100%;
         height: 55px;
         display: flex;
-        align-items: center;
+        flex-direction: column;
         background: url("../../../assets/images/screen/title-3.png") no-repeat;
         background-size: 100% 100%;
-        margin-top: 4px;
-        padding-bottom: 10px;
+        margin-top: 16px;
+        padding-left: 22px;
 
         .label {
           font-size: 16px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: rgba(252, 253, 255, 1);
-          margin-left: 40px;
+          margin: -14px 0 0 10px;
         }
 
-        img {
-          height: 16px;
-          margin-left: 36px;
-          transform: rotate(-90deg);
-        }
-
-        .value {
+        .box {
+          width: 100%;
           display: flex;
           align-items: center;
-          margin-left: 9px;
+          margin: 0 0 0 0;
+          img {
+            height: 20px;
+            transform: rotate(-90deg);
+          }
 
           span {
-            width: 76px;
+            width: 100%;
             font-size: 22px;
             font-family: YouSheBiaoTiHei;
             font-weight: 400;
             color: #2993ff;
-          }
-
-          p {
-            font-size: 14px;
-            font-family: YouSheBiaoTiHei;
-            font-weight: 400;
-            color: rgba(252, 253, 255, 1);
-            margin: 2px 0 0 3px;
           }
         }
       }
