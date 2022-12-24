@@ -108,6 +108,7 @@ export default {
         ],
         legend: {
           show: true,
+          top: 5,
           right: 0,
           data: [
             {
