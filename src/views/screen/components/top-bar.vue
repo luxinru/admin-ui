@@ -74,6 +74,7 @@ function onPlatformClick() {
 
 onMounted(() => {
   bus.on('onAreaClick', (data) => {
+    console.log('data111 :>> ', data);
     area.value = data
   })
 })

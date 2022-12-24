@@ -14,7 +14,7 @@
 
     <div v-if="isShow" class="select_container">
       <div class="item" v-for="(item, index) in houseList" :key="index" @click="onItemClick(item)">
-        {{ item.areaName }}
+        {{ item.actualName }}
       </div>
     </div>
   </div>
@@ -60,6 +60,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  z-index: 2;
 
   .label {
     font-size: 18px;

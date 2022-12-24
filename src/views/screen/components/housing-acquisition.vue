@@ -37,7 +37,7 @@ function initChart(data) {
     xAxis: {
       type: "category",
       boundaryGap: true,
-      data: housePaperData.map(item => item),
+      data: housePaperData ? housePaperData.map(item => item) : [],
       axisLine: {
         lineStyle: {
           color: "rgba(87, 107, 139, 0.66)",
@@ -188,11 +188,17 @@ async function fetchVisualPaperFun () {
     departCode: 11518,
   })
 
+  console.log('data1111111 :>> ', data);
+
   initChart(data);
 }
 
 onMounted(() => {
   fetchVisualPaperFun()
+});
+
+onBeforeUnmount(() => {
+  echarts.dispose(document.getElementById("chart6"));
 });
 </script>
 

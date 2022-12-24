@@ -248,6 +248,10 @@ async function fetchVisualAmountFun () {
 onMounted(() => {
   fetchVisualAmountFun()
 });
+
+onBeforeUnmount(() => {
+  echarts.dispose(document.getElementById("chart7"));
+});
 </script>
 
 <style scoped lang="scss">

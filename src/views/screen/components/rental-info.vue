@@ -14,11 +14,9 @@
           </div>
 
           <div class="info" @click="onItemClick">
-            <span> 出租总收入 </span>
+            <span> 出租总收入(万元) </span>
 
             <p><CountTo :start="0" :end="rentalIncome" /></p>
-
-            <span> 万元 </span>
           </div>
         </div>
 
@@ -239,7 +237,7 @@ onBeforeUnmount(() => {
 
       .info {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         margin-left: 11px;
 
         span {
@@ -250,7 +248,7 @@ onBeforeUnmount(() => {
         }
 
         p {
-          width: 80px;
+          width: 100%;
           font-size: 36px;
           font-family: YouSheBiaoTiHei;
           font-weight: 400;
@@ -264,9 +262,7 @@ onBeforeUnmount(() => {
           );
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          margin: 0 10px 3px 5px;
-          text-align: right;
-          z-index: 1;
+          margin: 0 10px 3px 0;
         }
       }
     }

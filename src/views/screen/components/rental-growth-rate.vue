@@ -37,7 +37,7 @@ const year = ref(0)
 function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart1"));
 
-  const { BasicData, xAreaData, yearData, yearOnYear } = data
+  const { basicData, xAreaData, yearData, yearOnYear } = data
 
   year.value = Number(yearOnYear) || 0
 
@@ -98,7 +98,7 @@ function initChart(data) {
       {
         name: "同比增长",
         type: "line",
-        data: BasicData,
+        data: basicData,
         symbol: "none",
         smooth: true,
         lineStyle: {
@@ -106,18 +106,18 @@ function initChart(data) {
         },
       },
 
-      {
-        name: "同比增长",
-        type: "line",
-        data: BasicData.map(item => {
-          return item - item * 0.2
-        }),
-        symbol: "none",
-        smooth: true,
-        lineStyle: {
-          color: "RGBA(9, 29, 54, 1)",
-        },
-      },
+      // {
+      //   name: "同比增长",
+      //   type: "line",
+      //   data: basicData.map(item => {
+      //     return Number(item) - Number(item) * 0.2
+      //   }),
+      //   symbol: "none",
+      //   smooth: true,
+      //   lineStyle: {
+      //     color: "RGBA(9, 29, 54, 1)",
+      //   },
+      // },
 
       {
         name: "环比增长",
@@ -130,18 +130,18 @@ function initChart(data) {
         },
       },
 
-      {
-        name: "环比增长",
-        type: "line",
-        data: yearData.map(item => {
-          return item - item * 0.2
-        }),
-        symbol: "none",
-        smooth: true,
-        lineStyle: {
-          color: "RGBA(9, 29, 54, 1)",
-        },
-      },
+      // {
+      //   name: "环比增长",
+      //   type: "line",
+      //   data: yearData.map(item => {
+      //     return Number(item) - Number(item) * 0.2
+      //   }),
+      //   symbol: "none",
+      //   smooth: true,
+      //   lineStyle: {
+      //     color: "RGBA(9, 29, 54, 1)",
+      //   },
+      // },
     ],
   });
 }
@@ -151,12 +151,18 @@ async function fetchRentalGrowthFun () {
     departCode: 11518,
     groupType: 0,
   })
+  
+  console.log('data :>> ', data);
 
   initChart(data);
 }
 
 onMounted(() => {
   fetchRentalGrowthFun()
+});
+
+onBeforeUnmount(() => {
+  echarts.dispose(document.getElementById("chart1"));
 });
 </script>
 

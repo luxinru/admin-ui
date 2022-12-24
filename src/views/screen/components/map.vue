@@ -8,16 +8,18 @@ import bus from "vue3-eventbus";
 import { fetchVisualList } from "@/api/screen";
 import useScreenStore from '@/store/modules/screen'
 
+const map = ref({})
+
 const initMap = (list) => {
   const Bmap = window.BMap;
-  const map = new BMap.Map("map"); // 创建Map实例
-  map.setMapType(BMAP_HYBRID_MAP);
-  map.setCurrentCity("成都"); // 设置地图显示的城市 此项是必须设置的
-  map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-  map.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
-  map.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
-  map.enableKeyboard(); //启用键盘上下左右键移动地图
-  map.centerAndZoom(new Bmap.Point(104.04263635868074, 30.556100647961866), 13);
+  map.value = new BMap.Map("map"); // 创建Map实例
+  map.value.setMapType(BMAP_HYBRID_MAP);
+  map.value.setCurrentCity("成都"); // 设置地图显示的城市 此项是必须设置的
+  map.value.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+  map.value.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
+  map.value.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
+  map.value.enableKeyboard(); //启用键盘上下左右键移动地图
+  map.value.centerAndZoom(new Bmap.Point(104.04263635868074, 30.556100647961866), 13);
 
   // 函数 创建多个标注
   for (let i = 0; i < list.length; i++) {
@@ -29,9 +31,11 @@ const initMap = (list) => {
 
     markers.addEventListener('click', () => {
       bus.emit('onTopbarClick', 2)
+
+      bus.emit('onMapItemClick', list[i])
     })
 
-    map.addOverlay(markers);
+    map.value.addOverlay(markers);
 
     // if (i > 2) {
     //   let icon = new BMap.Icon(
@@ -73,6 +77,12 @@ onMounted(() => {
   nextTick(() => {
     fetchVisualListFun();
   });
+
+  bus.on('onAreaClick', (data)=> {
+    console.log('data :>> ', data);
+
+    map.value.centerAndZoom(new Bmap.Point(data.longitude, data.latitude), 15);
+  })
 });
 </script>
 

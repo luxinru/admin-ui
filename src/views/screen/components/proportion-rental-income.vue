@@ -62,7 +62,6 @@ function onItemClick() {
 }
 
 function initChart(data) {
-  console.log("data :>> ", data);
   const myChart = echarts.init(document.getElementById("chart3"));
 
   const { areaName, areaNum, areaValue } = data;
@@ -80,13 +79,13 @@ function initChart(data) {
     "#8200F0",
     "#ea7ccc",
   ];
-  const results = areaName.map((item, index) => {
+  const results = areaName ? areaName.map((item, index) => {
     return {
       name: item,
       value: areaValue[index] || 0,
       label: item,
     };
-  });
+  }) : []
 
   myChart.setOption({
     title: {
@@ -163,11 +162,17 @@ async function fetchVisualRentalIncomeFun() {
     groupType: '0'
   });
 
+  console.log('data :>> ', data);
+
   initChart(data);
 }
 
 onMounted(() => {
   fetchVisualRentalIncomeFun();
+});
+
+onBeforeUnmount(() => {
+  echarts.dispose(document.getElementById("chart3"));
 });
 </script>
 
