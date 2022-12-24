@@ -177,12 +177,9 @@ import bus from "vue3-eventbus";
 
 let dataInfo = ref({});
 
-// bus.on("onMapItemClick", (data) => {
-//   console.log('111111111 :>> ', 111111111);
-//   dataInfo.value = data;
-//   console.log('dataInfo.value :>> ', dataInfo);
-//   console.log('222222222 :>> ', 222222222);
-// });
+bus.on("onMapItemClick", (data) => {
+  dataInfo.value = JSON.parse(localStorage.getItem("data"))
+});
 
 onMounted(() => {
   dataInfo.value = JSON.parse(localStorage.getItem("data"))

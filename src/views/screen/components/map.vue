@@ -36,6 +36,7 @@ const initMap = (list) => {
       bus.emit("onTopbarClick", 2);
 
       bus.emit("onAreaClick", list[i]);
+      bus.emit("onMapItemClick", list[i]);
 
       localStorage.setItem("data", JSON.stringify(list[i]));
     });
