@@ -44,8 +44,8 @@ import { computed } from "vue";
 import { fetchListFilesByKeyCode } from "@/api/screen";
 import { cloneDeep } from "lodash";
 
-const imgList = ref([0, 1, 2, 3, 4, 5, 6, 7, 8]);
-const house = JSON.parse(localStorage.getItem("currentHouse"));
+const imgList = ref([]);
+const house = ref({});
 const currentImgIndex = ref(0);
 
 const showImgs = computed(() => {
@@ -63,10 +63,6 @@ const showImgs = computed(() => {
   }
 });
 
-bus.on("onMapItemClick", async (data) => {
-  fetchListFilesByKeyCodeFun();
-});
-
 function onPreview() {
   if (currentImgIndex.value === 0) return;
   currentImgIndex.value -= 1;
@@ -78,11 +74,8 @@ function onNext() {
 }
 
 async function fetchListFilesByKeyCodeFun() {
-  // const depart = JSON.parse(localStorage.getItem("currentDepart"));
-  const house = JSON.parse(localStorage.getItem("currentHouse"));
-
   const { rows } = await fetchListFilesByKeyCode({
-    keyCode: house.keyCode,
+    keyCode: house.value.keyCode,
   });
 
   imgList.value =
@@ -95,7 +88,13 @@ async function fetchListFilesByKeyCodeFun() {
 }
 
 onMounted(() => {
+  house.value = JSON.parse(localStorage.getItem("currentHouse"));
   fetchListFilesByKeyCodeFun();
+
+  bus.on("onMapItemClick", async (data) => {
+    house.value = JSON.parse(localStorage.getItem("currentHouse"));
+    fetchListFilesByKeyCodeFun();
+  });
 });
 </script>
 

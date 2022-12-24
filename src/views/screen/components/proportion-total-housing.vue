@@ -1,6 +1,6 @@
 <template>
   <div class="housing_info_root">
-    <Box title="房屋总量占比">
+    <Box title="房屋总量占比" @click="onItemClick('房屋分类占比')">
       <div class="container">
         <div class="chart_box">
           <div id="chart7" class="chart7"></div>
@@ -8,12 +8,7 @@
         </div>
 
         <div class="labels">
-          <div
-            class="item"
-            v-for="(item, index) in list"
-            :key="index"
-            @click="onItemClick(null)"
-          >
+          <div class="item" v-for="(item, index) in list" :key="index">
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> {{ item.name }} </span>
             <p><CountTo :start="0" :end="Number(item.value)" /></p>
@@ -32,9 +27,10 @@ import * as echarts from "echarts";
 import { fetchVisualAmount } from "@/api/screen";
 
 const list = ref([]);
+const currentDepart = ref({});
 
 function onItemClick(value) {
-  localStorage.setItem('tableType', value)
+  localStorage.setItem("tableType", value);
   bus.emit("onModalShow");
 }
 
@@ -62,7 +58,7 @@ function getParametricEquation(
   const offsetX = isSelected ? Math.cos(midRadian) * 0.1 : 0;
   const offsetY = isSelected ? Math.sin(midRadian) * 0.1 : 0;
   // 计算高亮效果的放大比例（未高亮，则比例为 1）
-  const hoverRate = isHovered ? 1.05 : 1;
+  const hoverRate = isHovered ? 1.2 : 1;
   // 返回曲面参数方程
   return {
     u: {
@@ -175,14 +171,6 @@ function getPie3D(
     endValue = startValue + series[i].pieData.value;
     series[i].pieData.startRatio = startValue / sumValue;
     series[i].pieData.endRatio = endValue / sumValue;
-    console.log(
-      series[i].pieData.startRatio,
-      series[i].pieData.endRatio,
-      false,
-      false,
-      k,
-      series[i].pieData.value
-    );
     series[i].parametricEquation = getParametricEquation(
       series[i].pieData.startRatio,
       series[i].pieData.endRatio,
@@ -203,13 +191,15 @@ function initChart(data) {
   const optionsData = data.map((item) => {
     return {
       name: item.name,
-      value: Number(item.value) / 10,
+      value: Number(item.value),
     };
   });
 
   let series = getPie3D(optionsData, 0.8, 240, 28, 26, 0.5);
 
   series.push();
+
+  console.log('series :>> ', series);
 
   myChart.setOption({
     xAxis3D: {
@@ -222,11 +212,11 @@ function initChart(data) {
     },
     zAxis3D: {
       min: -1,
-      max: 1,
+      max: 'dataMax',
     },
     grid3D: {
       show: false,
-      boxHeight: 30, // 三维笛卡尔坐标系在三维场景中的高度
+      boxHeight: 60, // 三维笛卡尔坐标系在三维场景中的高度
       viewControl: {
         alpha: 40,
         beta: 40,
@@ -243,7 +233,7 @@ function initChart(data) {
 
 async function fetchVisualAmountFun() {
   const { data } = await fetchVisualAmount({
-    departCode: 11518,
+    departCode: currentDepart.value.departCode,
   });
 
   list.value = data;
@@ -251,7 +241,19 @@ async function fetchVisualAmountFun() {
 }
 
 onMounted(() => {
-  fetchVisualAmountFun();
+  bus.on("onDepartChange", (depart) => {
+    currentDepart.value = depart;
+    fetchVisualAmountFun();
+  });
+
+  const depart = localStorage.getItem("currentDepart")
+    ? JSON.parse(localStorage.getItem("currentDepart"))
+    : "";
+
+  if (depart) {
+    currentDepart.value = depart;
+    fetchVisualAmountFun();
+  }
 });
 
 onBeforeUnmount(() => {

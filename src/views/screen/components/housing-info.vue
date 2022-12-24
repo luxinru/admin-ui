@@ -11,7 +11,7 @@
               alt=""
             />
           </div>
-          <div class="info" @click="onItemClick(null)">
+          <div class="info" @click="onItemClick('房屋总量')">
             <span>房屋总量(幢)</span>
             <span>
               <CountTo :start="0" :end="totalHouseNum" />
@@ -19,7 +19,7 @@
           </div>
         </div>
 
-        <div class="item" @click="onItemClick(4)">
+        <div class="item" @click="onItemClick('房屋面积')">
           <div class="imgs">
             <img class="img1" src="@/assets/images/screen/icon-bj.png" alt="" />
             <img class="img2" src="@/assets/images/screen/area.png" alt="" />

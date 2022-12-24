@@ -1,23 +1,12 @@
 <template>
   <div class="rental_growth_rate_root">
-    <Box title="租金增长率" @click="onItemClick(5)">
+    <Box title="租金增长率" @click="onItemClick('租金增长率')">
       <div class="container">
         <div class="title">
           <div class="part">
             <img src="@/assets/images/screen/more-1.png" alt="" />
             <span class="label"> 年同比 </span>
             <p><CountTo :start="0" :end="year" />%</p>
-          </div>
-
-          <div class="part">
-            <div class="item">
-              <span class="dot"></span>
-              <div>同比</div>
-            </div>
-            <div class="item">
-              <span class="dot"></span>
-              <div>环比</div>
-            </div>
           </div>
         </div>
 
@@ -33,30 +22,42 @@ import Box from "./box.vue";
 import * as echarts from "echarts";
 import { fetchRentalGrowth } from "@/api/screen";
 
-const year = ref(0)
+const year = ref(0);
+const currentDepart = ref({});
 
-function onItemClick(value) {
-  localStorage.setItem('tableType', value)
+function onItemClick(value, isAll = true) {
+  if (isAll) {
+    localStorage.removeItem("租金增长率");
+  }
+  localStorage.setItem("tableType", value);
   bus.emit("onModalShow");
 }
 
 function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart1"));
 
-  const { basicData, xAreaData, yearData, yearOnYear } = data
+  const { basicData, xAreaData, yearData, yearOnYear } = data;
 
-  year.value = Number(yearOnYear) || 0
+  year.value = Number(yearOnYear) || 0;
 
   myChart.setOption({
     legend: {
-      show: false,
+      show: true,
+      right: 0,
+      top: 0,
+      icon: "circle",
+      itemWidth: 6,
+      textStyle: {
+        color: "#fff",
+        fontSize: 12,
+      },
     },
     tooltip: {
       show: true,
       trigger: "axis",
     },
     grid: {
-      top: "10%",
+      top: "28%",
       left: "3%",
       right: "3%",
       bottom: "5%",
@@ -150,21 +151,49 @@ function initChart(data) {
       // },
     ],
   });
+
+  myChart.getZr().on("click", (params) => {
+    let pointInPixel = [params.offsetX, params.offsetY];
+    if (myChart.containPixel("grid", pointInPixel)) {
+      //点击第几个柱子
+      let pointInGrid = myChart.convertFromPixel(
+        { seriesIndex: 0 },
+        pointInPixel
+      );
+      // 也可以通过params.offsetY 来判断鼠标点击的位置是否是图表展示区里面的位置
+      // 也可以通过name[xIndex] != undefined，name是x轴的坐标名称来判断是否还是点击的图表里面的内容
+      // x轴数据的索引
+      let xIndex = pointInGrid[0];
+
+      localStorage.setItem("租金增长率", xAreaData[xIndex]);
+      onItemClick("租金增长率", false);
+    }
+  });
 }
 
-async function fetchRentalGrowthFun () {
+async function fetchRentalGrowthFun() {
   const { data } = await fetchRentalGrowth({
-    departCode: 11518,
+    departCode: currentDepart.value.departCode,
     groupType: 0,
-  })
-  
-  console.log('data :>> ', data);
+  });
 
   initChart(data);
 }
 
 onMounted(() => {
-  fetchRentalGrowthFun()
+  bus.on("onDepartChange", (depart) => {
+    currentDepart.value = depart;
+    fetchRentalGrowthFun();
+  });
+
+  const depart = localStorage.getItem("currentDepart")
+    ? JSON.parse(localStorage.getItem("currentDepart"))
+    : "";
+
+  if (depart) {
+    currentDepart.value = depart;
+    fetchRentalGrowthFun();
+  }
 });
 
 onBeforeUnmount(() => {
@@ -255,8 +284,11 @@ onBeforeUnmount(() => {
     }
 
     .chart1 {
-      width: 100%;
-      flex: 1 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
     }
   }
 }

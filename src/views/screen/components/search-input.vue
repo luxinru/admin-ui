@@ -9,14 +9,13 @@
         type="text"
         placeholder="可输入房屋名称、编号、管理单位"
         @focus="isShow = true"
-        @input="onInput"
       />
     </div>
 
     <div v-if="isShow" class="select_container">
       <div
         class="item"
-        v-for="(item, index) in houseList"
+        v-for="(item, index) in showHouseList"
         :key="index"
         @click="onSearchItemClick(item)"
       >
@@ -49,16 +48,18 @@ export default {
     houseList() {
       return useScreenStore().houseList;
     },
+
+    showHouseList () {
+      return this.houseList.filter(item => item.actualName.indexOf(this.value) > -1)
+    }
   },
 
   methods: {
     onSearchItemClick(item) {
+      localStorage.setItem('currentHouse', JSON.stringify(item))
+      bus.emit("onTopbarClick", 2);
       bus.emit("onMapItemClick", item);
       this.isShow = false;
-    },
-
-    onInput() {
-      console.log("value :>> ", this.value);
     },
 
     onClickOutside() {

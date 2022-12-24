@@ -31,8 +31,8 @@
         </div>
 
         <div class="paging">
-          <div>1</div>
-          <div class="active">2</div>
+          <div class="active">1</div>
+          <div>2</div>
           <div>3</div>
           <div>…</div>
           <div>末页</div>
@@ -135,6 +135,7 @@
 </template>
 
 <script setup name="HouseTable">
+import bus from "vue3-eventbus";
 import {
   fetchVisualList,
   fetchVisualRentHouse,
@@ -184,6 +185,10 @@ async function onTypeClick(value) {
 
 onMounted(() => {
   onTypeClick(1);
+
+  bus.on("onMapItemClick", async (data) => {
+    onTypeClick(1);
+  });
 });
 </script>
 

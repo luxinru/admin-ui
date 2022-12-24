@@ -8,7 +8,7 @@
         </div>
 
         <div class="list">
-          <div class="item" @click="onItemClick(1)">
+          <div class="item" @click="onItemClick('原值')">
             <span class="label"> 原值 </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
@@ -18,7 +18,7 @@
             </div>
           </div>
 
-          <div class="item" @click="onItemClick(2)">
+          <div class="item" @click="onItemClick('净值')">
             <span class="label"> 净值 </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
@@ -26,7 +26,7 @@
             </div>
           </div>
 
-          <div class="item" @click="onItemClick(3)">
+          <div class="item" @click="onItemClick('折旧')">
             <span class="label"> 折旧 </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />

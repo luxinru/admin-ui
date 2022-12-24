@@ -19,7 +19,7 @@ export default {
   mounted() {
     const self = this;
     this.$nextTick(() => {
-      bus.on("onMapInit", (depart) => {
+      bus.on("onDepartChange", (depart) => {
         self.fetchVisualListFun(depart);
       });
     });
@@ -40,10 +40,9 @@ export default {
         13
       );
 
-      console.log("this.map :>> ", [this.map]);
-      this.map.setDisplayOptions({
-        poi: false,
-      });
+      // this.map.setDisplayOptions({
+      //   poi: false,
+      // });
 
       // 函数 创建多个标注
       for (let i = 0; i < list.length; i++) {
@@ -59,7 +58,6 @@ export default {
         markers.addEventListener("click", () => {
           localStorage.setItem("currentHouse", JSON.stringify(list[i]));
           bus.emit("onTopbarClick", 2);
-
           bus.emit("onMapItemClick", list[i]);
         });
 

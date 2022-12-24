@@ -1,7 +1,7 @@
 <template>
   <div class="housing_acquisition_root">
     <Box title="房屋取得情况">
-      <div class="container" @click="onItemClick(null)">
+      <div class="container" @click="onItemClick('房屋取得情况')">
         <div id="chart6" class="chart6"></div>
       </div>
     </Box>
@@ -14,6 +14,8 @@ import Box from "./box.vue";
 import { fetchVisualPaper } from "@/api/screen";
 
 import * as echarts from "echarts";
+
+const currentDepart = ref({});
 
 function onItemClick(value) {
   localStorage.setItem('tableType', value)
@@ -191,16 +193,26 @@ function initChart(data) {
 
 async function fetchVisualPaperFun () {
   const { data } = await fetchVisualPaper({
-    departCode: 11518,
+    departCode: currentDepart.value.departCode,
   })
-
-  console.log('data1111111 :>> ', data);
 
   initChart(data);
 }
 
 onMounted(() => {
-  fetchVisualPaperFun()
+  bus.on("onDepartChange", (depart) => {
+    currentDepart.value = depart;
+    fetchVisualPaperFun();
+  });
+
+  const depart = localStorage.getItem("currentDepart")
+    ? JSON.parse(localStorage.getItem("currentDepart"))
+    : "";
+
+  if (depart) {
+    currentDepart.value = depart;
+    fetchVisualPaperFun();
+  }
 });
 
 onBeforeUnmount(() => {

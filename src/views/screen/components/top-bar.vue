@@ -1,12 +1,16 @@
 <template>
-  <div class="top_bar_root"  v-click-out-side="onClickOutside">
+  <div class="top_bar_root">
     <section class="left">
       <div class="item" @click="onBackToPlatform">
         <img src="@/assets/images/screen/system.png" alt="" />
         <span> 系统平台 </span>
       </div>
 
-      <div class="item" @click="onPlatformClick">
+      <div
+        class="item"
+        @click="onPlatformClick"
+        v-click-out-side="onClickOutside"
+      >
         <img src="@/assets/images/screen/unit.png" alt="" />
         <span> {{ currentDepart.departName || "-" }} </span>
 
@@ -72,7 +76,7 @@ export default {
   name: "TopBar",
 
   directives: {
-    clickOutSide
+    clickOutSide,
   },
 
   data() {
@@ -82,7 +86,7 @@ export default {
       departList: [],
       isDepartListShow: false,
       currentDepart: {},
-      getCurrentInstance: getCurrentInstance()
+      getCurrentInstance: getCurrentInstance(),
     };
   },
 
@@ -92,8 +96,8 @@ export default {
 
   methods: {
     onItemClick(value) {
-      const { proxy } = this.getCurrentInstance
-      if (value !== 2) return proxy.$modal.msg('暂未开放！')
+      const { proxy } = this.getCurrentInstance;
+      if (value !== 2) return proxy.$modal.msg("暂未开放！");
       this.type = value;
       // bus.emit("onTopbarClick", value);
     },
@@ -125,7 +129,7 @@ export default {
 
       localStorage.setItem("currentDepart", JSON.stringify(this.currentDepart));
 
-      bus.emit("onMapInit", this.currentDepart);
+      bus.emit("onDepartChange", this.currentDepart);
     },
   },
 };
@@ -171,6 +175,7 @@ export default {
 
       .content {
         position: absolute;
+        height: 230px;
         top: 30px;
         left: 0;
         display: flex;
@@ -180,6 +185,7 @@ export default {
         border-radius: 3px;
         padding: 0 10px;
         z-index: 1;
+        overflow-y: scroll;
 
         .content_item {
           width: 163px;

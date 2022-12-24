@@ -17,19 +17,32 @@ import RentalInfo from "./rental-info.vue";
 
 import { fetchBasicStats } from "@/api/screen";
 
-const original = ref(0)
-const now = ref(0)
-const acc = ref(0)
+const original = ref(0);
+const now = ref(0);
+const acc = ref(0);
+const currentDepart = ref({});
 
 async function fetchBasicStatsFun() {
   const { data } = await fetchBasicStats({
-    departCode: 11518,
+    departCode: currentDepart.value.departCode,
   });
   bus.emit("fetchBasicStatsFun", data);
 }
 
 onMounted(() => {
-  fetchBasicStatsFun();
+  bus.on("onDepartChange", (depart) => {
+    currentDepart.value = depart;
+    fetchBasicStatsFun();
+  });
+
+  const depart = localStorage.getItem("currentDepart")
+    ? JSON.parse(localStorage.getItem("currentDepart"))
+    : "";
+
+  if (depart) {
+    currentDepart.value = depart;
+    fetchBasicStatsFun();
+  }
 });
 </script>
 

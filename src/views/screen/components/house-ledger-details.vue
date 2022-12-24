@@ -22,7 +22,7 @@
           <div class="item">
             <div class="item_title">
               <img src="@/assets/images/screen/more-1.png" alt="" />
-              <span> 数据统计 </span>
+              <span> {{ chart1Title }} </span>
             </div>
 
             <div class="chart_box">
@@ -38,14 +38,38 @@
               >
                 <img src="@/assets/images/screen/mark.png" alt="" />
                 <span>{{ item.usedNatureName }}</span>
-                <p>{{ item.countValue }}</p>
+                <p
+                  v-if="
+                    [
+                      '原值',
+                      '净值',
+                      '折旧',
+                      '房屋总量',
+                      '房屋分类占比',
+                      '房屋取得情况',
+                    ].indexOf(type) > -1
+                  "
+                >
+                  {{ item.countValue }}
+                </p>
+                <p v-if="['房屋面积'].indexOf(type) > -1">
+                  {{ item.landArea }}
+                </p>
+                <p
+                  v-if="
+                    ['出租总收入', '租金增长率', '租金收入占比'].indexOf(type) >
+                    -1
+                  "
+                >
+                  {{ item.rentMoney }}
+                </p>
               </div>
             </div>
           </div>
           <div class="item">
             <div class="item_title">
               <img src="@/assets/images/screen/more-1.png" alt="" />
-              <span> 数据统计 </span>
+              <span> {{ chart2Title }} </span>
             </div>
 
             <div class="chart_box">
@@ -61,14 +85,44 @@
               >
                 <img src="@/assets/images/screen/mark.png" alt="" />
                 <span>{{ item.usedNatureName }}</span>
-                <p>{{ item.countValue }}</p>
+                <p
+                  v-if="
+                    [
+                      '原值',
+                      '房屋总量',
+                      '房屋面积',
+                      '房屋分类占比',
+                      '房屋取得情况',
+                    ].indexOf(type) > -1
+                  "
+                >
+                  {{ item.countValue }}
+                </p>
+                <p v-if="['净值'].indexOf(type) > -1">
+                  {{ item.nowValue }}
+                </p>
+                <p v-if="['折旧'].indexOf(type) > -1">
+                  {{ item.addDepreciate }}
+                </p>
+                <p
+                  v-if="
+                    ['出租总收入', '租金增长率', '租金收入占比'].indexOf(type) >
+                    -1
+                  "
+                >
+                  {{ item.rentMoney }}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
         <div class="list">
-          <table v-if="type === 5">
+          <table
+            v-if="
+              ['出租总收入', '租金收入占比', '租金增长率'].indexOf(type) > -1
+            "
+          >
             <thead>
               <tr>
                 <th>资产编码</th>
@@ -168,10 +222,10 @@
                     <img src="@/assets/images/screen/triangular.png" alt="" />
                   </div>
                 </th>
-                <th v-if="type === 1">原值</th>
-                <th v-if="type === 2">净值</th>
-                <th v-if="type === 3">折旧</th>
-                <th v-if="type === 4">土地面积</th>
+                <th v-if="type === '原值'">原值</th>
+                <th v-if="type === '净值'">净值</th>
+                <th v-if="type === '折旧'">折旧</th>
+                <th v-if="type === '房屋面积'">土地面积</th>
               </tr>
             </thead>
 
@@ -186,10 +240,10 @@
                 <td>{{ item.parcelCode || "-" }}</td>
                 <td>{{ item.ownershipConditionName || "-" }}</td>
                 <td>{{ item.usedrightTypeName || "-" }}</td>
-                <td v-if="type === 1">{{ item.originalValue || "-" }}</td>
-                <td v-if="type === 2">{{ item.nowValue || "-" }}</td>
-                <td v-if="type === 3">{{ item.addDepreciate || "-" }}</td>
-                <td v-if="type === 4">{{ item.landArea || "-" }}</td>
+                <td v-if="type === '原值'">{{ item.originalValue || "-" }}</td>
+                <td v-if="type === '净值'">{{ item.nowValue || "-" }}</td>
+                <td v-if="type === '折旧'">{{ item.addDepreciate || "-" }}</td>
+                <td v-if="type === '房屋面积'">{{ item.landArea || "-" }}</td>
               </tr>
             </tbody>
           </table>
@@ -211,9 +265,10 @@
 import * as echarts from "echarts";
 import bus from "vue3-eventbus";
 import {
-  fetchVisualHouseAccount,
+  fetchVisualList,
   fetchVisualAmountNature,
   fetchVisualValueNature,
+  fetchVisualValueRentDepart,
 } from "@/api/screen";
 
 export default {
@@ -226,22 +281,85 @@ export default {
         pageSize: 20,
       },
       list: [],
-      type: 1,
+      type: "原值",
       currentDepart: {},
+      currentHouse: {},
       chart1Data: [],
       chart2Data: [],
     };
   },
 
+  computed: {
+    chart1Title() {
+      switch (this.type) {
+        case "原值":
+        case "净值":
+        case "折旧":
+        case "房屋总量":
+        case "房屋面积":
+        case "房屋分类占比":
+        case "房屋取得情况":
+          return "使用性质分类占比";
+        case "出租总收入":
+        case "租金增长率":
+        case "租金收入占比":
+          return "承租单位性质分类占比";
+        default:
+          break;
+      }
+    },
+
+    chart2Title() {
+      switch (this.type) {
+        case "原值":
+        case "房屋总量":
+        case "房屋面积":
+        case "房屋分类占比":
+        case "房屋取得情况":
+          return "使用性质分类原值占比";
+        case "净值":
+          return "使用性质分类净值占比";
+        case "折旧":
+          return "使用性质分类折旧占比";
+        case "出租总收入":
+        case "租金增长率":
+        case "租金收入占比":
+          return "承租单位性质分类租金额占比";
+
+        default:
+          break;
+      }
+    },
+  },
+
   async mounted() {
-    this.type = Number(localStorage.getItem("tableType"));
+    this.type = localStorage.getItem("tableType");
     this.currentDepart = JSON.parse(localStorage.getItem("currentDepart"));
+    this.currentHouse = localStorage.getItem("currentHouse")
+      ? JSON.parse(localStorage.getItem("currentHouse"))
+      : undefined;
 
     this.fetchVisualHouseAccountFun();
-    await this.fetchVisualAmountNatureFun();
-    await this.fetchVisualValueNatureFun();
+    if (
+      [
+        "原值",
+        "净值",
+        "折旧",
+        "房屋总量",
+        "房屋面积",
+        "房屋分类占比",
+        "房屋取得情况",
+      ].indexOf(this.type) > -1
+    ) {
+      await this.fetchVisualAmountNatureFun();
+      await this.fetchVisualValueNatureFun();
 
-    this.initChart();
+      this.initChart();
+    } else {
+      await this.fetchVisualValueRentDepartFun();
+
+      this.initChart();
+    }
   },
 
   beforeUnmount() {
@@ -251,18 +369,52 @@ export default {
 
   methods: {
     async fetchVisualAmountNatureFun() {
-      const { data } = await fetchVisualAmountNature({
+      const options = {
         departCode: this.currentDepart.departCode,
-      });
+      };
+
+      if (this.type === "房屋分类占比") {
+        options.departName = this.currentDepart.departName;
+      }
+
+      const { data } = await fetchVisualAmountNature(options);
 
       this.chart1Data = data || [];
     },
 
     async fetchVisualValueNatureFun() {
-      const { data } = await fetchVisualValueNature({
+      const options = {
         departCode: this.currentDepart.departCode,
-      });
+      };
 
+      if (this.type === "房屋分类占比") {
+        options.departName = this.currentDepart.departName;
+      }
+
+      const { data } = await fetchVisualValueNature(options);
+
+      this.chart2Data = data || [];
+    },
+
+    async fetchVisualValueRentDepartFun() {
+      const options = {
+        departCode: this.currentDepart.departCode,
+      };
+
+      if (this.type === "出租总收入" && localStorage.getItem("出租总收入")) {
+        options.statisticalDate = localStorage.getItem("出租总收入");
+      }
+
+      if (
+        (this.type === "租金增长率" || this.type === "租金收入占比") &&
+        localStorage.getItem("租金增长率")
+      ) {
+        options.city = localStorage.getItem("租金增长率");
+      }
+
+      const { data } = await fetchVisualValueRentDepart(options);
+
+      this.chart1Data = data || [];
       this.chart2Data = data || [];
     },
 
@@ -349,6 +501,44 @@ export default {
         ]),
       ];
 
+      let data1 = [];
+      switch (this.type) {
+        case "原值":
+        case "净值":
+        case "折旧":
+        case "房屋总量":
+        case "房屋分类占比":
+        case "房屋取得情况":
+          data1 = this.chart1Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.countValue),
+            };
+          });
+          break;
+        case "房屋面积":
+          data1 = this.chart1Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.landArea),
+            };
+          });
+          break;
+        case "出租总收入":
+        case "租金增长率":
+        case "租金收入占比":
+          data1 = this.chart1Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.rentMoney),
+            };
+          });
+          break;
+
+        default:
+          break;
+      }
+
       const options1 = {
         series: [
           {
@@ -367,15 +557,56 @@ export default {
             label: {
               show: false,
             },
-            data: this.chart1Data.map((item) => {
-              return {
-                name: item.usedNatureName,
-                value: Number(item.countValue),
-              };
-            }),
+            data: data1,
           },
         ],
       };
+
+      let data2 = [];
+
+      switch (this.type) {
+        case "原值":
+        case "房屋总量":
+        case "房屋面积":
+        case "房屋分类占比":
+        case "房屋取得情况":
+          data2 = this.chart2Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.originalValue),
+            };
+          });
+          break;
+        case "净值":
+          data2 = this.chart2Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.nowValue),
+            };
+          });
+          break;
+        case "折旧":
+          data2 = this.chart2Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.addDepreciate),
+            };
+          });
+          break;
+        case "出租总收入":
+        case "租金增长率":
+        case "租金收入占比":
+          data2 = this.chart2Data.map((item) => {
+            return {
+              name: item.usedNatureName,
+              value: Number(item.rentMoney),
+            };
+          });
+          break;
+
+        default:
+          break;
+      }
 
       const options2 = {
         series: [
@@ -395,12 +626,7 @@ export default {
             label: {
               show: false,
             },
-            data: this.chart2Data.map((item) => {
-              return {
-                name: item.usedNatureName,
-                value: Number(item.originalValue),
-              };
-            }),
+            data: data2,
           },
         ],
       };
@@ -414,10 +640,11 @@ export default {
     },
 
     async fetchVisualHouseAccountFun() {
-      const { rows } = await fetchVisualHouseAccount({
-        houseType: "",
-        areaName: "",
-        housePaperType: "",
+      const { rows } = await fetchVisualList({
+        houseName: "",
+        houseCode: this.currentHouse ? this.currentHouse.id : '',
+        departCode: this.currentDepart.departCode,
+        assetsCode: "",
         pageNum: this.page.pageNum,
         pageSize: this.page.pageSize,
       });

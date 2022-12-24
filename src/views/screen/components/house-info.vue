@@ -106,9 +106,7 @@
       <div class="tr">
         <div class="item">
           <span class="label">权属状况</span>
-          <span class="value">{{
-            house.ownershipConditionName || "-"
-          }}</span>
+          <span class="value">{{ house.ownershipConditionName || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">使用权资产</span>
@@ -142,9 +140,7 @@
         </div>
         <div class="item">
           <span class="label">办证情况</span>
-          <span class="value">{{
-            house.certificateHandlingName || "-"
-          }}</span>
+          <span class="value">{{ house.certificateHandlingName || "-" }}</span>
         </div>
       </div>
       <div class="tr">
@@ -160,9 +156,7 @@
       <div class="tr">
         <div class="item">
           <span class="label">管理单位情况</span>
-          <span class="value">{{
-            house.managerDepartThreeName || "-"
-          }}</span>
+          <span class="value">{{ house.managerDepartThreeName || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">使用单位情况</span>
@@ -177,7 +171,15 @@
 import { onMounted } from "vue-demi";
 import bus from "vue3-eventbus";
 
-const house = JSON.parse(localStorage.getItem('currentHouse'))
+const house = ref({});
+
+onMounted(() => {
+  house.value = JSON.parse(localStorage.getItem("currentHouse"));
+
+  bus.on("onMapItemClick", async (data) => {
+    house.value = JSON.parse(localStorage.getItem("currentHouse"));
+  });
+});
 </script>
 
 <style scoped lang="scss">

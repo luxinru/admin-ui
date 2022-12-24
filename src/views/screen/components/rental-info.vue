@@ -2,7 +2,7 @@
   <div class="rental_info_root">
     <Box title="出租信息">
       <div class="container">
-        <div class="top" @click="onItemClick(5)">
+        <div class="top" @click="onItemClick('出租总收入')">
           <div class="imgs">
             <img
               class="img1"
@@ -22,157 +22,201 @@
 
         <div class="chart_box">
           <div id="chart" class="chart"></div>
-          <div class="legend">
-            <div class="item">
-              <img src="@/assets/images/screen/icon-1.png" alt="" />
-              <span>同比增长</span>
-            </div>
-            <div class="item">
-              <img src="@/assets/images/screen/icon-2.png" alt="" />
-              <span>环比增长</span>
-            </div>
-          </div>
         </div>
       </div>
     </Box>
   </div>
 </template>
 
-<script setup name="ScreenIndex">
+<script>
 import bus from "vue3-eventbus";
 import * as echarts from "echarts";
-
+import Moment from "moment";
 import Box from "./box.vue";
 
-const rentalIncome = ref(0);
+export default {
+  name: "RentalInfo",
 
-function onItemClick(value) {
-  localStorage.setItem('tableType', value)
-  bus.emit("onModalShow");
-}
+  components: {
+    Box
+  },
 
-function initChart(data) {
-  const myChart = echarts.init(document.getElementById("chart"));
+  data() {
+    return {
+      rentalIncome: 0,
+    };
+  },
 
-  console.log('data :>> ', data);
+  mounted() {
+    bus.on("fetchBasicStatsFun", (data) => {
+      const { rentalIncome: value } = data;
+      this.rentalIncome = Number(value) || 0;
 
-  const { chainlGrowth, yearOnYearGrowth } = data
-  const labels = chainlGrowth.map(item => item.month + '月')
+      this.initChart(data);
+    });
+  },
 
-  myChart.setOption({
-    visualMap: [
-      {
-        show: false,
-        type: "continuous",
-        seriesIndex: 0,
-        min: 0,
-        max: 50,
-        color: [
-          "rgba(165, 182, 217, 1)",
-          "rgba(59, 154, 255, 1)",
-          "rgba(143, 193, 249, 1)",
+  beforeUnmount() {
+    echarts.dispose(document.getElementById("chart"));
+  },
+
+  methods: {
+    Moment,
+
+    onItemClick(value, isAll = true) {
+      if (isAll) {
+        localStorage.removeItem('出租总收入')
+      }
+      
+      localStorage.setItem("tableType", value);
+      bus.emit("onModalShow");
+    },
+
+    initChart(data) {
+      const self = this
+      const myChart = echarts.init(document.getElementById("chart"));
+      const { chainlGrowth, yearOnYearGrowth } = data;
+      const labels = chainlGrowth.map((item) => item.month + "月");
+
+      myChart.setOption({
+        visualMap: [
+          {
+            show: false,
+            type: "continuous",
+            seriesIndex: 0,
+            min: 0,
+            max: 50,
+            color: [
+              "rgba(165, 182, 217, 1)",
+              "rgba(59, 154, 255, 1)",
+              "rgba(143, 193, 249, 1)",
+            ],
+          },
+
+          {
+            show: false,
+            type: "continuous",
+            seriesIndex: 1,
+            min: 0,
+            max: 50,
+            color: [
+              "rgba(165, 182, 217, 1)",
+              "rgba(59, 154, 255, 1)",
+              "rgba(143, 193, 249, 1)",
+            ],
+          },
         ],
-      },
-
-      {
-        show: false,
-        type: "continuous",
-        seriesIndex: 1,
-        min: 0,
-        max: 50,
-        color: [
-          "rgba(255, 255, 255, 0.64)",
-          "rgba(94, 158, 225, 0.64)",
-          "rgba(26, 38, 50, 0.02)",
+        legend: {
+          show: true,
+          right: 0,
+          data: [
+            {
+              name: "同比增长",
+              icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAABf0lEQVQokZXSv2sUYRDG8e/O7t4ZMYhaeIVwhaAEBPEHWAkiWBm4gI2mshMsTZXaTswfYRNRm2uusLARwUBAxC4QhRzLcZ4X9G5Zl933fWcs4hbX6fQP83mGicznj4G7/NsMIvP54N6L9GEiHG8ldiaOuGhEF04tsVJ7m5xcojzRtt8SYZu3ww3Zm6YAqBHUKBWKlbPSySv7GgtlLASJMIC9aYrsZEe7DJxq5B5cSa7uT8P7dsL3Yym/WrGVjWcnA9kd/g0Yunkn7b385PuJMGnHTNqJ/ZSIGqCzLN3dIchw4gHYWkvXn751r4JRBaVSKIPiguE7y9Id53ownHikmB2ytZaub/TddsMKSuWV2itV93R8fjTXbwDF7BCpZiM2+m67YanhvOKCUl87l1ze/xG+mOEBqtkICfNs4dBqhGBUvUvpzY8H4UPDAgjzDNF8MWDgntxqrb757AYNSw2nRtA8QyjGC4HnvfT+s3fudcMKR51qMzzFmOj66qP/eo0/EOThcJD1NMkAAAAASUVORK5CYII=",
+            },
+            {
+              name: "环比增长",
+              icon: "image://data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAjUlEQVQokY3SsQnDMBCF4T+HPUCKbJA6C6RPo02yn5qUgYDBExhSCWGMscGyENggK1nhrn7fgwd3+uX4BAy6sxVgrvfHW5P+fl5GuqlWlkM31Ujj1XkaD9I6PWgdiBuzGrgxIynMapDCjOyhV4M99Mix6lcfq0dK1IMSPUIa1IA0UJVtsefLTfUaZVvsH4DfOse0WLHVAAAAAElFTkSuQmCC",
+            },
+          ],
+          textStyle: {
+            color: "#fff",
+            fontSize: 14,
+          },
+          itemWidth: 10,
+          itemHeight: 10,
+          inactiveBorderWidth: 0,
+        },
+        tooltip: {
+          show: true,
+          trigger: "axis",
+        },
+        grid: {
+          top: "22%",
+          left: "3%",
+          right: "3%",
+          bottom: "5%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          data: labels,
+          axisLine: {
+            lineStyle: {
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            show: true,
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisLabel: {
+            color: "rgba(196, 225, 255, 1)",
+          },
+        },
+        yAxis: {
+          type: "value",
+          axisLine: {
+            lineStyle: {
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisLabel: {
+            color: "rgba(255, 255, 255, 0.6)",
+          },
+        },
+        series: [
+          {
+            name: "同比增长",
+            type: "line",
+            data: yearOnYearGrowth.map((item) => Number(item.value)),
+            symbol: "none",
+          },
+          {
+            name: "环比增长",
+            type: "line",
+            data: chainlGrowth.map((item) => Number(item.value)),
+            symbol: "none",
+          },
         ],
-      },
-    ],
-    legend: {
-      show: false,
-    },
-    tooltip: {
-      show: true,
-      trigger: "axis",
-    },
-    grid: {
-      top: "22%",
-      left: "3%",
-      right: "3%",
-      bottom: "5%",
-      containLabel: true,
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: false,
-      data: labels,
-      axisLine: {
-        lineStyle: {
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisTick: {
-        show: false,
-      },
-      splitLine: {
-        show: true,
-        lineStyle: {
-          type: "dashed",
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisLabel: {
-        color: "rgba(196, 225, 255, 1)",
-      },
-    },
-    yAxis: {
-      type: "value",
-      axisLine: {
-        lineStyle: {
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisTick: {
-        show: false,
-      },
-      splitLine: {
-        lineStyle: {
-          type: "dashed",
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisLabel: {
-        color: "rgba(255, 255, 255, 0.6)",
-      },
-    },
-    series: [
-      {
-        name: "同比增长",
-        type: "line",
-        data: yearOnYearGrowth.map(item => Number(item.value)),
-        symbol: "none",
-      },
-      {
-        name: "环比增长",
-        type: "line",
-        data: chainlGrowth.map(item => Number(item.value)),
-        symbol: "none",
-      },
-    ],
-  });
-}
+      });
 
-onMounted(() => {
-  bus.on("fetchBasicStatsFun", (data) => {
-    const { rentalIncome: value } = data;
-    rentalIncome.value = Number(value) || 0;
+      myChart.getZr().on("click", (params) => {
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if (myChart.containPixel("grid", pointInPixel)) {
+          //点击第几个柱子
+          let pointInGrid = myChart.convertFromPixel(
+            { seriesIndex: 0 },
+            pointInPixel
+          );
+          // 也可以通过params.offsetY 来判断鼠标点击的位置是否是图表展示区里面的位置
+          // 也可以通过name[xIndex] != undefined，name是x轴的坐标名称来判断是否还是点击的图表里面的内容
+          // x轴数据的索引
+          let xIndex = pointInGrid[0];
 
-    initChart(data);
-  });
-});
-
-onBeforeUnmount(() => {
-  echarts.dispose(document.getElementById("chart"));
-});
+          localStorage.setItem('出租总收入', Moment().format(`YYYY-${chainlGrowth[xIndex].month}`))
+          self.onItemClick('出租总收入', false)
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

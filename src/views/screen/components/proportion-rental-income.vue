@@ -17,7 +17,7 @@
           </div>
         </div> -->
 
-        <div class="chart_box" @click="onItemClick(5)">
+        <div class="chart_box">
           <div id="chart3" class="chart3"></div>
           <div class="info" @click="onItemClick">
             <div class="bac"></div>
@@ -57,9 +57,13 @@ import "echarts-gl";
 import { fetchVisualRentalIncome } from "@/api/screen";
 
 const all = ref(0);
+const currentDepart = ref({});
 
-function onItemClick(value) {
-  localStorage.setItem('tableType', value)
+function onItemClick(value, isAll = true) {
+  if (isAll) {
+    localStorage.removeItem("租金增长率");
+  }
+  localStorage.setItem("tableType", value);
   bus.emit("onModalShow");
 }
 
@@ -81,13 +85,15 @@ function initChart(data) {
     "#8200F0",
     "#ea7ccc",
   ];
-  const results = areaName ? areaName.map((item, index) => {
-    return {
-      name: item,
-      value: areaValue[index] || 0,
-      label: item,
-    };
-  }) : []
+  const results = areaName
+    ? areaName.map((item, index) => {
+        return {
+          name: item,
+          value: areaValue[index] || 0,
+          label: item,
+        };
+      })
+    : [];
 
   myChart.setOption({
     title: {
@@ -124,7 +130,7 @@ function initChart(data) {
           show: false,
         },
         data: results,
-        
+
         itemStyle: {
           normal: {
             borderRadius: 80,
@@ -151,26 +157,43 @@ function initChart(data) {
         labelLine: {
           show: false,
           length: 10,
-          length2: 0
+          length2: 0,
         },
       },
     ],
+  });
+
+  myChart.on("click", function (param) {
+    localStorage.setItem("租金增长率", param.name);
+    onItemClick("租金收入占比", false);
   });
 }
 
 async function fetchVisualRentalIncomeFun() {
   const { data } = await fetchVisualRentalIncome({
-    departCode: 11518,
-    groupType: '0'
+    departCode: currentDepart.value.departCode,
+    groupType: 0,
   });
 
-  console.log('data :>> ', data);
+  console.log("data :>> ", data);
 
   initChart(data);
 }
 
 onMounted(() => {
-  fetchVisualRentalIncomeFun();
+  bus.on("onDepartChange", (depart) => {
+    currentDepart.value = depart;
+    fetchVisualRentalIncomeFun();
+  });
+
+  const depart = localStorage.getItem("currentDepart")
+    ? JSON.parse(localStorage.getItem("currentDepart"))
+    : "";
+
+  if (depart) {
+    currentDepart.value = depart;
+    fetchVisualRentalIncomeFun();
+  }
 });
 
 onBeforeUnmount(() => {
