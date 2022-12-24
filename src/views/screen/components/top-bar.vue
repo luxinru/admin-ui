@@ -8,7 +8,7 @@
 
       <div class="item" @click="onPlatformClick">
         <img src="@/assets/images/screen/unit.png" alt="" />
-        <span> {{ area.areaName || '全部' }} </span>
+        <span> {{ area.actualName || '全部' }} </span>
       </div>
     </section>
 
@@ -74,7 +74,6 @@ function onPlatformClick() {
 
 onMounted(() => {
   bus.on('onAreaClick', (data) => {
-    console.log('data111 :>> ', data);
     area.value = data
   })
 })

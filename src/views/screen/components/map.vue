@@ -6,9 +6,9 @@
 import bus from "vue3-eventbus";
 
 import { fetchVisualList } from "@/api/screen";
-import useScreenStore from '@/store/modules/screen'
+import useScreenStore from "@/store/modules/screen";
 
-const map = ref({})
+const map = ref({});
 
 const initMap = (list) => {
   const Bmap = window.BMap;
@@ -19,7 +19,10 @@ const initMap = (list) => {
   map.value.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
   map.value.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
   map.value.enableKeyboard(); //启用键盘上下左右键移动地图
-  map.value.centerAndZoom(new Bmap.Point(104.04263635868074, 30.556100647961866), 13);
+  map.value.centerAndZoom(
+    new Bmap.Point(104.04263635868074, 30.556100647961866),
+    13
+  );
 
   // 函数 创建多个标注
   for (let i = 0; i < list.length; i++) {
@@ -29,11 +32,13 @@ const initMap = (list) => {
       icon,
     });
 
-    markers.addEventListener('click', () => {
-      bus.emit('onTopbarClick', 2)
+    markers.addEventListener("click", () => {
+      bus.emit("onTopbarClick", 2);
 
-      bus.emit('onMapItemClick', list[i])
-    })
+      bus.emit("onAreaClick", list[i]);
+
+      localStorage.setItem("data", JSON.stringify(list[i]));
+    });
 
     map.value.addOverlay(markers);
 
@@ -57,6 +62,10 @@ const initMap = (list) => {
     //   map.addOverlay(markers);
     // }
   }
+
+  bus.on("onAreaClick", (data) => {
+    map.value.centerAndZoom(new Bmap.Point(data.longitude, data.latitude), 15);
+  });
 };
 
 async function fetchVisualListFun() {
@@ -68,7 +77,7 @@ async function fetchVisualListFun() {
   });
 
   const list = rows.filter((item) => item.longitude && item.latitude);
-  useScreenStore().setHouseList(list)
+  useScreenStore().setHouseList(list);
 
   initMap(list);
 }
@@ -77,12 +86,6 @@ onMounted(() => {
   nextTick(() => {
     fetchVisualListFun();
   });
-
-  bus.on('onAreaClick', (data)=> {
-    console.log('data :>> ', data);
-
-    map.value.centerAndZoom(new Bmap.Point(data.longitude, data.latitude), 15);
-  })
 });
 </script>
 

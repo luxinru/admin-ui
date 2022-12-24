@@ -13,21 +13,21 @@
     <section class="table">
       <div class="tabs">
         <div class="part">
-          <span :class="{ active: type === 1 }" @click="type = 1"
-            >基础信息</span
-          >
-          <span :class="{ active: type === 2 }" @click="type = 2"
-            >资产信息</span
-          >
-          <span :class="{ active: type === 3 }" @click="type = 3"
-            >房屋档案</span
-          >
-          <span :class="{ active: type === 4 }" @click="type = 4"
-            >出租信息</span
-          >
-          <span :class="{ active: type === 5 }" @click="type = 5"
-            >改造信息</span
-          >
+          <span :class="{ active: type === 1 }" @click="onTypeClick(1)">
+            基础信息
+          </span>
+          <span :class="{ active: type === 2 }" @click="onTypeClick(2)">
+            资产信息
+          </span>
+          <span :class="{ active: type === 3 }" @click="onTypeClick(3)">
+            房屋档案
+          </span>
+          <span :class="{ active: type === 4 }" @click="onTypeClick(4)">
+            出租信息
+          </span>
+          <span :class="{ active: type === 5 }" @click="onTypeClick(5)">
+            改造信息
+          </span>
         </div>
 
         <div class="paging">
@@ -39,88 +39,118 @@
         </div>
       </div>
 
-      <table class="table1" border="1" style="z-index: 3">
-        <thead>
-          <tr>
-            <td rowspan="2"></td>
-            <td rowspan="2">房屋名称</td>
-            <td rowspan="2">使用单位</td>
-            <td colspan="3">价值信息</td>
-            <td colspan="3">用途信息</td>
-          </tr>
-          <tr>
-            <td>原值</td>
-            <td>净值</td>
-            <td>折旧</td>
-            <td>使用性质</td>
-            <td>实际用途</td>
-            <td>使用状态</td>
-          </tr>
-        </thead>
-        <tbody style="opacity: 0">
-          <tr class="td">
-            <td>
-              <div class="check" @click="onCheck(index)"></div>
-            </td>
-            <td>101</td>
-            <td>川中油气矿射洪作业区</td>
-            <td>5200</td>
-            <td>0.36</td>
-            <td>13.36</td>
-            <td>办公用房</td>
-            <td>办公用房</td>
-            <td>使用中</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <section class="table_body">
-        <table border="1">
-          <thead style="opacity: 0">
+      <template v-if="type === 1 || type === 2 || type === 3 || type === 5">
+        <table border="1" style="z-index: 3">
+          <thead>
             <tr>
-              <td rowspan="2"></td>
-              <td rowspan="2">房屋名称</td>
-              <td rowspan="2">使用单位</td>
-              <td colspan="3">价值信息</td>
-              <td colspan="3">用途信息</td>
-            </tr>
-            <tr>
-              <td>原值</td>
-              <td>净值</td>
-              <td>折旧</td>
-              <td>使用性质</td>
-              <td>实际用途</td>
-              <td>使用状态</td>
+              <th>房屋名称</th>
+              <th>使用单位</th>
+              <th>原值</th>
+              <th>净值</th>
+              <th>折旧</th>
+              <th>使用性质</th>
+              <th>实际用途</th>
+              <th>使用状态</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr class="td" v-for="index in 20" :key="index">
-              <td>
-                <div class="check" @click="onCheck(index)"></div>
-              </td>
-              <td>101</td>
-              <td>川中油气矿射洪作业区</td>
-              <td>5200</td>
-              <td>0.36</td>
-              <td>13.36</td>
-              <td>办公用房</td>
-              <td>办公用房</td>
-              <td>使用中</td>
+            <tr class="td" v-for="(item, index) in list" :key="index">
+              <td>{{ item.assetsName || "-" }}</td>
+              <td>{{ item.rentDepartName || "-" }}</td>
+              <td>{{ item.originalValue || "-" }}</td>
+              <td>{{ item.nowValue || "-" }}</td>
+              <td>{{ item.devalueValue || "-" }}</td>
+              <td>{{ item.noCertificateReason || "-" }}</td>
+              <td>{{ item.managerDepartThreeName || "-" }}</td>
+              <td>{{ item.usedDepartThreeName || "-" }}</td>
             </tr>
           </tbody>
         </table>
-      </section>
+      </template>
+
+      <template v-if="type === 4">
+        <table border="1" style="z-index: 3">
+          <thead>
+            <tr>
+              <th>合同编号</th>
+              <th>合同名称</th>
+              <th>资产编码</th>
+              <th>资产名称</th>
+              <th>履行开始日期</th>
+              <th>履行结束日期</th>
+              <th>承租方单位名称</th>
+              <th>租赁金额（不含税）</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="td" v-for="(item, index) in list" :key="index">
+              <td>{{ item.contractCode || "-" }}</td>
+              <td>{{ item.contracName || "-" }}</td>
+              <td>{{ item.assetsCode || "-" }}</td>
+              <td>{{ item.assetsName || "-" }}</td>
+              <td>{{ item.performStartDate || "-" }}</td>
+              <td>{{ item.performEndDate || "-" }}</td>
+              <td>{{ item.rentDepartName || "-" }}</td>
+              <td>{{ item.rentMoney || "-" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
     </section>
   </div>
 </template>
 
 <script setup name="HouseTable">
+import {
+  fetchVisualList,
+  fetchVisualRentHouse,
+  fetchVisualReformHouse,
+} from "@/api/screen";
+
 const type = ref(1);
 
-function onCheck(index) {
-  console.log("index :>> ", index);
+// function onCheck(index) {
+//   console.log("index :>> ", index);
+// }
+
+const list = ref([]);
+
+async function onTypeClick(value) {
+  type.value = value;
+
+  list.value = []
+  switch (type.value) {
+    case 1:
+    case 2:
+    case 3:
+      const { rows: rows1 } = await fetchVisualList({
+        houseName: "",
+        houseCode: "",
+        departCode: "",
+        assetsCode: "",
+      });
+      list.value = rows1 || [];
+      break;
+    case 4:
+      const { rows: rows2 } = await fetchVisualRentHouse({
+        houseCode: "",
+      });
+      list.value = rows2 || [];
+      break;
+    case 5:
+      const { rows: rows3 } = await fetchVisualReformHouse({
+        houseName: "",
+      });
+      list.value = rows3 || [];
+      break;
+  }
 }
+
+onMounted(() => {
+  onTypeClick(4);
+});
 </script>
 
 <style scoped lang="scss">
@@ -278,59 +308,56 @@ function onCheck(index) {
 
     table {
       width: 100%;
+      flex: 1 0;
       border: 1px solid rgba(57, 158, 233, 0.2);
       border-collapse: collapse;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
       tr {
-        td {
+        width: 100%;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        th {
+          flex: 1 0;
           height: 34px;
-          text-align: center;
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #91ccff;
+          text-align: center;
+          line-height: 34px;
+          border: 1px solid rgba(57, 158, 233, 0.2);
+        }
+        td {
+          flex: 1 0;
+          height: 34px;
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #ffffff;
+          text-align: center;
+          line-height: 34px;
+          border: 1px solid rgba(57, 158, 233, 0.2);
         }
       }
 
       thead {
+        width: calc(100% - 7px);
         background-color: #153456;
       }
 
       tbody {
+        width: 100%;
+        flex: 1 0;
+        overflow-y: scroll;
         tr {
           &:nth-child(2n) {
             background-color: rgba(51, 133, 238, 0.1);
           }
         }
-        td {
-          font-size: 14px;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color: #ffffff;
-        }
-
-        .check {
-          width: 10px;
-          height: 10px;
-          border: 1px solid rgba(33, 119, 207, 0.5);
-          margin: 0 auto;
-        }
       }
-    }
-
-    .table1 {
-      width: calc(100% - 7px);
-    }
-  }
-
-  .table_body {
-    width: 100%;
-    flex: 1 0;
-    margin-top: calc(-34px * 3);
-    overflow-y: scroll;
-
-    table {
-      height: 100%;
     }
   }
 }

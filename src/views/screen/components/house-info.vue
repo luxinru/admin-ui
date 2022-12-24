@@ -8,157 +8,163 @@
       <div class="tr">
         <div class="item">
           <span class="label">省(直辖市)</span>
-          <span class="value">{{ dataInfo.province || '-'}}</span>
+          <span class="value">{{ dataInfo.province || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">市</span>
-          <span class="value">{{ dataInfo.city || '-'}}</span>
+          <span class="value">{{ dataInfo.city || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">区(县)</span>
-          <span class="value">{{ dataInfo.county || '-'}}</span>
+          <span class="value">{{ dataInfo.county || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">房屋结构</span>
-          <span class="value">{{ dataInfo.houseStructureName || '-'}}</span>
+          <span class="value">{{ dataInfo.houseStructureName || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">建筑面积</span>
-          <span class="value">{{ dataInfo.buildArea || '-'}}㎡</span>
+          <span class="value">{{ dataInfo.buildArea || "-" }}㎡</span>
         </div>
         <div class="item">
           <span class="label">地上总层</span>
-          <span class="value">{{ dataInfo.floorsUpName || '-'}}</span>
+          <span class="value">{{ dataInfo.floorsUpName || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">地下总层</span>
-          <span class="value">{{ dataInfo.floorsDownName || '-'}}</span>
+          <span class="value">{{ dataInfo.floorsDownName || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">备注</span>
-          <span class="value">{{ dataInfo.remark || '-'}}</span>
+          <span class="value">{{ dataInfo.remark || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">资产编号</span>
-          <span class="value">{{ dataInfo.assetsCode || '-'}}</span>
+          <span class="value">{{ dataInfo.assetsCode || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">资产名称</span>
-          <span class="value">{{ dataInfo.assetsName || '-'}}</span>
+          <span class="value">{{ dataInfo.assetsName || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">计量单位</span>
-          <span class="value">{{ dataInfo.unitCodeName || '-'}}</span>
+          <span class="value">{{ dataInfo.unitCodeName || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">贮存数量</span>
-          <span class="value">{{ '-' }}</span>
+          <span class="value">{{ "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">投产日期</span>
-          <span class="value">{{ dataInfo.operateDate || '-'}}</span>
+          <span class="value">{{ dataInfo.operateDate || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">规格型号</span>
-          <span class="value">{{ dataInfo.assetsStandard || '-'}}</span>
+          <span class="value">{{ dataInfo.assetsStandard || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">原值</span>
-          <span class="value">{{ dataInfo.originalValue || '-'}}</span>
+          <span class="value">{{ dataInfo.originalValue || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">净值</span>
-          <span class="value">{{ dataInfo.nowValue || '-'}}</span>
+          <span class="value">{{ dataInfo.nowValue || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">已提减值准备</span>
-          <span class="value">{{ dataInfo.devalueValue || '-'}}</span>
+          <span class="value">{{ dataInfo.devalueValue || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">宗地编码</span>
-          <span class="value">{{ dataInfo.parcelCode || '-'}}</span>
+          <span class="value">{{ dataInfo.parcelCode || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">权属状况</span>
-          <span class="value">{{ dataInfo.ownershipConditionName || '-'}}</span>
+          <span class="value">{{
+            dataInfo.ownershipConditionName || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">使用权资产</span>
-          <span class="value">{{ dataInfo.usedrightTypeName || '-'}}</span>
+          <span class="value">{{ dataInfo.usedrightTypeName || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">土地面积</span>
-          <span class="value">{{ dataInfo.landArea || '-'}}</span>
+          <span class="value">{{ dataInfo.landArea || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">土地证号</span>
-          <span class="value">{{ dataInfo.landCertificateNo || '-'}}</span>
+          <span class="value">{{ dataInfo.landCertificateNo || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">土地使用人</span>
-          <span class="value">{{ dataInfo.landUsedHolder || '-'}}</span>
+          <span class="value">{{ dataInfo.landUsedHolder || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">房产证号</span>
-          <span class="value">{{ dataInfo.houseCertificateNo || '-'}}</span>
+          <span class="value">{{ dataInfo.houseCertificateNo || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">证载所有权人</span>
-          <span class="value">{{ dataInfo.certificateHolder || '-'}}</span>
+          <span class="value">{{ dataInfo.certificateHolder || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">办证情况</span>
-          <span class="value">{{ dataInfo.certificateHandlingName || '-'}}</span>
+          <span class="value">{{
+            dataInfo.certificateHandlingName || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">记账是否相符</span>
-          <span class="value">{{ dataInfo.bookkeeping || '-'}}</span>
+          <span class="value">{{ dataInfo.bookkeeping || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">无证原因</span>
-          <span class="value">{{ dataInfo.noCertificateReason || '-'}}</span>
+          <span class="value">{{ dataInfo.noCertificateReason || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">管理单位情况</span>
-          <span class="value">{{ dataInfo.managerDepartThreeName || '-'}}</span>
+          <span class="value">{{
+            dataInfo.managerDepartThreeName || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">使用单位情况</span>
-          <span class="value">{{ dataInfo.usedDepartThreeName || '-'}}</span>
+          <span class="value">{{ dataInfo.usedDepartThreeName || "-" }}</span>
         </div>
       </div>
     </div>
@@ -166,16 +172,21 @@
 </template>
 
 <script setup name="HouseInfo">
+import { onMounted } from "vue-demi";
 import bus from "vue3-eventbus";
 
-const dataInfo = ref({})
+let dataInfo = ref({});
+
+// bus.on("onMapItemClick", (data) => {
+//   console.log('111111111 :>> ', 111111111);
+//   dataInfo.value = data;
+//   console.log('dataInfo.value :>> ', dataInfo);
+//   console.log('222222222 :>> ', 222222222);
+// });
 
 onMounted(() => {
-  bus.on('onMapItemClick', (data) => {
-    dataInfo.value = data
-  })
+  dataInfo.value = JSON.parse(localStorage.getItem("data"))
 })
-
 </script>
 
 <style scoped lang="scss">
@@ -235,19 +246,21 @@ onMounted(() => {
         height: 100%;
         display: flex;
         align-items: center;
+        overflow: hidden;
 
         .label {
-          width: 68px;
+          width: 80px;
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: rgba(145, 204, 255, 1);
-          text-align-last: justify;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .value {
           flex: 1 0;
-          margin-left: 10px;
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;

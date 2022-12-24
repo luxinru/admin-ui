@@ -45,6 +45,22 @@ export function fetchVisualList(params) {
   })
 }
 
+export function fetchVisualRentHouse(params) {
+  return request({
+    url: `data-visualization/house/visual/rent/house`,
+    method: 'get',
+    params,
+  })
+}
+
+export function fetchVisualReformHouse(params) {
+  return request({
+    url: `data-visualizatio/house/visual/reform/house`,
+    method: 'get',
+    params,
+  })
+}
+
 export function fetchVisualHouseAccount(params) {
   return request({
     url: `data-visualization/house/visual/house/account`,

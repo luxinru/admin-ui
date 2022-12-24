@@ -8,7 +8,12 @@
         </div>
 
         <div class="labels">
-          <div class="item" v-for="(item, index) in list" :key="index" @click="onItemClick">
+          <div
+            class="item"
+            v-for="(item, index) in list"
+            :key="index"
+            @click="onItemClick"
+          >
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> {{ item.name }} </span>
             <p><CountTo :start="0" :end="Number(item.value)" /></p>
@@ -25,10 +30,10 @@ import * as echarts from "echarts";
 
 import { fetchVisualAmount } from "@/api/screen";
 
-const list = ref([])
+const list = ref([]);
 
 function onItemClick() {
-  bus.emit('onModalShow')
+  bus.emit("onModalShow");
 }
 
 // 生成扇形的曲面参数方程，用于 series-surface.parametricEquation
@@ -190,21 +195,19 @@ function getPie3D(
   return series;
 }
 
-
-
 function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart7"));
 
-  const optionsData = data.map(item => {
+  const optionsData = data.map((item) => {
     return {
       name: item.name,
-      value: Number(item.value)
-    }
+      value: Number(item.value) / 10,
+    };
   });
 
-let series = getPie3D(optionsData, 0.8, 240, 28, 26, 0.5);
+  let series = getPie3D(optionsData, 0.8, 240, 28, 26, 0.5);
 
-series.push();
+  series.push();
 
   myChart.setOption({
     xAxis3D: {
@@ -236,17 +239,17 @@ series.push();
   });
 }
 
-async function fetchVisualAmountFun () {
+async function fetchVisualAmountFun() {
   const { data } = await fetchVisualAmount({
     departCode: 11518,
-  })
+  });
 
-  list.value = data
+  list.value = data;
   initChart(data);
 }
 
 onMounted(() => {
-  fetchVisualAmountFun()
+  fetchVisualAmountFun();
 });
 
 onBeforeUnmount(() => {

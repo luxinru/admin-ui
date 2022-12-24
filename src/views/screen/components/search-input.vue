@@ -5,15 +5,16 @@
 
     <div class="input">
       <input
+        v-model="value"
         type="text"
         placeholder="可输入房屋名称、编号、管理单位"
         @focus="isShow = true"
-        @blur="isShow = false"
+        @input="onInput"
       />
     </div>
 
     <div v-if="isShow" class="select_container">
-      <div class="item" v-for="(item, index) in houseList" :key="index" @click="onItemClick(item)">
+      <div class="item" v-for="(item, index) in houseList" :key="index" @click="onSearchItemClick(item)">
         {{ item.actualName }}
       </div>
     </div>
@@ -28,10 +29,15 @@ import { onMounted } from "vue-demi";
 const houseList = computed(() => useScreenStore().houseList);
 
 const isShow = ref(false);
+const value = ref('')
 
-function onItemClick(item) {
+function onSearchItemClick(item) {
   bus.emit('onAreaClick', item)
   isShow.value = false
+}
+
+function onInput() {
+  console.log('value :>> ', value);
 }
 
 onMounted(() => {
@@ -124,6 +130,7 @@ onMounted(() => {
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #ffffff;
+      cursor: pointer;
     }
   }
 }
