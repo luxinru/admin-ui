@@ -77,11 +77,12 @@ export default {
 
   data() {
     return {
-      type: 1,
+      type: 2,
       area: {},
       departList: [],
       isDepartListShow: false,
       currentDepart: {},
+      getCurrentInstance: getCurrentInstance()
     };
   },
 
@@ -91,6 +92,8 @@ export default {
 
   methods: {
     onItemClick(value) {
+      const { proxy } = this.getCurrentInstance
+      if (value !== 2) return proxy.$modal.msg('暂未开放！')
       this.type = value;
       // bus.emit("onTopbarClick", value);
     },
