@@ -1,5 +1,5 @@
 <template>
-  <div class="search_input_root">
+  <div class="search_input_root" v-click-out-side="onClickOutside">
     <span class="label"> 房屋信息 </span>
     <img src="@/assets/images/screen/search.png" alt="" />
 
@@ -14,35 +14,58 @@
     </div>
 
     <div v-if="isShow" class="select_container">
-      <div class="item" v-for="(item, index) in houseList" :key="index" @click="onSearchItemClick(item)">
+      <div
+        class="item"
+        v-for="(item, index) in houseList"
+        :key="index"
+        @click="onSearchItemClick(item)"
+      >
         {{ item.actualName }}
       </div>
     </div>
   </div>
 </template>
 
-<script setup name="ScreenIndex">
+<script>
 import bus from "vue3-eventbus";
+import clickOutSide from "@mahdikhashan/vue3-click-outside";
 import useScreenStore from "@/store/modules/screen";
-import { onMounted } from "vue-demi";
 
-const houseList = computed(() => useScreenStore().houseList);
+export default {
+  name: "SearchInput",
 
-const isShow = ref(false);
-const value = ref('')
+  directives: {
+    clickOutSide
+  },
 
-function onSearchItemClick(item) {
-  bus.emit('onAreaClick', item)
-  isShow.value = false
-}
+  data() {
+    return {
+      isShow: false,
+      value: "",
+    };
+  },
 
-function onInput() {
-  console.log('value :>> ', value);
-}
+  computed: {
+    houseList() {
+      return useScreenStore().houseList;
+    },
+  },
 
-onMounted(() => {
-  // console.log('houseList :>> ', houseList.value);
-});
+  methods: {
+    onSearchItemClick(item) {
+      bus.emit("onMapItemClick", item);
+      this.isShow = false;
+    },
+
+    onInput() {
+      console.log("value :>> ", this.value);
+    },
+
+    onClickOutside() {
+      this.isShow = false;
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

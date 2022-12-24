@@ -4,10 +4,10 @@
       <img class="bac" src="@/assets/images/screen/title-2.png" alt="" />
       <span class="name">房屋取得情况</span>
 
-      <div class="more" @click="onMoreClick">
+      <!-- <div class="more" @click="onMoreClick">
         <span>More</span>
         <img src="@/assets/images/screen/more-1.png" alt="" />
-      </div>
+      </div> -->
     </section>
 
     <section class="table">
@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <template v-if="type === 1 || type === 2 || type === 3 || type === 5">
+      <template v-if="type === 1 || type === 2 || type === 3">
         <table border="1" style="z-index: 3">
           <thead>
             <tr>
@@ -57,13 +57,13 @@
           <tbody>
             <tr class="td" v-for="(item, index) in list" :key="index">
               <td>{{ item.assetsName || "-" }}</td>
-              <td>{{ item.rentDepartName || "-" }}</td>
+              <td>{{ item.usedDepartThreeName || "-" }}</td>
               <td>{{ item.originalValue || "-" }}</td>
               <td>{{ item.nowValue || "-" }}</td>
-              <td>{{ item.devalueValue || "-" }}</td>
-              <td>{{ item.noCertificateReason || "-" }}</td>
-              <td>{{ item.managerDepartThreeName || "-" }}</td>
-              <td>{{ item.usedDepartThreeName || "-" }}</td>
+              <td>{{ item.addDepreciate || "-" }}</td>
+              <td>{{ item.usedNatureName || "-" }}</td>
+              <td>{{ item.actualUsedName || "-" }}</td>
+              <td>{{ item.usedStateName || "-" }}</td>
             </tr>
           </tbody>
         </table>
@@ -98,6 +98,38 @@
           </tbody>
         </table>
       </template>
+
+      <template v-if="type === 5">
+        <table border="1" style="z-index: 3">
+          <thead>
+            <tr>
+              <th>合同编号</th>
+              <th>合同名称</th>
+              <th>资产编码</th>
+              <th>资产名称</th>
+              <th>开工时间</th>
+              <th>完工时间</th>
+              <th>合同金额</th>
+              <th>工程进度</th>
+              <th>结算金额</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="td" v-for="(item, index) in list" :key="index">
+              <td>{{ item.contractCode || "-" }}</td>
+              <td>{{ item.contracName || "-" }}</td>
+              <td>{{ item.assetsCode || "-" }}</td>
+              <td>{{ item.assetsName || "-" }}</td>
+              <td>{{ item.startDate || "-" }}</td>
+              <td>{{ item.endDate || "-" }}</td>
+              <td>{{ item.contracMoney || "-" }}</td>
+              <td>{{ item.projectProgress || "-" }}</td>
+              <td>{{ item.settleMoney || "-" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
     </section>
   </div>
 </template>
@@ -120,28 +152,30 @@ const list = ref([]);
 async function onTypeClick(value) {
   type.value = value;
 
-  list.value = []
+  list.value = [];
+  const depart = JSON.parse(localStorage.getItem("currentDepart"));
+  const house = JSON.parse(localStorage.getItem("currentHouse"));
   switch (type.value) {
     case 1:
     case 2:
     case 3:
       const { rows: rows1 } = await fetchVisualList({
         houseName: "",
-        houseCode: "",
-        departCode: "",
+        houseCode: house.id,
+        departCode: depart.departCode,
         assetsCode: "",
       });
       list.value = rows1 || [];
       break;
     case 4:
       const { rows: rows2 } = await fetchVisualRentHouse({
-        houseCode: "",
+        houseCode: house.id,
       });
       list.value = rows2 || [];
       break;
     case 5:
       const { rows: rows3 } = await fetchVisualReformHouse({
-        houseName: "",
+        houseCode: house.id,
       });
       list.value = rows3 || [];
       break;
@@ -149,7 +183,7 @@ async function onTypeClick(value) {
 }
 
 onMounted(() => {
-  onTypeClick(4);
+  onTypeClick(1);
 });
 </script>
 

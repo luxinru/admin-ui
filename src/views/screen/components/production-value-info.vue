@@ -8,7 +8,7 @@
         </div>
 
         <div class="list">
-          <div class="item" @click="onItemClick">
+          <div class="item" @click="onItemClick(1)">
             <span class="label"> 原值 </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
@@ -18,7 +18,7 @@
             </div>
           </div>
 
-          <div class="item" @click="onItemClick">
+          <div class="item" @click="onItemClick(2)">
             <span class="label"> 净值 </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
@@ -26,7 +26,7 @@
             </div>
           </div>
 
-          <div class="item" @click="onItemClick">
+          <div class="item" @click="onItemClick(3)">
             <span class="label"> 折旧 </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
@@ -48,7 +48,8 @@ const original = ref(0);
 const now = ref(0);
 const acc = ref(0);
 
-function onItemClick() {
+function onItemClick(value) {
+  localStorage.setItem('tableType', value)
   bus.emit("onModalShow");
 }
 

@@ -12,7 +12,7 @@
             class="item"
             v-for="(item, index) in list"
             :key="index"
-            @click="onItemClick"
+            @click="onItemClick(null)"
           >
             <img src="@/assets/images/screen/mark.png" alt="" />
             <span> {{ item.name }} </span>
@@ -25,6 +25,7 @@
 </template>
 
 <script setup name="HousingInfo">
+import bus from "vue3-eventbus";
 import Box from "./box.vue";
 import * as echarts from "echarts";
 
@@ -32,7 +33,8 @@ import { fetchVisualAmount } from "@/api/screen";
 
 const list = ref([]);
 
-function onItemClick() {
+function onItemClick(value) {
+  localStorage.setItem('tableType', value)
   bus.emit("onModalShow");
 }
 
@@ -300,6 +302,7 @@ onBeforeUnmount(() => {
         display: flex;
         align-items: center;
         margin-top: 12px;
+        cursor: pointer;
 
         &:first-child {
           margin-top: 0;

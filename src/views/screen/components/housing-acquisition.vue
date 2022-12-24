@@ -1,7 +1,7 @@
 <template>
   <div class="housing_acquisition_root">
     <Box title="房屋取得情况">
-      <div class="container">
+      <div class="container" @click="onItemClick(null)">
         <div id="chart6" class="chart6"></div>
       </div>
     </Box>
@@ -9,10 +9,16 @@
 </template>
 
 <script setup name="HousingAcquisition">
+import bus from "vue3-eventbus";
 import Box from "./box.vue";
 import { fetchVisualPaper } from "@/api/screen";
 
 import * as echarts from "echarts";
+
+function onItemClick(value) {
+  localStorage.setItem('tableType', value)
+  bus.emit("onModalShow");
+}
 
 function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart6"));

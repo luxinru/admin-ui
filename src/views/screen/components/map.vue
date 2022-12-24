@@ -2,92 +2,114 @@
   <div class="map_root" id="map"></div>
 </template>
 
-<script setup name="Map">
+<script>
 import bus from "vue3-eventbus";
-
 import { fetchVisualList } from "@/api/screen";
 import useScreenStore from "@/store/modules/screen";
 
-const map = ref({});
+export default {
+  name: "Map",
 
-const initMap = (list) => {
-  const Bmap = window.BMap;
-  map.value = new BMap.Map("map"); // 创建Map实例
-  map.value.setMapType(BMAP_HYBRID_MAP);
-  map.value.setCurrentCity("成都"); // 设置地图显示的城市 此项是必须设置的
-  map.value.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-  map.value.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
-  map.value.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
-  map.value.enableKeyboard(); //启用键盘上下左右键移动地图
-  map.value.centerAndZoom(
-    new Bmap.Point(104.04263635868074, 30.556100647961866),
-    13
-  );
+  data() {
+    return {
+      map: {},
+    };
+  },
 
-  // 函数 创建多个标注
-  for (let i = 0; i < list.length; i++) {
-    let points = new BMap.Point(list[i].longitude, list[i].latitude); //创建坐标点
-    let icon = new BMap.Icon("/images/position-2.png", new BMap.Size(67, 108));
-    let markers = new BMap.Marker(points, {
-      icon,
+  mounted() {
+    const self = this;
+    this.$nextTick(() => {
+      bus.on("onMapInit", (depart) => {
+        self.fetchVisualListFun(depart);
+      });
     });
+  },
 
-    markers.addEventListener("click", () => {
-      bus.emit("onTopbarClick", 2);
+  methods: {
+    initMap(list) {
+      const Bmap = window.BMap;
+      this.map = new BMap.Map("map"); // 创建Map实例
+      this.map.setMapType(BMAP_HYBRID_MAP);
+      this.map.setCurrentCity("成都"); // 设置地图显示的城市 此项是必须设置的
+      this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+      this.map.enableDragging(); //启用地图拖拽事件，默认启用(可不写)
+      this.map.enableDoubleClickZoom(); //启用鼠标双击放大，默认启用(可不写)
+      this.map.enableKeyboard(); //启用键盘上下左右键移动地图
+      this.map.centerAndZoom(
+        new Bmap.Point(104.04263635868074, 30.556100647961866),
+        13
+      );
 
-      bus.emit("onAreaClick", list[i]);
-      bus.emit("onMapItemClick", list[i]);
+      console.log("this.map :>> ", [this.map]);
+      this.map.setDisplayOptions({
+        poi: false,
+      });
 
-      localStorage.setItem("data", JSON.stringify(list[i]));
-    });
+      // 函数 创建多个标注
+      for (let i = 0; i < list.length; i++) {
+        let points = new BMap.Point(list[i].longitude, list[i].latitude); //创建坐标点
+        let icon = new BMap.Icon(
+          "/images/position-2.png",
+          new BMap.Size(67, 108)
+        );
+        let markers = new BMap.Marker(points, {
+          icon,
+        });
 
-    map.value.addOverlay(markers);
+        markers.addEventListener("click", () => {
+          localStorage.setItem("currentHouse", JSON.stringify(list[i]));
+          bus.emit("onTopbarClick", 2);
 
-    // if (i > 2) {
-    //   let icon = new BMap.Icon(
-    //     "/images/position-1.png",
-    //     new BMap.Size(67, 108)
-    //   );
-    //   let markers = new BMap.Marker(points, {
-    //     icon,
-    //   });
-    //   map.addOverlay(markers);
-    // } else {
-    //   let icon = new BMap.Icon(
-    //     "/images/position-2.png",
-    //     new BMap.Size(67, 108)
-    //   );
-    //   let markers = new BMap.Marker(points, {
-    //     icon,
-    //   });
-    //   map.addOverlay(markers);
-    // }
-  }
+          bus.emit("onMapItemClick", list[i]);
+        });
 
-  bus.on("onAreaClick", (data) => {
-    map.value.centerAndZoom(new Bmap.Point(data.longitude, data.latitude), 15);
-  });
+        this.map.addOverlay(markers);
+
+        // if (i > 2) {
+        //   let icon = new BMap.Icon(
+        //     "/images/position-1.png",
+        //     new BMap.Size(67, 108)
+        //   );
+        //   let markers = new BMap.Marker(points, {
+        //     icon,
+        //   });
+        //   map.addOverlay(markers);
+        // } else {
+        //   let icon = new BMap.Icon(
+        //     "/images/position-2.png",
+        //     new BMap.Size(67, 108)
+        //   );
+        //   let markers = new BMap.Marker(points, {
+        //     icon,
+        //   });
+        //   map.addOverlay(markers);
+        // }
+      }
+
+      bus.on("onMapItemClick", (data) => {
+        this.map.centerAndZoom(
+          new Bmap.Point(data.longitude, data.latitude),
+          15
+        );
+      });
+    },
+
+    async fetchVisualListFun(depart) {
+      const { rows } = await fetchVisualList({
+        houseName: "",
+        houseCode: "",
+        departCode: depart.departCode,
+        // departCode: "226010006",
+        assetsCode: "",
+      });
+
+      const list = rows.filter((item) => item.longitude && item.latitude);
+      useScreenStore().setHouseList(list);
+
+      this.initMap(list);
+    },
+  },
 };
-
-async function fetchVisualListFun() {
-  const { rows } = await fetchVisualList({
-    houseName: "",
-    houseCode: "",
-    departCode: "",
-    assetsCode: "",
-  });
-
-  const list = rows.filter((item) => item.longitude && item.latitude);
-  useScreenStore().setHouseList(list);
-
-  initMap(list);
-}
-
-onMounted(() => {
-  nextTick(() => {
-    fetchVisualListFun();
-  });
-});
 </script>
 
 <style scoped lang="scss">

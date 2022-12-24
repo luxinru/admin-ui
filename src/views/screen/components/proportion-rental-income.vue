@@ -17,7 +17,7 @@
           </div>
         </div> -->
 
-        <div class="chart_box">
+        <div class="chart_box" @click="onItemClick(5)">
           <div id="chart3" class="chart3"></div>
           <div class="info" @click="onItemClick">
             <div class="bac"></div>
@@ -50,6 +50,7 @@
 </template>
 
 <script setup name="ProportionRentalIncome">
+import bus from "vue3-eventbus";
 import Box from "./box.vue";
 import * as echarts from "echarts";
 import "echarts-gl";
@@ -57,8 +58,9 @@ import { fetchVisualRentalIncome } from "@/api/screen";
 
 const all = ref(0);
 
-function onItemClick() {
-  bus.emit('onModalShow')
+function onItemClick(value) {
+  localStorage.setItem('tableType', value)
+  bus.emit("onModalShow");
 }
 
 function initChart(data) {

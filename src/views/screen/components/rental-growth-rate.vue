@@ -1,6 +1,6 @@
 <template>
   <div class="rental_growth_rate_root">
-    <Box title="租金增长率">
+    <Box title="租金增长率" @click="onItemClick(5)">
       <div class="container">
         <div class="title">
           <div class="part">
@@ -28,11 +28,17 @@
 </template>
 
 <script setup name="RentalGrowthRate">
+import bus from "vue3-eventbus";
 import Box from "./box.vue";
 import * as echarts from "echarts";
 import { fetchRentalGrowth } from "@/api/screen";
 
 const year = ref(0)
+
+function onItemClick(value) {
+  localStorage.setItem('tableType', value)
+  bus.emit("onModalShow");
+}
 
 function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart1"));

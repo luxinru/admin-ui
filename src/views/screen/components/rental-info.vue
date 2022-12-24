@@ -2,7 +2,7 @@
   <div class="rental_info_root">
     <Box title="出租信息">
       <div class="container">
-        <div class="top">
+        <div class="top" @click="onItemClick(5)">
           <div class="imgs">
             <img
               class="img1"
@@ -13,7 +13,7 @@
             <img class="img2" src="@/assets/images/screen/income.png" alt="" />
           </div>
 
-          <div class="info" @click="onItemClick">
+          <div class="info">
             <span> 出租总收入(万元) </span>
 
             <p><CountTo :start="0" :end="rentalIncome" /></p>
@@ -46,8 +46,9 @@ import Box from "./box.vue";
 
 const rentalIncome = ref(0);
 
-function onItemClick() {
-  bus.emit('onModalShow')
+function onItemClick(value) {
+  localStorage.setItem('tableType', value)
+  bus.emit("onModalShow");
 }
 
 function initChart(data) {

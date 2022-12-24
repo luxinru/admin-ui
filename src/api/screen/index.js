@@ -68,3 +68,35 @@ export function fetchVisualHouseAccount(params) {
     params,
   })
 }
+
+export function fetchMyrelationList(params) {
+  return request({
+    url: `/system/rewrite/user/myrelation`,
+    method: 'get',
+    params,
+  })
+}
+
+export function fetchListFilesByKeyCode(params) {
+  return request({
+    url: `/file/file/listFilesByKeyCode`,
+    method: 'get',
+    params,
+  })
+}
+
+export function fetchVisualAmountNature(params) {
+  return request({
+    url: `data-visualization/house/visual/amount/nature`,
+    method: 'get',
+    params,
+  })
+}
+
+export function fetchVisualValueNature(params) {
+  return request({
+    url: `data-visualization/house/visual/value/nature`,
+    method: 'get',
+    params,
+  })
+}

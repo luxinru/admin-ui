@@ -31,25 +31,14 @@
             </div>
 
             <div class="info">
-              <div class="info_item">
+              <div
+                class="info_item"
+                v-for="(item, index) in chart1Data"
+                :key="index"
+              >
                 <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
-              </div>
-              <div class="info_item">
-                <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
-              </div>
-              <div class="info_item">
-                <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
-              </div>
-              <div class="info_item">
-                <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
+                <span>{{ item.usedNatureName }}</span>
+                <p>{{ item.countValue }}</p>
               </div>
             </div>
           </div>
@@ -65,32 +54,75 @@
             </div>
 
             <div class="info">
-              <div class="info_item">
+              <div
+                class="info_item"
+                v-for="(item, index) in chart2Data"
+                :key="index"
+              >
                 <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
-              </div>
-              <div class="info_item">
-                <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
-              </div>
-              <div class="info_item">
-                <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
-              </div>
-              <div class="info_item">
-                <img src="@/assets/images/screen/mark.png" alt="" />
-                <span>数据展示</span>
-                <p>254</p>
+                <span>{{ item.usedNatureName }}</span>
+                <p>{{ item.countValue }}</p>
               </div>
             </div>
           </div>
         </div>
 
         <div class="list">
-          <table>
+          <table v-if="type === 5">
+            <thead>
+              <tr>
+                <th>资产编码</th>
+                <th>资产类型</th>
+                <th>
+                  资产名称
+                  <div class="sort">
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                  </div>
+                </th>
+                <th>
+                  资产类别编码
+                  <div class="sort">
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                  </div>
+                </th>
+                <th>
+                  租赁期实际开始日期
+                  <div class="sort">
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                  </div>
+                </th>
+                <th>
+                  预计租赁终止日
+                  <div class="sort">
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                    <img src="@/assets/images/screen/triangular.png" alt="" />
+                  </div>
+                </th>
+                <th>承租方单位类型</th>
+                <th>承租方单位</th>
+                <th>租赁金额</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="(item, index) in list" :key="index">
+                <td>{{ item.assetsCode || "-" }}</td>
+                <td>{{ item.assetsType || "-" }}</td>
+                <td>{{ item.assetsName || "-" }}</td>
+                <td>{{ item.contentAssetsCode || "-" }}</td>
+                <td>{{ item.rentStartDate || "-" }}</td>
+                <td>{{ item.rentEndDate || "-" }}</td>
+                <td>{{ item.rentDepartTypeName || "-" }}</td>
+                <td>{{ item.rentDepartName || "-" }}</td>
+                <td>{{ item.rentMoney || "-" }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table v-else>
             <thead>
               <tr>
                 <th>资产编码</th>
@@ -136,6 +168,10 @@
                     <img src="@/assets/images/screen/triangular.png" alt="" />
                   </div>
                 </th>
+                <th v-if="type === 1">原值</th>
+                <th v-if="type === 2">净值</th>
+                <th v-if="type === 3">折旧</th>
+                <th v-if="type === 4">土地面积</th>
               </tr>
             </thead>
 
@@ -150,6 +186,10 @@
                 <td>{{ item.parcelCode || "-" }}</td>
                 <td>{{ item.ownershipConditionName || "-" }}</td>
                 <td>{{ item.usedrightTypeName || "-" }}</td>
+                <td v-if="type === 1">{{ item.originalValue || "-" }}</td>
+                <td v-if="type === 2">{{ item.nowValue || "-" }}</td>
+                <td v-if="type === 3">{{ item.addDepreciate || "-" }}</td>
+                <td v-if="type === 4">{{ item.landArea || "-" }}</td>
               </tr>
             </tbody>
           </table>
@@ -167,160 +207,225 @@
   </div>
 </template>
 
-<script setup name="HouseLedgerDetails">
+<script>
 import * as echarts from "echarts";
 import bus from "vue3-eventbus";
-import { fetchVisualHouseAccount } from "@/api/screen";
+import {
+  fetchVisualHouseAccount,
+  fetchVisualAmountNature,
+  fetchVisualValueNature,
+} from "@/api/screen";
 
-const page = ref({
-  pageNum: 1,
-  pageSize: 20,
-});
+export default {
+  name: "HouseLedgerDetails",
 
-const list = ref([]);
+  data() {
+    return {
+      page: {
+        pageNum: 1,
+        pageSize: 20,
+      },
+      list: [],
+      type: 1,
+      currentDepart: {},
+      chart1Data: [],
+      chart2Data: [],
+    };
+  },
 
-function initChart() {
-  const myChart1 = echarts.init(document.getElementById("chart4"));
-  const myChart2 = echarts.init(document.getElementById("chart5"));
+  async mounted() {
+    this.type = Number(localStorage.getItem("tableType"));
+    this.currentDepart = JSON.parse(localStorage.getItem("currentDepart"));
 
-  const gradList = [
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#03c",
-      },
-      {
-        offset: 1,
-        color: "#18f",
-      },
-    ]),
+    this.fetchVisualHouseAccountFun();
+    await this.fetchVisualAmountNatureFun();
+    await this.fetchVisualValueNatureFun();
 
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#46f",
-      },
-      {
-        offset: 1,
-        color: "#4cd",
-      },
-    ]),
+    this.initChart();
+  },
 
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#3a7",
-      },
-      {
-        offset: 1,
-        color: "#4db",
-      },
-    ]),
+  beforeUnmount() {
+    echarts.dispose(document.getElementById("chart4"));
+    echarts.dispose(document.getElementById("chart5"));
+  },
 
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#03c",
-      },
-      {
-        offset: 1,
-        color: "#9db",
-      },
-    ]),
+  methods: {
+    async fetchVisualAmountNatureFun() {
+      const { data } = await fetchVisualAmountNature({
+        departCode: this.currentDepart.departCode,
+      });
 
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#06b",
-      },
-      {
-        offset: 1,
-        color: "#4bf",
-      },
-    ]),
+      this.chart1Data = data || [];
+    },
 
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#06b",
-      },
-      {
-        offset: 1,
-        color: "#0bb",
-      },
-    ]),
+    async fetchVisualValueNatureFun() {
+      const { data } = await fetchVisualValueNature({
+        departCode: this.currentDepart.departCode,
+      });
 
-    new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-      {
-        offset: 0,
-        color: "#8ec",
-      },
-      {
-        offset: 1,
-        color: "#dea",
-      },
-    ]),
-  ];
+      this.chart2Data = data || [];
+    },
 
-  const options = {
-    series: [
-      {
-        name: "数据统计",
-        type: "pie",
-        center: ["50%", "50%"],
-        radius: ["20%", "75%"],
-        roseType: true,
-        itemStyle: {
-          normal: {
-            color: function (params) {
-              return gradList[params.dataIndex];
-            },
+    initChart() {
+      const myChart1 = echarts.init(document.getElementById("chart4"));
+      const myChart2 = echarts.init(document.getElementById("chart5"));
+
+      const gradList = [
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#03c",
           },
-        },
-        label: {
-          show: false,
-        },
-        data: [
-          { name: "数据1", value: 10 },
-          { name: "数据2", value: 30 },
-          { name: "数据3", value: 15 },
-          { name: "数据4", value: 23 },
+          {
+            offset: 1,
+            color: "#18f",
+          },
+        ]),
+
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#46f",
+          },
+          {
+            offset: 1,
+            color: "#4cd",
+          },
+        ]),
+
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#3a7",
+          },
+          {
+            offset: 1,
+            color: "#4db",
+          },
+        ]),
+
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#03c",
+          },
+          {
+            offset: 1,
+            color: "#9db",
+          },
+        ]),
+
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#06b",
+          },
+          {
+            offset: 1,
+            color: "#4bf",
+          },
+        ]),
+
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#06b",
+          },
+          {
+            offset: 1,
+            color: "#0bb",
+          },
+        ]),
+
+        new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          {
+            offset: 0,
+            color: "#8ec",
+          },
+          {
+            offset: 1,
+            color: "#dea",
+          },
+        ]),
+      ];
+
+      const options1 = {
+        series: [
+          {
+            name: "数据统计",
+            type: "pie",
+            center: ["50%", "50%"],
+            radius: ["20%", "75%"],
+            roseType: true,
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return gradList[params.dataIndex];
+                },
+              },
+            },
+            label: {
+              show: false,
+            },
+            data: this.chart1Data.map((item) => {
+              return {
+                name: item.usedNatureName,
+                value: Number(item.countValue),
+              };
+            }),
+          },
         ],
-      },
-    ],
-  };
+      };
 
-  myChart1.setOption(options);
-  myChart2.setOption(options);
-}
+      const options2 = {
+        series: [
+          {
+            name: "数据统计",
+            type: "pie",
+            center: ["50%", "50%"],
+            radius: ["20%", "75%"],
+            roseType: true,
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  return gradList[params.dataIndex];
+                },
+              },
+            },
+            label: {
+              show: false,
+            },
+            data: this.chart2Data.map((item) => {
+              return {
+                name: item.usedNatureName,
+                value: Number(item.originalValue),
+              };
+            }),
+          },
+        ],
+      };
 
-function onModalClose(params) {
-  bus.emit("onModalClose");
-}
+      myChart1.setOption(options1);
+      myChart2.setOption(options2);
+    },
 
-async function fetchVisualHouseAccountFun() {
-  console.log("page :>> ", page);
-  const { rows } = await fetchVisualHouseAccount({
-    houseType: "",
-    areaName: "",
-    housePaperType: "",
-    pageNum: page.value.pageNum,
-    pageSize: page.value.pageSize,
-  });
+    onModalClose() {
+      bus.emit("onModalClose");
+    },
 
-  list.value = rows || [];
-}
+    async fetchVisualHouseAccountFun() {
+      const { rows } = await fetchVisualHouseAccount({
+        houseType: "",
+        areaName: "",
+        housePaperType: "",
+        pageNum: this.page.pageNum,
+        pageSize: this.page.pageSize,
+      });
 
-onMounted(() => {
-  initChart();
-
-  fetchVisualHouseAccountFun();
-});
-
-onBeforeUnmount(() => {
-  echarts.dispose(document.getElementById("chart4"));
-  echarts.dispose(document.getElementById("chart5"));
-});
+      this.list = rows || [];
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -328,13 +433,13 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
 }
 .house_ledger_details_root {
-  width: 1573px;
+  width: 1800px;
   height: 804px;
   display: flex;
   flex-direction: column;
 
   .title_img {
-    width: 1573px;
+    width: 100%;
     height: 48px;
   }
 
@@ -531,7 +636,7 @@ onBeforeUnmount(() => {
                 .sort {
                   display: flex;
                   flex-direction: column;
-                  margin-left: 18px;
+                  margin-left: 5px;
 
                   img {
                     width: 8px;

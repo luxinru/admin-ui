@@ -1,5 +1,5 @@
 <template>
-  <div class="top_bar_root">
+  <div class="top_bar_root"  v-click-out-side="onClickOutside">
     <section class="left">
       <div class="item" @click="onBackToPlatform">
         <img src="@/assets/images/screen/system.png" alt="" />
@@ -8,7 +8,18 @@
 
       <div class="item" @click="onPlatformClick">
         <img src="@/assets/images/screen/unit.png" alt="" />
-        <span> {{ area.actualName || '全部' }} </span>
+        <span> {{ currentDepart.departName || "-" }} </span>
+
+        <div class="content" v-if="isDepartListShow">
+          <span
+            class="content_item"
+            v-for="(item, index) in departList"
+            :key="index"
+            @click="onDepartClick(item)"
+          >
+            {{ item.departName || "-" }}
+          </span>
+        </div>
       </div>
     </section>
 
@@ -52,31 +63,69 @@
   </div>
 </template>
 
-<script setup name="ScreenIndex">
+<script>
 import bus from "vue3-eventbus";
-const router = useRouter();
+import clickOutSide from "@mahdikhashan/vue3-click-outside";
+import { fetchMyrelationList } from "@/api/screen";
 
-const type = ref(1);
-const area = ref({})
+export default {
+  name: "TopBar",
 
-function onItemClick(value) {
-  type.value = value
-  // bus.emit("onTopbarClick", value);
-}
+  directives: {
+    clickOutSide
+  },
 
-function onBackToPlatform() {
-  router.replace('/index')
-}
+  data() {
+    return {
+      type: 1,
+      area: {},
+      departList: [],
+      isDepartListShow: false,
+      currentDepart: {},
+    };
+  },
 
-function onPlatformClick() {
-  bus.emit("onTopbarClick", 1);
-}
+  mounted() {
+    this.fetchMyrelationListFun();
+  },
 
-onMounted(() => {
-  bus.on('onAreaClick', (data) => {
-    area.value = data
-  })
-})
+  methods: {
+    onItemClick(value) {
+      this.type = value;
+      // bus.emit("onTopbarClick", value);
+    },
+
+    onClickOutside() {
+      this.isDepartListShow = false;
+    },
+
+    onBackToPlatform() {
+      this.$router.replace("/index");
+    },
+
+    onPlatformClick() {
+      bus.emit("onTopbarClick", 1);
+      localStorage.removeItem("currentHouse");
+      this.isDepartListShow = true;
+    },
+
+    onDepartClick(depart) {
+      this.currentDepart = depart;
+    },
+
+    async fetchMyrelationListFun() {
+      const { rows } = await fetchMyrelationList();
+
+      this.departList = rows;
+
+      this.currentDepart = rows[0];
+
+      localStorage.setItem("currentDepart", JSON.stringify(this.currentDepart));
+
+      bus.emit("onMapInit", this.currentDepart);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -89,11 +138,13 @@ onMounted(() => {
   padding: 13px 5px;
 
   .left {
+    position: relative;
     flex: 1 0;
     display: flex;
     align-items: center;
 
     .item {
+      position: relative;
       display: flex;
       align-items: center;
       margin-left: 37px;
@@ -113,6 +164,34 @@ onMounted(() => {
         font-weight: 400;
         color: #bdd7e7;
         margin-left: 10px;
+      }
+
+      .content {
+        position: absolute;
+        top: 30px;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        background: rgba(7, 37, 84, 0.9);
+        border: 1px solid rgba(10, 71, 167, 0.9);
+        border-radius: 3px;
+        padding: 0 10px;
+        z-index: 1;
+
+        .content_item {
+          width: 163px;
+          font-size: 15px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #ffffff;
+          border-bottom: 1px solid rgba(55, 130, 255, 0.2);
+          padding: 10px 0;
+          margin-left: 0;
+
+          &:last-child {
+            border-bottom: none;
+          }
+        }
       }
     }
   }

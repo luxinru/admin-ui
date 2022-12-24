@@ -2,68 +2,70 @@
   <div class="house_info_root">
     <img class="close" src="@/assets/images/screen/close.png" alt="" />
 
-    <div class="title">川中油气矿</div>
+    <div class="title">
+      {{ house.actualName }}
+    </div>
 
     <div class="content">
       <div class="tr">
         <div class="item">
           <span class="label">省(直辖市)</span>
-          <span class="value">{{ dataInfo.province || "-" }}</span>
+          <span class="value">{{ house.province || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">市</span>
-          <span class="value">{{ dataInfo.city || "-" }}</span>
+          <span class="value">{{ house.city || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">区(县)</span>
-          <span class="value">{{ dataInfo.county || "-" }}</span>
+          <span class="value">{{ house.county || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">房屋结构</span>
-          <span class="value">{{ dataInfo.houseStructureName || "-" }}</span>
+          <span class="value">{{ house.houseStructureName || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">建筑面积</span>
-          <span class="value">{{ dataInfo.buildArea || "-" }}㎡</span>
+          <span class="value">{{ house.buildArea || "-" }}㎡</span>
         </div>
         <div class="item">
           <span class="label">地上总层</span>
-          <span class="value">{{ dataInfo.floorsUpName || "-" }}</span>
+          <span class="value">{{ house.floorsUpName || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">地下总层</span>
-          <span class="value">{{ dataInfo.floorsDownName || "-" }}</span>
+          <span class="value">{{ house.floorsDownName || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">备注</span>
-          <span class="value">{{ dataInfo.remark || "-" }}</span>
+          <span class="value">{{ house.remark || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">资产编号</span>
-          <span class="value">{{ dataInfo.assetsCode || "-" }}</span>
+          <span class="value">{{ house.assetsCode || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">资产名称</span>
-          <span class="value">{{ dataInfo.assetsName || "-" }}</span>
+          <span class="value">{{ house.assetsName || "-" }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">计量单位</span>
-          <span class="value">{{ dataInfo.unitCodeName || "-" }}</span>
+          <span class="value">{{ house.unitCodeName || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">贮存数量</span>
@@ -74,97 +76,97 @@
       <div class="tr">
         <div class="item">
           <span class="label">投产日期</span>
-          <span class="value">{{ dataInfo.operateDate || "-" }}</span>
+          <span class="value">{{ house.operateDate || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">规格型号</span>
-          <span class="value">{{ dataInfo.assetsStandard || "-" }}</span>
+          <span class="value">{{ house.assetsStandard || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">原值</span>
-          <span class="value">{{ dataInfo.originalValue || "-" }}</span>
+          <span class="value">{{ house.originalValue || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">净值</span>
-          <span class="value">{{ dataInfo.nowValue || "-" }}</span>
+          <span class="value">{{ house.nowValue || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">已提减值准备</span>
-          <span class="value">{{ dataInfo.devalueValue || "-" }}</span>
+          <span class="value">{{ house.devalueValue || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">宗地编码</span>
-          <span class="value">{{ dataInfo.parcelCode || "-" }}</span>
+          <span class="value">{{ house.parcelCode || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">权属状况</span>
           <span class="value">{{
-            dataInfo.ownershipConditionName || "-"
+            house.ownershipConditionName || "-"
           }}</span>
         </div>
         <div class="item">
           <span class="label">使用权资产</span>
-          <span class="value">{{ dataInfo.usedrightTypeName || "-" }}</span>
+          <span class="value">{{ house.usedrightTypeName || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">土地面积</span>
-          <span class="value">{{ dataInfo.landArea || "-" }}</span>
+          <span class="value">{{ house.landArea || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">土地证号</span>
-          <span class="value">{{ dataInfo.landCertificateNo || "-" }}</span>
+          <span class="value">{{ house.landCertificateNo || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">土地使用人</span>
-          <span class="value">{{ dataInfo.landUsedHolder || "-" }}</span>
+          <span class="value">{{ house.landUsedHolder || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">房产证号</span>
-          <span class="value">{{ dataInfo.houseCertificateNo || "-" }}</span>
+          <span class="value">{{ house.houseCertificateNo || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">证载所有权人</span>
-          <span class="value">{{ dataInfo.certificateHolder || "-" }}</span>
+          <span class="value">{{ house.certificateHolder || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">办证情况</span>
           <span class="value">{{
-            dataInfo.certificateHandlingName || "-"
+            house.certificateHandlingName || "-"
           }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">记账是否相符</span>
-          <span class="value">{{ dataInfo.bookkeeping || "-" }}</span>
+          <span class="value">{{ house.bookkeeping || "-" }}</span>
         </div>
         <div class="item">
           <span class="label">无证原因</span>
-          <span class="value">{{ dataInfo.noCertificateReason || "-" }}</span>
+          <span class="value">{{ house.noCertificateReason || "-" }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">管理单位情况</span>
           <span class="value">{{
-            dataInfo.managerDepartThreeName || "-"
+            house.managerDepartThreeName || "-"
           }}</span>
         </div>
         <div class="item">
           <span class="label">使用单位情况</span>
-          <span class="value">{{ dataInfo.usedDepartThreeName || "-" }}</span>
+          <span class="value">{{ house.usedDepartThreeName || "-" }}</span>
         </div>
       </div>
     </div>
@@ -175,15 +177,7 @@
 import { onMounted } from "vue-demi";
 import bus from "vue3-eventbus";
 
-let dataInfo = ref({});
-
-bus.on("onMapItemClick", (data) => {
-  dataInfo.value = JSON.parse(localStorage.getItem("data"))
-});
-
-onMounted(() => {
-  dataInfo.value = JSON.parse(localStorage.getItem("data"))
-})
+const house = JSON.parse(localStorage.getItem('currentHouse'))
 </script>
 
 <style scoped lang="scss">
