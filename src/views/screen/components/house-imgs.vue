@@ -31,7 +31,7 @@
 
     <template v-else>
       <section class="no_data">
-        <img src="@/assets/images/screen/No picture.png" alt="" />
+        <img src="@/assets/images/screen/Nopicture.png" alt="" />
         <span>暂无数据</span>
       </section>
     </template>
