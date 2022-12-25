@@ -96,8 +96,8 @@ export default {
       const { rows } = await fetchVisualList({
         houseName: "",
         houseCode: "",
-        departCode: depart.departCode,
-        // departCode: "226010006",
+        // departCode: depart.departCode,
+        departCode: "226010006",
         assetsCode: "",
       });
 

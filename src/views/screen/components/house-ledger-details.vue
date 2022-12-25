@@ -96,7 +96,7 @@
                     ].indexOf(type) > -1
                   "
                 >
-                  {{ item.countValue }}
+                  {{ item.originalValue }}
                 </p>
                 <p v-if="['净值'].indexOf(type) > -1">
                   {{ item.nowValue }}
