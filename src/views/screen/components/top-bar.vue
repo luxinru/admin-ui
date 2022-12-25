@@ -12,7 +12,7 @@
         v-click-out-side="onClickOutside"
       >
         <img src="@/assets/images/screen/unit.png" alt="" />
-        <span> {{ currentDepart.departName || "未命名" }} </span>
+        <span> {{ currentDepart.departName || "未命名单位" }} </span>
 
         <div class="content" v-if="isDepartListShow">
           <span
@@ -21,7 +21,7 @@
             :key="index"
             @click="onDepartClick(item)"
           >
-            {{ item.departName || "未命名" }}
+            {{ item.departName || "未命名单位" }}
           </span>
         </div>
       </div>
