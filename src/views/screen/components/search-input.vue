@@ -56,9 +56,10 @@ export default {
 
   methods: {
     onSearchItemClick(item) {
+      this.value = item.actualName
       localStorage.setItem('currentHouse', JSON.stringify(item))
-      bus.emit("onTopbarClick", 2);
-      bus.emit("onMapItemClick", item);
+      // bus.emit("onTopbarClick", 2);
+      bus.emit("onSearchInputClick", item);
       this.isShow = false;
     },
 

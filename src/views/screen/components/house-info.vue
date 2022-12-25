@@ -1,6 +1,11 @@
 <template>
   <div class="house_info_root">
-    <img class="close" src="@/assets/images/screen/close.png" alt="" />
+    <img
+      class="close"
+      src="@/assets/images/screen/close.png"
+      alt=""
+      @click="onClose"
+    />
 
     <div class="title">
       {{ house.actualName }}
@@ -167,19 +172,33 @@
   </div>
 </template>
 
-<script setup name="HouseInfo">
-import { onMounted } from "vue-demi";
+<script>
 import bus from "vue3-eventbus";
 
-const house = ref({});
+export default {
+  name: "HouseInfo",
 
-onMounted(() => {
-  house.value = JSON.parse(localStorage.getItem("currentHouse"));
+  data() {
+    return {
+      house: {},
+    };
+  },
 
-  bus.on("onMapItemClick", async (data) => {
-    house.value = JSON.parse(localStorage.getItem("currentHouse"));
-  });
-});
+  mounted() {
+    const self = this
+    this.house = JSON.parse(localStorage.getItem("currentHouse"));
+
+    bus.on("onMapItemClick", async (data) => {
+      self.house = JSON.parse(localStorage.getItem("currentHouse"));
+    });
+  },
+
+  methods: {
+    onClose () {
+      bus.emit('onHouseInfoOperate', false)
+    }
+  }
+};
 </script>
 
 <style scoped lang="scss">

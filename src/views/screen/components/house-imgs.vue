@@ -1,6 +1,11 @@
 <template>
   <div class="house_imgs_root">
-    <img class="close" src="@/assets/images/screen/close.png" alt="" />
+    <img
+      class="close"
+      src="@/assets/images/screen/close.png"
+      alt=""
+      @click="onClose"
+    />
 
     <div class="title">
       {{ house.actualName }}
@@ -38,64 +43,80 @@
   </div>
 </template>
 
-<script setup name="HouseImgs">
+<script>
 import bus from "vue3-eventbus";
-import { computed } from "vue";
 import { fetchListFilesByKeyCode } from "@/api/screen";
 import { cloneDeep } from "lodash";
 
-const imgList = ref([]);
-const house = ref({});
-const currentImgIndex = ref(0);
+export default {
+  name: "HouseImgs",
 
-const showImgs = computed(() => {
-  if (currentImgIndex.value < 3) {
-    // 前三张
-    const list = cloneDeep(imgList.value);
-    return list.splice(0, 3);
-  } else if (currentImgIndex.value > imgList.value.length - 3) {
-    // 后三张
-    const list = cloneDeep(imgList.value);
-    return list.splice(imgList.value.length - 3, 3);
-  } else {
-    const list = cloneDeep(imgList.value);
-    return list.splice(currentImgIndex.value - 2, 3);
-  }
-});
+  data() {
+    return {
+      imgList: [],
+      house: {},
+      currentImgIndex: 0,
+    };
+  },
 
-function onPreview() {
-  if (currentImgIndex.value === 0) return;
-  currentImgIndex.value -= 1;
-}
+  computed: {
+    showImgs() {
+      if (this.currentImgIndex < 3) {
+        // 前三张
+        const list = cloneDeep(this.imgList);
+        return list.splice(0, 3);
+      } else if (this.currentImgIndex > this.imgList.length - 3) {
+        // 后三张
+        const list = cloneDeep(this.imgList);
+        return list.splice(this.imgList.length - 3, 3);
+      } else {
+        const list = cloneDeep(this.imgList);
+        return list.splice(this.currentImgIndex - 2, 3);
+      }
+    },
+  },
 
-function onNext() {
-  if (currentImgIndex.value === imgList.value.length - 1) return;
-  currentImgIndex.value += 1;
-}
+  mounted() {
+    const self = this;
+    this.house = JSON.parse(localStorage.getItem("currentHouse"));
+    this.fetchListFilesByKeyCodeFun();
 
-async function fetchListFilesByKeyCodeFun() {
-  const { rows } = await fetchListFilesByKeyCode({
-    keyCode: house.value.keyCode,
-  });
+    bus.on("onMapItemClick", async (data) => {
+      self.house = JSON.parse(localStorage.getItem("currentHouse"));
+      self.fetchListFilesByKeyCodeFun();
+    });
+  },
 
-  imgList.value =
-    rows.map((item, index) => {
-      return {
-        ...item,
-        imgIndex: index,
-      };
-    }) || [];
-}
+  methods: {
+    onClose () {
+      bus.emit('onHouseImgsOperate', false)
+    },
 
-onMounted(() => {
-  house.value = JSON.parse(localStorage.getItem("currentHouse"));
-  fetchListFilesByKeyCodeFun();
+    onPreview() {
+      if (this.currentImgIndex === 0) return;
+      this.currentImgIndex -= 1;
+    },
 
-  bus.on("onMapItemClick", async (data) => {
-    house.value = JSON.parse(localStorage.getItem("currentHouse"));
-    fetchListFilesByKeyCodeFun();
-  });
-});
+    onNext() {
+      if (this.currentImgIndex === this.imgList.length - 1) return;
+      this.currentImgIndex += 1;
+    },
+
+    async fetchListFilesByKeyCodeFun() {
+      const { rows } = await fetchListFilesByKeyCode({
+        keyCode: this.house.keyCode,
+      });
+
+      this.imgList =
+        rows.map((item, index) => {
+          return {
+            ...item,
+            imgIndex: index,
+          };
+        }) || [];
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

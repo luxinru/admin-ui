@@ -57,8 +57,11 @@ export default {
 
         markers.addEventListener("click", () => {
           localStorage.setItem("currentHouse", JSON.stringify(list[i]));
-          bus.emit("onTopbarClick", 2);
           bus.emit("onMapItemClick", list[i]);
+          bus.emit("onTopbarClick", 2);
+          bus.emit("onHouseInfoOperate", true);
+          bus.emit("onHouseImgsOperate", true);
+          bus.emit("onSearchInputClick", list[i]);
         });
 
         this.map.addOverlay(markers);
@@ -84,7 +87,7 @@ export default {
         // }
       }
 
-      bus.on("onMapItemClick", (data) => {
+      bus.on("onSearchInputClick", (data) => {
         this.map.centerAndZoom(
           new Bmap.Point(data.longitude, data.latitude),
           15

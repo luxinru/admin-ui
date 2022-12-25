@@ -59,11 +59,11 @@
       <AdvancedInfo />
     </section>
 
-    <section v-if="type === 2" class="house_imgs">
+    <section v-if="type === 2 && isShowHouseImgs" class="house_imgs">
       <HouseImgs />
     </section>
 
-    <section v-if="type === 2" class="house_info">
+    <section v-if="type === 2 && isShowHouseInfo" class="house_info">
       <HouseInfo />
     </section>
 
@@ -93,6 +93,8 @@ import { onMounted } from "vue-demi";
 
 const isShowModal = ref(false);
 const type = ref(1);
+const isShowHouseInfo = ref(false);
+const isShowHouseImgs = ref(false);
 
 bus.on("onModalClose", () => {
   isShowModal.value = false;
@@ -120,6 +122,14 @@ bus.on("onTopbarClick", (value) => {
       }
     });
   }
+});
+
+bus.on("onHouseInfoOperate", (show) => {
+  isShowHouseInfo.value = show;
+});
+
+bus.on("onHouseImgsOperate", (show) => {
+  isShowHouseImgs.value = show;
 });
 
 onMounted(() => {

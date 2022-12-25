@@ -123,9 +123,13 @@ export default {
     async fetchMyrelationListFun() {
       const { rows } = await fetchMyrelationList();
 
-      this.departList = rows;
+      this.departList = rows || [];
 
-      this.currentDepart = rows[0];
+      const departCode = sessionStorage.getItem('departCode') || ''
+
+      const depart = this.departList.filter(item => item.departCode === departCode)
+
+      this.currentDepart = depart ? depart : rows[0];
 
       localStorage.setItem("currentDepart", JSON.stringify(this.currentDepart));
 
