@@ -19,7 +19,7 @@
 
         <div class="chart_box">
           <div id="chart3" class="chart3"></div>
-          <div class="info" @click="onItemClick">
+          <div class="info">
             <div class="bac"></div>
 
             <span class="label"> 共计 </span>
