@@ -101,6 +101,7 @@ export default {
 
     initChart(data) {
       const self = this;
+      echarts.dispose(document.getElementById("chart3"));
       const myChart = echarts.init(document.getElementById("chart3"));
 
       const { areaName, areaNum, areaValue } = data;

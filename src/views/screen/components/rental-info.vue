@@ -74,6 +74,7 @@ export default {
 
     initChart(data) {
       const self = this;
+      echarts.dispose(document.getElementById("chart"));
       const myChart = echarts.init(document.getElementById("chart"));
       const { chainlGrowth, yearOnYearGrowth } = data;
       const labels = chainlGrowth.map((item) => item.month + "月");

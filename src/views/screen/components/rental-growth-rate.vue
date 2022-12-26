@@ -34,6 +34,7 @@ function onItemClick(value, isAll = true) {
 }
 
 function initChart(data) {
+  echarts.dispose(document.getElementById("chart1"));
   const myChart = echarts.init(document.getElementById("chart1"));
 
   const { basicData, xAreaData, yearData, yearOnYear } = data;

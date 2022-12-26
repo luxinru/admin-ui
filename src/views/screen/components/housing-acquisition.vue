@@ -24,6 +24,7 @@ function onItemClick(value) {
 }
 
 function initChart(data) {
+  echarts.dispose(document.getElementById("chart6"));
   const myChart = echarts.init(document.getElementById("chart6"));
 
   const { housePaperData, housePaperValue } = data;

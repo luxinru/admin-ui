@@ -415,10 +415,10 @@ export default {
   },
 
   methods: {
-    onCurrentChange (value) {
-      console.log('value :>> ', value);
-      this.page.pageNum = value
-      this.fetchVisualHouseAccountFun()
+    onCurrentChange(value) {
+      console.log("value :>> ", value);
+      this.page.pageNum = value;
+      this.fetchVisualHouseAccountFun();
     },
 
     async fetchVisualAmountNatureFun() {
@@ -472,6 +472,8 @@ export default {
     },
 
     initChart() {
+      echarts.dispose(document.getElementById("chart4"));
+      echarts.dispose(document.getElementById("chart5"));
       const myChart1 = echarts.init(document.getElementById("chart4"));
       const myChart2 = echarts.init(document.getElementById("chart5"));
 
@@ -703,7 +705,7 @@ export default {
       });
 
       this.list = rows || [];
-      this.total = total
+      this.total = total;
     },
   },
 };

@@ -187,6 +187,7 @@ function getPie3D(
 }
 
 function initChart(data) {
+  echarts.dispose(document.getElementById("chart7"));
   const myChart = echarts.init(document.getElementById("chart7"));
 
   const optionsData = data.map((item) => {
@@ -199,8 +200,6 @@ function initChart(data) {
   let series = getPie3D(optionsData, 0.8, 240, 28, 26, 0.5);
 
   series.push();
-
-  console.log('series :>> ', series);
 
   myChart.setOption({
     xAxis3D: {
