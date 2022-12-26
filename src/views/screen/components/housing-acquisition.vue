@@ -3,6 +3,7 @@
     <Box title="房屋取得情况">
       <div class="container" @click="onItemClick('房屋取得情况')">
         <div id="chart6" class="chart6"></div>
+        <div class="box"></div>
       </div>
     </Box>
   </div>
@@ -18,186 +19,94 @@ import * as echarts from "echarts";
 const currentDepart = ref({});
 
 function onItemClick(value) {
-  localStorage.setItem('tableType', value)
+  localStorage.setItem("tableType", value);
   bus.emit("onModalShow");
 }
 
 function initChart(data) {
   const myChart = echarts.init(document.getElementById("chart6"));
 
-  const { housePaperData, housePaperValue } = data
+  const { housePaperData, housePaperValue } = data;
+  const results = housePaperData.map((item, index) => {
+    return {
+      name: item,
+      value: housePaperValue[index],
+    };
+  });
 
   myChart.setOption({
+    title: {
+      show: false,
+    },
+    // color: colorList,
+    tooltip: {
+      show: true,
+      trigger: "item",
+      padding: [8, 15],
+      backgroundColor: "rgba(12, 51, 115,0.8)",
+      borderColor: "rgba(3, 11, 44, 0.5)",
+      textStyle: {
+        color: "rgba(255, 255, 255, 1)",
+      },
+    },
     legend: {
       show: false,
     },
-    tooltip: {
-      show: true,
-      trigger: 'axis'
-    },
     grid: {
-      top: "10%",
-      left: "3%",
-      right: "3%",
-      bottom: "5%",
-      containLabel: true,
-    },
-    xAxis: {
-      type: "category",
-      boundaryGap: true,
-      data: housePaperData ? housePaperData.map(item => item) : [],
-      axisLine: {
-        lineStyle: {
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisTick: {
-        show: false,
-      },
-      axisLabel: {
-        color: "rgba(196, 225, 255, 1)",
-        interval: 0
-      },
-    },
-    yAxis: {
-      type: "value",
-      max: 60,
-      axisLine: {
-        show: true,
-        lineStyle: {
-          type: "dashed",
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisTick: {
-        show: false,
-      },
-      splitLine: {
-        lineStyle: {
-          type: "dashed",
-          color: "rgba(87, 107, 139, 0.66)",
-        },
-      },
-      axisLabel: {
-        color: "rgba(255, 255, 255, 0.6)",
-      },
-      max: (value) => {
-        return value.max + value.max * 0.5;
-      },
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 10,
     },
     series: [
       {
-        name: "数据",
-        type: "bar",
-        data: [
-          {
-            value: housePaperValue[0] || 0,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-                { offset: 0, color: "rgba(78, 137, 255, 1)" },
-                { offset: 0.2, color: "rgba(78, 137, 255, 1)" },
-                { offset: 0.5, color: "rgba(78, 137, 255, 0.8)" },
-                { offset: 0.95, color: "rgba(78, 137, 255, 0)" },
-              ]),
+        startAngle: 90,
+        name: "房屋取得情况",
+        type: "pie",
+        radius: ["50%", "60%"],
+        center: ["50%", "50%"],
+        label: {
+          show: false,
+        },
+        data: results,
+
+        itemStyle: {
+          normal: {
+            borderRadius: 80,
+            borderCap: "round",
+          },
+        },
+        label: {
+          show: true,
+          fontSize: 16,
+          // alignTo: "edge",
+          color: "#fff",
+          formatter: "{b|{b}：}{c|{d}%}",
+          rich: {
+            b: {
+              color: "#fff",
+              fontSize: 14,
+            },
+            c: {
+              color: "#4bb9f4",
+              fontSize: 14,
             },
           },
-          {
-            value: housePaperValue[1] || 0,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-                { offset: 0, color: "rgba(97, 252, 156, 1)" },
-                { offset: 0.2, color: "rgba(97, 252, 156, 1)" },
-                { offset: 0.5, color: "rgba(97, 252, 156, 0.8)" },
-                { offset: 0.95, color: "rgba(78, 137, 255, 0)" },
-              ]),
-            },
-          },
-          {
-            value: housePaperValue[2] || 0,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-                { offset: 0, color: "rgba(254, 222, 113, 1)" },
-                { offset: 0.2, color: "rgba(254, 222, 113, 1)" },
-                { offset: 0.5, color: "rgba(254, 222, 113, 0.8)" },
-                { offset: 0.95, color: "rgba(254, 222, 113, 0)" },
-              ]),
-            },
-          },
-          {
-            value: housePaperValue[3] || 0,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-                { offset: 0, color: "rgba(43, 173, 248, 1)" },
-                { offset: 0.2, color: "rgba(43, 173, 248, 1)" },
-                { offset: 0.5, color: "rgba(43, 173, 248, 0.8)" },
-                { offset: 0.95, color: "rgba(43, 173, 248, 0)" },
-              ]),
-            },
-          },
-          {
-            value: housePaperValue[4] || 0,
-            itemStyle: {
-              color: new echarts.graphic.LinearGradient(0.5, 0, 0.5, 1, [
-                { offset: 0, color: "rgba(159, 125, 255, 1)" },
-                { offset: 0.2, color: "rgba(159, 125, 255, 1)" },
-                { offset: 0.5, color: "rgba(159, 125, 255, 0.8)" },
-                { offset: 0.95, color: "rgba(159, 125, 255, 0)" },
-              ]),
-            },
-          },
-        ],
-        barWidth: "16",
-      },
-      {
-        z: 1,
-        type: "pictorialBar",
-        symbolPosition: "end",
-        symbolRotate: "-90",
-        symbolSize: [10, 15],
-        color: "rgb(4,128,224)",
-        data: [
-          {
-            value: housePaperValue[0] || 0,
-            itemStyle: {
-              color: "rgba(78, 137, 255, 1)",
-            },
-          },
-          {
-            value: housePaperValue[1] || 0,
-            itemStyle: {
-              color: "rgba(97, 252, 156, 1)",
-            },
-          },
-          {
-            value: housePaperValue[2] || 0,
-            itemStyle: {
-              color: "rgba(254, 222, 113, 1)",
-            },
-          },
-          {
-            value: housePaperValue[3] || 0,
-            itemStyle: {
-              color: "rgba(43, 173, 248, 1)",
-            },
-          },
-          {
-            value: housePaperValue[4] || 0,
-            itemStyle: {
-              color: "rgba(159, 125, 255, 1",
-            },
-          },
-        ],
-        symbol: "triangle",
-        symbolOffset: [-0.5, -8],
+        },
+        labelLine: {
+          show: false,
+          length: 10,
+          length2: 0,
+        },
       },
     ],
   });
 }
 
-async function fetchVisualPaperFun () {
+async function fetchVisualPaperFun() {
   const { data } = await fetchVisualPaper({
     departCode: currentDepart.value.departCode,
-  })
+  });
 
   initChart(data);
 }
@@ -241,6 +150,14 @@ onBeforeUnmount(() => {
     .chart6 {
       width: 100%;
       height: 100%;
+    }
+
+    .box {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(23, 154, 255, 0.1);
+      border-radius: 50%;
     }
   }
 }

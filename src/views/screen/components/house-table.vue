@@ -31,11 +31,13 @@
         </div>
 
         <div class="paging">
-          <div class="active">1</div>
-          <div>2</div>
-          <div>3</div>
-          <div>…</div>
-          <div>末页</div>
+          <el-pagination
+            layout="prev, pager, next"
+            :total="total"
+            :page-size="20"
+            :current-page="page.pageNum"
+            @current-change="onCurrentChange"
+          />
         </div>
       </div>
 
@@ -56,14 +58,28 @@
 
           <tbody>
             <tr class="td" v-for="(item, index) in list" :key="index">
-              <td>{{ item.assetsName || "-" }}</td>
-              <td>{{ item.usedDepartThreeName || "-" }}</td>
-              <td>{{ item.originalValue || "-" }}</td>
-              <td>{{ item.nowValue || "-" }}</td>
-              <td>{{ item.addDepreciate || "-" }}</td>
-              <td>{{ item.usedNatureName || "-" }}</td>
-              <td>{{ item.actualUsedName || "-" }}</td>
-              <td>{{ item.usedStateName || "-" }}</td>
+              <td :title="item.assetsName || '-'">
+                {{ item.assetsName || "-" }}
+              </td>
+              <td :title="item.usedDepartThreeName || '-'">
+                {{ item.usedDepartThreeName || "-" }}
+              </td>
+              <td :title="item.originalValue || '-'">
+                {{ item.originalValue || "-" }}
+              </td>
+              <td :title="item.nowValue || '-'">{{ item.nowValue || "-" }}</td>
+              <td :title="item.addDepreciate || '-'">
+                {{ item.addDepreciate || "-" }}
+              </td>
+              <td :title="item.usedNatureName || '-'">
+                {{ item.usedNatureName || "-" }}
+              </td>
+              <td :title="item.actualUsedName || '-'">
+                {{ item.actualUsedName || "-" }}
+              </td>
+              <td :title="item.usedStateName || '-'">
+                {{ item.usedStateName || "-" }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -86,14 +102,30 @@
 
           <tbody>
             <tr class="td" v-for="(item, index) in list" :key="index">
-              <td>{{ item.contractCode || "-" }}</td>
-              <td>{{ item.contracName || "-" }}</td>
-              <td>{{ item.assetsCode || "-" }}</td>
-              <td>{{ item.assetsName || "-" }}</td>
-              <td>{{ item.performStartDate || "-" }}</td>
-              <td>{{ item.performEndDate || "-" }}</td>
-              <td>{{ item.rentDepartName || "-" }}</td>
-              <td>{{ item.rentMoney || "-" }}</td>
+              <td :title="item.contractCode || '-'">
+                {{ item.contractCode || "-" }}
+              </td>
+              <td :title="item.contracName || '-'">
+                {{ item.contracName || "-" }}
+              </td>
+              <td :title="item.assetsCode || '-'">
+                {{ item.assetsCode || "-" }}
+              </td>
+              <td :title="item.assetsName || '-'">
+                {{ item.assetsName || "-" }}
+              </td>
+              <td :title="item.performStartDate || '-'">
+                {{ item.performStartDate || "-" }}
+              </td>
+              <td :title="item.performEndDate || '-'">
+                {{ item.performEndDate || "-" }}
+              </td>
+              <td :title="item.rentDepartName || '-'">
+                {{ item.rentDepartName || "-" }}
+              </td>
+              <td :title="item.rentMoney || '-'">
+                {{ item.rentMoney || "-" }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -117,15 +149,31 @@
 
           <tbody>
             <tr class="td" v-for="(item, index) in list" :key="index">
-              <td>{{ item.contractCode || "-" }}</td>
-              <td>{{ item.contracName || "-" }}</td>
-              <td>{{ item.assetsCode || "-" }}</td>
-              <td>{{ item.assetsName || "-" }}</td>
-              <td>{{ item.startDate || "-" }}</td>
-              <td>{{ item.endDate || "-" }}</td>
-              <td>{{ item.contracMoney || "-" }}</td>
-              <td>{{ item.projectProgress || "-" }}</td>
-              <td>{{ item.settleMoney || "-" }}</td>
+              <td :title="item.contractCode || '-'">
+                {{ item.contractCode || "-" }}
+              </td>
+              <td :title="item.contracName || '-'">
+                {{ item.contracName || "-" }}
+              </td>
+              <td :title="item.assetsCode || '-'">
+                {{ item.assetsCode || "-" }}
+              </td>
+              <td :title="item.assetsName || '-'">
+                {{ item.assetsName || "-" }}
+              </td>
+              <td :title="item.startDate || '-'">
+                {{ item.startDate || "-" }}
+              </td>
+              <td :title="item.endDate || '-'">{{ item.endDate || "-" }}</td>
+              <td :title="item.contracMoney || '-'">
+                {{ item.contracMoney || "-" }}
+              </td>
+              <td :title="item.projectProgress || '-'">
+                {{ item.projectProgress || "-" }}
+              </td>
+              <td :title="item.settleMoney || '-'">
+                {{ item.settleMoney || "-" }}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -134,7 +182,7 @@
   </div>
 </template>
 
-<script setup name="HouseTable">
+<script>
 import bus from "vue3-eventbus";
 import {
   fetchVisualList,
@@ -142,55 +190,112 @@ import {
   fetchVisualReformHouse,
 } from "@/api/screen";
 
-const type = ref(1);
+export default {
+  name: "HouseTable",
 
-// function onCheck(index) {
-//   console.log("index :>> ", index);
-// }
+  data() {
+    return {
+      type: 1,
+      list: [],
+      page: {
+        pageNum: 1,
+        pageSize: 20,
+      },
+      total: 0,
+    };
+  },
 
-const list = ref([]);
+  mounted() {
+    const self = this;
+    self.onTypeClick(1);
 
-async function onTypeClick(value) {
-  type.value = value;
+    bus.on("onMapItemClick", async (data) => {
+      self.onTypeClick(1);
+    });
+  },
 
-  list.value = [];
-  const depart = JSON.parse(localStorage.getItem("currentDepart"));
-  const house = JSON.parse(localStorage.getItem("currentHouse"));
-  switch (type.value) {
-    case 1:
-    case 2:
-    case 3:
-      const { rows: rows1 } = await fetchVisualList({
-        houseName: "",
-        houseCode: house.id,
-        departCode: depart.departCode,
-        assetsCode: "",
-      });
-      list.value = rows1 || [];
-      break;
-    case 4:
-      const { rows: rows2 } = await fetchVisualRentHouse({
-        houseCode: house.id,
-      });
-      list.value = rows2 || [];
-      break;
-    case 5:
-      const { rows: rows3 } = await fetchVisualReformHouse({
-        houseCode: house.id,
-      });
-      list.value = rows3 || [];
-      break;
+  methods: {
+    async onTypeClick(value) {
+      this.type = value;
+
+      this.list = [];
+      const depart = JSON.parse(localStorage.getItem("currentDepart"));
+      const house = JSON.parse(localStorage.getItem("currentHouse"));
+      switch (this.type) {
+        case 1:
+        case 2:
+        case 3:
+          const { rows: rows1, total: total1 } = await fetchVisualList({
+            houseName: "",
+            houseCode: house.id,
+            departCode: depart.departCode,
+            assetsCode: "",
+            pageNum: this.page.pageNum,
+            pageSize: this.page.pageSize,
+          });
+          this.list = rows1 || [];
+          this.total = total1 || 0;
+          break;
+        case 4:
+          const { rows: rows2, total: total2 } = await fetchVisualRentHouse({
+            houseCode: house.id,
+            pageNum: this.page.pageNum,
+            pageSize: this.page.pageSize,
+          });
+          this.list = rows2 || [];
+          this.total = total2 || 0;
+          break;
+        case 5:
+          const { rows: rows3, total: total3 } = await fetchVisualReformHouse({
+            houseCode: house.id,
+            pageNum: this.page.pageNum,
+            pageSize: this.page.pageSize,
+          });
+          this.list = rows3 || [];
+          this.total = total3 || 0;
+          break;
+      }
+    },
+
+    onCurrentChange(value) {
+      this.page.pageNum = value;
+      this.onTypeClick(this.type);
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+.house_table_root {
+  .el-pagination {
+    button {
+      background-color: rgba(51, 133, 238, 0.3);
+      border: 1px solid rgba(51, 133, 238, 0.5);
+    }
+
+    li {
+      background-color: rgba(51, 133, 238, 0.3);
+      border: 1px solid rgba(51, 133, 238, 0.5);
+      color: rgba(57, 158, 233, 1);
+      margin-right: 5px;
+    }
+
+    .is-active {
+      background-color: rgba(51, 133, 238, 0.5);
+      border: 1px solid rgba(51, 133, 238, 0.8);
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .el-icon {
+      color: rgba(57, 158, 233, 1);
+    }
+
+    .btn-prev {
+      margin-right: 5px;
+    }
   }
 }
-
-onMounted(() => {
-  onTypeClick(1);
-
-  bus.on("onMapItemClick", async (data) => {
-    onTypeClick(1);
-  });
-});
-</script>
+</style>
 
 <style scoped lang="scss">
 * {
@@ -316,32 +421,6 @@ onMounted(() => {
       .paging {
         display: flex;
         align-items: center;
-        div {
-          height: 25px;
-          background: rgba(51, 133, 238, 0.3);
-          border: 1px solid rgba(51, 133, 238, 0.5);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color: #399ee9;
-          margin-left: 3px;
-          padding: 0 6px;
-          box-sizing: border-box;
-          cursor: pointer;
-
-          &:first-child {
-            margin-left: 0;
-          }
-        }
-
-        .active {
-          background: rgba(51, 133, 238, 0.5);
-          border: 1px solid rgba(51, 133, 238, 0.8);
-          color: rgba(255, 255, 255, 1);
-        }
       }
     }
 
@@ -379,6 +458,12 @@ onMounted(() => {
           text-align: center;
           line-height: 34px;
           border: 1px solid rgba(57, 158, 233, 0.2);
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          padding: 0 10px;
+          box-sizing: border-box;
+          text-align: center;
         }
       }
 

@@ -163,15 +163,33 @@
 
             <tbody>
               <tr v-for="(item, index) in list" :key="index">
-                <td>{{ item.assetsCode || "-" }}</td>
-                <td>{{ item.assetsType || "-" }}</td>
-                <td>{{ item.assetsName || "-" }}</td>
-                <td>{{ item.contentAssetsCode || "-" }}</td>
-                <td>{{ item.rentStartDate || "-" }}</td>
-                <td>{{ item.rentEndDate || "-" }}</td>
-                <td>{{ item.rentDepartTypeName || "-" }}</td>
-                <td>{{ item.rentDepartName || "-" }}</td>
-                <td>{{ item.rentMoney || "-" }}</td>
+                <td :title="item.assetsCode || '-'">
+                  {{ item.assetsCode || "-" }}
+                </td>
+                <td :title="item.assetsType || '-'">
+                  {{ item.assetsType || "-" }}
+                </td>
+                <td :title="item.assetsName || '-'">
+                  {{ item.assetsName || "-" }}
+                </td>
+                <td :title="item.contentAssetsCode || '-'">
+                  {{ item.contentAssetsCode || "-" }}
+                </td>
+                <td :title="item.rentStartDate || '-'">
+                  {{ item.rentStartDate || "-" }}
+                </td>
+                <td :title="item.rentEndDate || '-'">
+                  {{ item.rentEndDate || "-" }}
+                </td>
+                <td :title="item.rentDepartTypeName || '-'">
+                  {{ item.rentDepartTypeName || "-" }}
+                </td>
+                <td :title="item.rentDepartName || '-'">
+                  {{ item.rentDepartName || "-" }}
+                </td>
+                <td :title="item.rentMoney || '-'">
+                  {{ item.rentMoney || "-" }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -231,29 +249,57 @@
 
             <tbody>
               <tr v-for="(item, index) in list" :key="index">
-                <td>{{ item.assetsCode || "-" }}</td>
-                <td>{{ item.assetsType || "-" }}</td>
-                <td>{{ item.assetsName || "-" }}</td>
-                <td>{{ item.contentAssetsCode || "-" }}</td>
-                <td>{{ item.assetsStandard || "-" }}</td>
-                <td>{{ item.departName || "-" }}</td>
-                <td>{{ item.parcelCode || "-" }}</td>
-                <td>{{ item.ownershipConditionName || "-" }}</td>
-                <td>{{ item.usedrightTypeName || "-" }}</td>
-                <td v-if="type === '原值'">{{ item.originalValue || "-" }}</td>
-                <td v-if="type === '净值'">{{ item.nowValue || "-" }}</td>
-                <td v-if="type === '折旧'">{{ item.addDepreciate || "-" }}</td>
-                <td v-if="type === '房屋面积'">{{ item.landArea || "-" }}</td>
+                <td :title="item.assetsCode || '-'">
+                  {{ item.assetsCode || "-" }}
+                </td>
+                <td :title="item.assetsType || '-'">
+                  {{ item.assetsType || "-" }}
+                </td>
+                <td :title="item.assetsName || '-'">
+                  {{ item.assetsName || "-" }}
+                </td>
+                <td :title="item.contentAssetsCode || '-'">
+                  {{ item.contentAssetsCode || "-" }}
+                </td>
+                <td :title="item.assetsStandard || '-'">
+                  {{ item.assetsStandard || "-" }}
+                </td>
+                <td :title="item.departName || '-'">
+                  {{ item.departName || "-" }}
+                </td>
+                <td :title="item.parcelCode || '-'">
+                  {{ item.parcelCode || "-" }}
+                </td>
+                <td :title="item.ownershipConditionName || '-'">
+                  {{ item.ownershipConditionName || "-" }}
+                </td>
+                <td :title="item.usedrightTypeName || '-'">
+                  {{ item.usedrightTypeName || "-" }}
+                </td>
+                <td v-if="type === '原值'" :title="item.originalValue || '-'">
+                  {{ item.originalValue || "-" }}
+                </td>
+                <td v-if="type === '净值'" :title="item.nowValue || '-'">
+                  {{ item.nowValue || "-" }}
+                </td>
+                <td v-if="type === '折旧'" :title="item.addDepreciate || '-'">
+                  {{ item.addDepreciate || "-" }}
+                </td>
+                <td v-if="type === '房屋面积'" :title="item.landArea || '-'">
+                  {{ item.landArea || "-" }}
+                </td>
               </tr>
             </tbody>
           </table>
 
           <div class="paging">
-            <div class="active">1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>…</div>
-            <div>末页</div>
+            <el-pagination
+              layout="prev, pager, next"
+              :total="total"
+              :page-size="20"
+              :current-page="page.pageNum"
+              @current-change="onCurrentChange"
+            />
           </div>
         </div>
       </div>
@@ -280,6 +326,7 @@ export default {
         pageNum: 1,
         pageSize: 20,
       },
+      total: 0,
       list: [],
       type: "原值",
       currentDepart: {},
@@ -368,6 +415,12 @@ export default {
   },
 
   methods: {
+    onCurrentChange (value) {
+      console.log('value :>> ', value);
+      this.page.pageNum = value
+      this.fetchVisualHouseAccountFun()
+    },
+
     async fetchVisualAmountNatureFun() {
       const options = {
         departCode: this.currentDepart.departCode,
@@ -640,9 +693,9 @@ export default {
     },
 
     async fetchVisualHouseAccountFun() {
-      const { rows } = await fetchVisualList({
+      const { rows, total } = await fetchVisualList({
         houseName: "",
-        houseCode: this.currentHouse ? this.currentHouse.id : '',
+        houseCode: this.currentHouse ? this.currentHouse.id : "",
         departCode: this.currentDepart.departCode,
         assetsCode: "",
         pageNum: this.page.pageNum,
@@ -650,10 +703,43 @@ export default {
       });
 
       this.list = rows || [];
+      this.total = total
     },
   },
 };
 </script>
+
+<style lang="scss">
+.house_ledger_details_root {
+  .el-pagination {
+    button {
+      background-color: rgba(51, 133, 238, 0.3);
+      border: 1px solid rgba(51, 133, 238, 0.5);
+    }
+
+    li {
+      background-color: rgba(51, 133, 238, 0.3);
+      border: 1px solid rgba(51, 133, 238, 0.5);
+      color: rgba(57, 158, 233, 1);
+      margin-right: 5px;
+    }
+
+    .is-active {
+      background-color: rgba(51, 133, 238, 0.5);
+      border: 1px solid rgba(51, 133, 238, 0.8);
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .el-icon {
+      color: rgba(57, 158, 233, 1);
+    }
+
+    .btn-prev {
+      margin-right: 5px;
+    }
+  }
+}
+</style>
 
 <style scoped lang="scss">
 * {
@@ -690,6 +776,7 @@ export default {
     align-items: center;
     background: url("../../../assets/images/screen/window-under.png") no-repeat;
     background-size: 100% 100%;
+    overflow: hidden;
 
     .title {
       position: relative;
@@ -721,9 +808,10 @@ export default {
       display: flex;
       padding: 0 17px;
       box-sizing: border-box;
+      overflow: hidden;
 
       .charts {
-        width: 311px;
+        width: 400px;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -737,7 +825,7 @@ export default {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          margin-top: 24px;
+          margin-top: 16px;
 
           &:first-child {
             margin-top: 0;
@@ -771,7 +859,7 @@ export default {
             justify-content: center;
             padding: 5px;
             box-sizing: border-box;
-            margin: 10px 0 18px;
+            margin: 10px 0;
 
             .bac {
               position: absolute;
@@ -828,10 +916,11 @@ export default {
         height: 100%;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
 
         table {
           width: 100%;
-          height: 602px;
+          flex: 1 0;
           display: flex;
           flex-direction: column;
           overflow: hidden;
@@ -897,14 +986,18 @@ export default {
               td {
                 flex: 1 0;
                 height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 font-size: 14px;
                 font-family: Microsoft YaHei;
                 font-weight: 400;
                 color: #ffffff;
                 border: 1px solid rgba(57, 158, 233, 0.2);
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                padding: 0 10px;
+                box-sizing: border-box;
+                line-height: 40px;
+                text-align: center;
               }
             }
           }
@@ -912,37 +1005,10 @@ export default {
 
         .paging {
           width: 100%;
-          flex: 1 0;
+          height: 63px;
           display: flex;
           align-items: center;
           justify-content: center;
-
-          div {
-            height: 25px;
-            background: rgba(51, 133, 238, 0.3);
-            border: 1px solid rgba(51, 133, 238, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #399ee9;
-            margin-left: 3px;
-            padding: 0 6px;
-            box-sizing: border-box;
-            cursor: pointer;
-
-            &:first-child {
-              margin-left: 0;
-            }
-          }
-
-          .active {
-            background: rgba(51, 133, 238, 0.5);
-            border: 1px solid rgba(51, 133, 238, 0.8);
-            color: rgba(255, 255, 255, 1);
-          }
         }
       }
     }

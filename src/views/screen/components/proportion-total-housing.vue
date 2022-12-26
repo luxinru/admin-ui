@@ -10,7 +10,7 @@
         <div class="labels">
           <div class="item" v-for="(item, index) in list" :key="index">
             <img src="@/assets/images/screen/mark.png" alt="" />
-            <span> {{ item.name }} </span>
+            <span :title="item.name"> {{ item.name }} </span>
             <p><CountTo :start="0" :end="Number(item.value)" /></p>
           </div>
         </div>
@@ -280,6 +280,7 @@ onBeforeUnmount(() => {
       position: relative;
       width: 166px;
       height: 122px;
+      margin-left: 10%;
 
       .chart7 {
         position: absolute;
@@ -298,15 +299,21 @@ onBeforeUnmount(() => {
     }
 
     .labels {
+      flex: 1 0;
+      height: 80%;
       display: flex;
+      align-items: center;
       flex-direction: column;
       margin-left: 10px;
+      overflow: hidden;
 
       .item {
+        width: 100%;
         display: flex;
         align-items: center;
         margin-top: 12px;
         cursor: pointer;
+        overflow: hidden;
 
         &:first-child {
           margin-top: 0;
@@ -318,20 +325,22 @@ onBeforeUnmount(() => {
         }
 
         span {
-          width: 90px;
-          display: flex;
-          align-items: center;
+          flex: 1 0;
           font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #ffffff;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         p {
+          width: 70px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: rgba(145, 204, 255, 1);
           font-size: 16px;
-          margin: 0;
+          margin: 0 0 0 10px;
           font-weight: bold;
         }
       }

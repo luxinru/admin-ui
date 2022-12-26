@@ -55,6 +55,7 @@ function initChart(data) {
     tooltip: {
       show: true,
       trigger: "axis",
+      valueFormatter: (value) => Number(value).toFixed(2) + "%",
     },
     grid: {
       top: "22%",
@@ -110,7 +111,7 @@ function initChart(data) {
       {
         name: "同比增长",
         type: "line",
-        data: basicData,
+        data: basicData.map(item => Number(item)),
         symbol: "none",
         smooth: true,
         lineStyle: {
@@ -134,7 +135,7 @@ function initChart(data) {
       {
         name: "环比增长",
         type: "line",
-        data: yearData,
+        data: yearData.map(item => Number(item)),
         symbol: "none",
         smooth: true,
         lineStyle: {

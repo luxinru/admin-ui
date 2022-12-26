@@ -17,18 +17,14 @@ export default {
   },
 
   mounted() {
-    const self = this;
     this.$nextTick(() => {
       this.initMap();
-
-      bus.on("onDepartChange", (depart) => {
-        self.fetchVisualListFun(depart);
-      });
     });
   },
 
   methods: {
     initMap() {
+      const self = this;
       const Bmap = window.BMap;
       this.map = new BMap.Map("map"); // 创建Map实例
       this.map.setMapType(BMAP_HYBRID_MAP);
@@ -46,11 +42,17 @@ export default {
       //   poi: false,
       // });
 
+      this.fetchVisualListFun()
+
       bus.on("onSearchInputClick", (data) => {
         this.map.centerAndZoom(
           new Bmap.Point(data.longitude, data.latitude),
           15
         );
+      });
+
+      bus.on("onDepartChange", (depart) => {
+        self.fetchVisualListFun(depart);
       });
     },
 
@@ -58,8 +60,8 @@ export default {
       const { rows } = await fetchVisualList({
         houseName: "",
         houseCode: "",
-        departCode: depart.departCode,
-        // departCode: "226010006",
+        // departCode: depart.departCode,
+        departCode: "226010006",
         assetsCode: "",
       });
 
@@ -67,6 +69,7 @@ export default {
       useScreenStore().setHouseList(list);
 
       // 函数 创建多个标注
+      this.map.clearOverlays();
       for (let i = 0; i < list.length; i++) {
         let points = new BMap.Point(list[i].longitude, list[i].latitude); //创建坐标点
         let icon = new BMap.Icon(
@@ -87,26 +90,6 @@ export default {
         });
 
         this.map.addOverlay(markers);
-
-        // if (i > 2) {
-        //   let icon = new BMap.Icon(
-        //     "/images/position-1.png",
-        //     new BMap.Size(67, 108)
-        //   );
-        //   let markers = new BMap.Marker(points, {
-        //     icon,
-        //   });
-        //   map.addOverlay(markers);
-        // } else {
-        //   let icon = new BMap.Icon(
-        //     "/images/position-2.png",
-        //     new BMap.Size(67, 108)
-        //   );
-        //   let markers = new BMap.Marker(points, {
-        //     icon,
-        //   });
-        //   map.addOverlay(markers);
-        // }
       }
     },
   },

@@ -100,7 +100,7 @@ export default {
     },
 
     initChart(data) {
-      const self = this
+      const self = this;
       const myChart = echarts.init(document.getElementById("chart3"));
 
       const { areaName, areaNum, areaValue } = data;
@@ -215,74 +215,6 @@ export default {
           })
         : [];
 
-      // myChart.setOption({
-      //   title: {
-      //     show: false,
-      //   },
-      //   color: colorList,
-      //   tooltip: {
-      //     show: true,
-      //     trigger: "item",
-      //     padding: [8, 15],
-      //     backgroundColor: "rgba(12, 51, 115,0.8)",
-      //     borderColor: "rgba(3, 11, 44, 0.5)",
-      //     textStyle: {
-      //       color: "rgba(255, 255, 255, 1)",
-      //     },
-      //   },
-      //   legend: {
-      //     show: false,
-      //   },
-      //   grid: {
-      //     top: 0,
-      //     left: 0,
-      //     right: 0,
-      //     bottom: 10,
-      //   },
-      //   series: [
-      //     {
-      //       startAngle: 90,
-      //       name: "租金收入占比",
-      //       type: "pie",
-      //       radius: ["70%", "80%"],
-      //       center: ["50%", "50%"],
-      //       label: {
-      //         show: false,
-      //       },
-      //       data: results,
-
-      //       itemStyle: {
-      //         normal: {
-      //           borderRadius: 80,
-      //           borderCap: "round",
-      //         },
-      //       },
-      //       label: {
-      //         show: true,
-      //         fontSize: 16,
-      //         // alignTo: "edge",
-      //         color: "#fff",
-      //         formatter: "{b|{b}：}{c|{d}%}",
-      //         rich: {
-      //           b: {
-      //             color: "#fff",
-      //             fontSize: 14,
-      //           },
-      //           c: {
-      //             color: "#4bb9f4",
-      //             fontSize: 14,
-      //           },
-      //         },
-      //       },
-      //       labelLine: {
-      //         show: false,
-      //         length: 10,
-      //         length2: 0,
-      //       },
-      //     },
-      //   ],
-      // });
-
       myChart.setOption({
         title: {
           show: true,
@@ -310,6 +242,7 @@ export default {
         tooltip: {
           show: true,
           trigger: "axis",
+          valueFormatter: (value) => value + "%",
         },
         grid: {
           top: "20%",
@@ -365,7 +298,7 @@ export default {
         },
         series: [
           {
-            name: "数据",
+            name: "租金收入",
             type: "bar",
             data: results.map((item, index) => {
               return {
@@ -412,6 +345,9 @@ export default {
             }),
             symbol: "triangle",
             symbolOffset: [0, -5],
+            tooltip: {
+              show: false,
+            },
           },
         ],
       });
