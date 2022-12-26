@@ -81,6 +81,9 @@ function initChart(data) {
       axisLabel: {
         color: "rgba(255, 255, 255, 0.6)",
       },
+      max: (value) => {
+        return value.max + value.max * 0.5;
+      },
     },
     series: [
       {
@@ -94,7 +97,7 @@ function initChart(data) {
                 { offset: 0, color: "rgba(78, 137, 255, 1)" },
                 { offset: 0.2, color: "rgba(78, 137, 255, 1)" },
                 { offset: 0.5, color: "rgba(78, 137, 255, 0.8)" },
-                { offset: 0.9, color: "rgba(78, 137, 255, 0)" },
+                { offset: 0.95, color: "rgba(78, 137, 255, 0)" },
               ]),
             },
           },
@@ -105,7 +108,7 @@ function initChart(data) {
                 { offset: 0, color: "rgba(97, 252, 156, 1)" },
                 { offset: 0.2, color: "rgba(97, 252, 156, 1)" },
                 { offset: 0.5, color: "rgba(97, 252, 156, 0.8)" },
-                { offset: 0.9, color: "rgba(78, 137, 255, 0)" },
+                { offset: 0.95, color: "rgba(78, 137, 255, 0)" },
               ]),
             },
           },
@@ -116,7 +119,7 @@ function initChart(data) {
                 { offset: 0, color: "rgba(254, 222, 113, 1)" },
                 { offset: 0.2, color: "rgba(254, 222, 113, 1)" },
                 { offset: 0.5, color: "rgba(254, 222, 113, 0.8)" },
-                { offset: 0.9, color: "rgba(254, 222, 113, 0)" },
+                { offset: 0.95, color: "rgba(254, 222, 113, 0)" },
               ]),
             },
           },
@@ -127,7 +130,7 @@ function initChart(data) {
                 { offset: 0, color: "rgba(43, 173, 248, 1)" },
                 { offset: 0.2, color: "rgba(43, 173, 248, 1)" },
                 { offset: 0.5, color: "rgba(43, 173, 248, 0.8)" },
-                { offset: 0.9, color: "rgba(43, 173, 248, 0)" },
+                { offset: 0.95, color: "rgba(43, 173, 248, 0)" },
               ]),
             },
           },
@@ -138,7 +141,7 @@ function initChart(data) {
                 { offset: 0, color: "rgba(159, 125, 255, 1)" },
                 { offset: 0.2, color: "rgba(159, 125, 255, 1)" },
                 { offset: 0.5, color: "rgba(159, 125, 255, 0.8)" },
-                { offset: 0.9, color: "rgba(159, 125, 255, 0)" },
+                { offset: 0.95, color: "rgba(159, 125, 255, 0)" },
               ]),
             },
           },
@@ -150,7 +153,7 @@ function initChart(data) {
         type: "pictorialBar",
         symbolPosition: "end",
         symbolRotate: "-90",
-        symbolSize: [16, 15],
+        symbolSize: [10, 15],
         color: "rgb(4,128,224)",
         data: [
           {
@@ -225,6 +228,7 @@ onBeforeUnmount(() => {
   width: 100%;
   flex: 1 0;
   margin-top: 11px;
+  overflow: hidden;
 
   .container {
     position: relative;

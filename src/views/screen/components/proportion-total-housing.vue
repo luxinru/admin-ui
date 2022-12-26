@@ -23,6 +23,7 @@
 import bus from "vue3-eventbus";
 import Box from "./box.vue";
 import * as echarts from "echarts";
+import "echarts-gl";
 
 import { fetchVisualAmount } from "@/api/screen";
 
@@ -265,6 +266,7 @@ onBeforeUnmount(() => {
 .housing_info_root {
   width: 100%;
   flex: 1 0;
+  overflow: hidden;
 
   .container {
     position: relative;

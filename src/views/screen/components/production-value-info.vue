@@ -9,7 +9,7 @@
 
         <div class="list">
           <div class="item" @click="onItemClick('原值')">
-            <span class="label"> 原值 </span>
+            <span class="label"> 原值 (万元) </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
               <span>
@@ -19,7 +19,7 @@
           </div>
 
           <div class="item" @click="onItemClick('净值')">
-            <span class="label"> 净值 </span>
+            <span class="label"> 净值 (万元) </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
               <span><CountTo :start="0" :end="now" /></span>
@@ -27,7 +27,7 @@
           </div>
 
           <div class="item" @click="onItemClick('折旧')">
-            <span class="label"> 折旧 </span>
+            <span class="label"> 折旧 (万元) </span>
             <div class="box">
               <img src="@/assets/images/screen/more-1.png" alt="" />
               <span><CountTo :start="0" :end="acc" /></span>

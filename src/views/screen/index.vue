@@ -43,37 +43,39 @@
       alt=""
     />
 
-    <section class="search_box">
-      <SearchInput />
-    </section>
-
     <section class="topbar">
       <TopBar />
     </section>
 
-    <section class="left_part">
-      <BasicInfo />
-    </section>
+    <template v-if="isLoading">
+      <section class="search_box">
+        <SearchInput />
+      </section>
 
-    <section class="right_part" v-if="type === 1">
-      <AdvancedInfo />
-    </section>
+      <section class="left_part">
+        <BasicInfo />
+      </section>
 
-    <section v-if="type === 2 && isShowHouseImgs" class="house_imgs">
-      <HouseImgs />
-    </section>
+      <section class="right_part" v-if="type === 1">
+        <AdvancedInfo />
+      </section>
 
-    <section v-if="type === 2 && isShowHouseInfo" class="house_info">
-      <HouseInfo />
-    </section>
+      <section v-if="type === 2 && isShowHouseImgs" class="house_imgs">
+        <HouseImgs />
+      </section>
 
-    <section v-if="type === 2" id="house_table" class="house_table">
-      <HouseTable />
-    </section>
+      <section v-if="type === 2 && isShowHouseInfo" class="house_info">
+        <HouseInfo />
+      </section>
 
-    <section class="modal" v-if="isShowModal">
-      <HouseLedgerDetails />
-    </section>
+      <section v-if="type === 2" id="house_table" class="house_table">
+        <HouseTable />
+      </section>
+
+      <section class="modal" v-if="isShowModal">
+        <HouseLedgerDetails />
+      </section>
+    </template>
   </div>
 </template>
 
@@ -95,6 +97,7 @@ const isShowModal = ref(false);
 const type = ref(1);
 const isShowHouseInfo = ref(false);
 const isShowHouseImgs = ref(false);
+const isLoading = ref(false)
 
 bus.on("onModalClose", () => {
   isShowModal.value = false;
@@ -110,12 +113,10 @@ bus.on("onTopbarClick", (value) => {
   if (value === 2) {
     nextTick(() => {
       const elements = document.getElementsByClassName("rental_info_root");
-      console.log("elements :>> ", elements);
       if (elements && elements.length) {
         const element = elements[0];
         const height = element.clientHeight;
         const houseTable = document.getElementById("house_table");
-        console.log("houseTable :>> ", houseTable);
         if (houseTable) {
           houseTable.style.height = height + "px";
         }
@@ -130,6 +131,10 @@ bus.on("onHouseInfoOperate", (show) => {
 
 bus.on("onHouseImgsOperate", (show) => {
   isShowHouseImgs.value = show;
+});
+
+bus.on("onDepartChange", () => {
+  isLoading.value = true;
 });
 
 onMounted(() => {

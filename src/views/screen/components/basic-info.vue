@@ -8,42 +8,57 @@
   </div>
 </template>
 
-<script setup name="ScreenIndex">
+<script>
 import bus from "vue3-eventbus";
-
 import ProductionValueInfo from "./production-value-info.vue";
 import HousingInfo from "./housing-info.vue";
 import RentalInfo from "./rental-info.vue";
-
 import { fetchBasicStats } from "@/api/screen";
 
-const original = ref(0);
-const now = ref(0);
-const acc = ref(0);
-const currentDepart = ref({});
+export default {
+  name: "BasicInfo",
 
-async function fetchBasicStatsFun() {
-  const { data } = await fetchBasicStats({
-    departCode: currentDepart.value.departCode,
-  });
-  bus.emit("fetchBasicStatsFun", data);
-}
+  components: {
+    ProductionValueInfo,
+    HousingInfo,
+    RentalInfo,
+  },
 
-onMounted(() => {
-  bus.on("onDepartChange", (depart) => {
-    currentDepart.value = depart;
-    fetchBasicStatsFun();
-  });
+  data() {
+    return {
+      original: 0,
+      now: 0,
+      acc: 0,
+      currentDepart: {},
+    };
+  },
 
-  const depart = localStorage.getItem("currentDepart")
-    ? JSON.parse(localStorage.getItem("currentDepart"))
-    : "";
+  mounted() {
+    const self = this;
+    bus.on("onDepartChange", (depart) => {
+      self.currentDepart = depart;
+      self.fetchBasicStatsFun();
+    });
 
-  if (depart) {
-    currentDepart.value = depart;
-    fetchBasicStatsFun();
-  }
-});
+    const depart = localStorage.getItem("currentDepart")
+      ? JSON.parse(localStorage.getItem("currentDepart"))
+      : "";
+
+    if (depart) {
+      this.currentDepart = depart;
+      this.fetchBasicStatsFun();
+    }
+  },
+
+  methods: {
+    async fetchBasicStatsFun() {
+      const { data } = await fetchBasicStats({
+        departCode: this.currentDepart.departCode,
+      });
+      bus.emit("fetchBasicStatsFun", data);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">

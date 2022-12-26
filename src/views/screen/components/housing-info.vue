@@ -14,7 +14,7 @@
           <div class="info" @click="onItemClick('房屋总量')">
             <span>房屋总量(幢)</span>
             <span>
-              <CountTo :start="0" :end="totalHouseNum" />
+              <CountTo :start="0" :end="totalHouseNum" :decimals="0"/>
             </span>
           </div>
         </div>
@@ -36,27 +36,40 @@
   </div>
 </template>
 
-<script setup name="HousingInfo">
+<script>
 import bus from "vue3-eventbus";
-
 import Box from "./box.vue";
 
-const totalHouseNum = ref(0);
-const totalHouseArea = ref(0);
+export default {
+  name: "HousingInfo",
 
-function onItemClick(value) {
-  localStorage.setItem('tableType', value)
-  bus.emit("onModalShow");
-}
+  components: {
+    Box,
+  },
 
-onMounted(() => {
-  bus.on("fetchBasicStatsFun", (data) => {
-    const { totalHouseNum: value1, totalHouseArea: value2 } = data;
+  data() {
+    return {
+      totalHouseNum: 0,
+      totalHouseArea: 0,
+    };
+  },
 
-    totalHouseNum.value = Number(value1) || 0;
-    totalHouseArea.value = Number(value2) / 10000 || 0;
-  });
-});
+  mounted() {
+    bus.on("fetchBasicStatsFun", (data) => {
+      const { totalHouseNum: value1, totalHouseArea: value2 } = data;
+
+      this.totalHouseNum = Number(value1) || 0;
+      this.totalHouseArea = Number(value2) / 10000 || 0;
+    });
+  },
+
+  methods: {
+    onItemClick(value) {
+      localStorage.setItem("tableType", value);
+      bus.emit("onModalShow");
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -75,11 +88,6 @@ onMounted(() => {
     .item {
       display: flex;
       align-items: center;
-      margin-left: 10px;
-
-      &:first-child {
-        margin-left: 0;
-      }
 
       .imgs {
         position: relative;

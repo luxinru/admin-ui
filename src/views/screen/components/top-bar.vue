@@ -127,9 +127,12 @@ export default {
 
       const departCode = sessionStorage.getItem('departCode') || ''
 
-      const depart = this.departList.filter(item => item.departCode === departCode)
-
-      this.currentDepart = depart ? depart : rows[0];
+      if (departCode) {
+        const depart = this.departList.filter(item => item.departCode === departCode)
+        this.currentDepart = depart ? depart : rows[0];
+      } else {
+        this.currentDepart = rows[0];
+      }
 
       localStorage.setItem("currentDepart", JSON.stringify(this.currentDepart));
 

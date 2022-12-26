@@ -19,7 +19,7 @@
 
         <div class="chart_box">
           <div id="chart3" class="chart3"></div>
-          <div class="info">
+          <!-- <div class="info">
             <div class="bac"></div>
 
             <span class="label"> 共计 </span>
@@ -27,7 +27,7 @@
               <p><CountTo :start="0" :end="all" /></p>
               <span>笔</span>
             </span>
-          </div>
+          </div> -->
         </div>
 
         <!-- <div class="labels labels2">
@@ -49,162 +49,409 @@
   </div>
 </template>
 
-<script setup name="ProportionRentalIncome">
+<script>
 import bus from "vue3-eventbus";
 import Box from "./box.vue";
 import * as echarts from "echarts";
-import "echarts-gl";
 import { fetchVisualRentalIncome } from "@/api/screen";
 
-const all = ref(0);
-const currentDepart = ref({});
+export default {
+  name: "ProportionRentalIncome",
 
-function onItemClick(value, isAll = true) {
-  if (isAll) {
-    localStorage.removeItem("租金增长率");
-  }
-  localStorage.setItem("tableType", value);
-  bus.emit("onModalShow");
-}
+  components: {
+    Box,
+  },
 
-function initChart(data) {
-  const myChart = echarts.init(document.getElementById("chart3"));
+  data() {
+    return {
+      all: 0,
+      currentDepart: {},
+    };
+  },
 
-  const { areaName, areaNum, areaValue } = data;
+  mounted() {
+    const self = this;
+    bus.on("onDepartChange", (depart) => {
+      self.currentDepart = depart;
+      self.fetchVisualRentalIncomeFun();
+    });
 
-  all.value = Number(areaNum) || 0;
+    const depart = localStorage.getItem("currentDepart")
+      ? JSON.parse(localStorage.getItem("currentDepart"))
+      : "";
 
-  let colorList = [
-    "#00A3F0",
-    "#00FED2",
-    "#FFD37A",
-    "#F08200",
-    "#F04900",
-    "#F00000",
-    "#F000A9",
-    "#8200F0",
-    "#ea7ccc",
-  ];
-  const results = areaName
-    ? areaName.map((item, index) => {
-        return {
-          name: item,
-          value: areaValue[index] || 0,
-          label: item,
-        };
-      })
-    : [];
+    if (depart) {
+      this.currentDepart = depart;
+      this.fetchVisualRentalIncomeFun();
+    }
+  },
 
-  myChart.setOption({
-    title: {
-      show: false,
+  beforeUnmount() {
+    echarts.dispose(document.getElementById("chart3"));
+  },
+
+  methods: {
+    onItemClick(value, isAll = true) {
+      if (isAll) {
+        localStorage.removeItem("租金增长率");
+      }
+      localStorage.setItem("tableType", value);
+      bus.emit("onModalShow");
     },
-    color: colorList,
-    tooltip: {
-      show: true,
-      trigger: "item",
-      padding: [8, 15],
-      backgroundColor: "rgba(12, 51, 115,0.8)",
-      borderColor: "rgba(3, 11, 44, 0.5)",
-      textStyle: {
-        color: "rgba(255, 255, 255, 1)",
-      },
-    },
-    legend: {
-      show: false,
-    },
-    grid: {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 10,
-    },
-    series: [
-      {
-        startAngle: 90,
-        name: "租金收入占比",
-        type: "pie",
-        radius: ["70%", "80%"],
-        center: ["50%", "50%"],
-        label: {
-          show: false,
-        },
-        data: results,
 
-        itemStyle: {
-          normal: {
-            borderRadius: 80,
-            borderCap: "round",
-          },
-        },
-        label: {
+    initChart(data) {
+      const self = this
+      const myChart = echarts.init(document.getElementById("chart3"));
+
+      const { areaName, areaNum, areaValue } = data;
+      this.all = Number(areaNum) || 0;
+      let max = 0;
+      areaValue.forEach((item) => {
+        max += Number(item);
+      });
+
+      const colorList1 = [
+        "#00A3F0",
+        "#00FED2",
+        "#FFD37A",
+        "#F08200",
+        "#F04900",
+        "#F00000",
+        "#F000A9",
+        "#8200F0",
+        "#ea7ccc",
+        "#00A3F0",
+        "#00FED2",
+        "#FFD37A",
+        "#F08200",
+        "#F04900",
+        "#F00000",
+        "#F000A9",
+        "#8200F0",
+        "#ea7ccc",
+        "#00A3F0",
+        "#00FED2",
+        "#FFD37A",
+        "#F08200",
+        "#F04900",
+        "#F00000",
+        "#F000A9",
+        "#8200F0",
+        "#ea7ccc",
+        "#00A3F0",
+        "#00FED2",
+        "#FFD37A",
+        "#F08200",
+        "#F04900",
+        "#F00000",
+        "#F000A9",
+        "#8200F0",
+        "#ea7ccc",
+        "#00A3F0",
+        "#00FED2",
+        "#FFD37A",
+        "#F08200",
+        "#F04900",
+        "#F00000",
+        "#F000A9",
+        "#8200F0",
+        "#ea7ccc",
+      ];
+
+      const colorList2 = [
+        "rgba(0, 163, 240, 0)",
+        "rgba(0, 254, 210, 0)",
+        "rgba(255, 211, 122, 0)",
+        "rgba(240, 130, 0, 0)",
+        "rgba(240, 73, 0, 0)",
+        "rgba(240, 0, 0, 0)",
+        "rgba(240, 0, 169, 0)",
+        "rgba(130, 0, 240, 0)",
+        "rgba(234, 124, 204, 0)",
+        "rgba(0, 163, 240, 0)",
+        "rgba(0, 254, 210, 0)",
+        "rgba(255, 211, 122, 0)",
+        "rgba(240, 130, 0, 0)",
+        "rgba(240, 73, 0, 0)",
+        "rgba(240, 0, 0, 0)",
+        "rgba(240, 0, 169, 0)",
+        "rgba(130, 0, 240, 0)",
+        "rgba(234, 124, 204, 0)",
+        "rgba(0, 163, 240, 0)",
+        "rgba(0, 254, 210, 0)",
+        "rgba(255, 211, 122, 0)",
+        "rgba(240, 130, 0, 0)",
+        "rgba(240, 73, 0, 0)",
+        "rgba(240, 0, 0, 0)",
+        "rgba(240, 0, 169, 0)",
+        "rgba(130, 0, 240, 0)",
+        "rgba(234, 124, 204, 0)",
+        "rgba(0, 163, 240, 0)",
+        "rgba(0, 254, 210, 0)",
+        "rgba(255, 211, 122, 0)",
+        "rgba(240, 130, 0, 0)",
+        "rgba(240, 73, 0, 0)",
+        "rgba(240, 0, 0, 0)",
+        "rgba(240, 0, 169, 0)",
+        "rgba(130, 0, 240, 0)",
+        "rgba(234, 124, 204, 0)",
+        "rgba(0, 163, 240, 0)",
+        "rgba(0, 254, 210, 0)",
+        "rgba(255, 211, 122, 0)",
+        "rgba(240, 130, 0, 0)",
+        "rgba(240, 73, 0, 0)",
+        "rgba(240, 0, 0, 0)",
+        "rgba(240, 0, 169, 0)",
+        "rgba(130, 0, 240, 0)",
+        "rgba(234, 124, 204, 0)",
+      ];
+      const results = areaName
+        ? areaName.map((item, index) => {
+            return {
+              name: item,
+              value: ((Number(areaValue[index]) / max) * 100).toFixed(2),
+              label: item,
+            };
+          })
+        : [];
+
+      // myChart.setOption({
+      //   title: {
+      //     show: false,
+      //   },
+      //   color: colorList,
+      //   tooltip: {
+      //     show: true,
+      //     trigger: "item",
+      //     padding: [8, 15],
+      //     backgroundColor: "rgba(12, 51, 115,0.8)",
+      //     borderColor: "rgba(3, 11, 44, 0.5)",
+      //     textStyle: {
+      //       color: "rgba(255, 255, 255, 1)",
+      //     },
+      //   },
+      //   legend: {
+      //     show: false,
+      //   },
+      //   grid: {
+      //     top: 0,
+      //     left: 0,
+      //     right: 0,
+      //     bottom: 10,
+      //   },
+      //   series: [
+      //     {
+      //       startAngle: 90,
+      //       name: "租金收入占比",
+      //       type: "pie",
+      //       radius: ["70%", "80%"],
+      //       center: ["50%", "50%"],
+      //       label: {
+      //         show: false,
+      //       },
+      //       data: results,
+
+      //       itemStyle: {
+      //         normal: {
+      //           borderRadius: 80,
+      //           borderCap: "round",
+      //         },
+      //       },
+      //       label: {
+      //         show: true,
+      //         fontSize: 16,
+      //         // alignTo: "edge",
+      //         color: "#fff",
+      //         formatter: "{b|{b}：}{c|{d}%}",
+      //         rich: {
+      //           b: {
+      //             color: "#fff",
+      //             fontSize: 14,
+      //           },
+      //           c: {
+      //             color: "#4bb9f4",
+      //             fontSize: 14,
+      //           },
+      //         },
+      //       },
+      //       labelLine: {
+      //         show: false,
+      //         length: 10,
+      //         length2: 0,
+      //       },
+      //     },
+      //   ],
+      // });
+
+      myChart.setOption({
+        title: {
           show: true,
-          fontSize: 16,
-          // alignTo: "edge",
-          color: "#fff",
-          formatter: "{b|{b}：}{c|{d}%}",
-          rich: {
-            b: {
-              color: "#fff",
-              fontSize: 14,
-            },
-            c: {
-              color: "#4bb9f4",
-              fontSize: 14,
+          left: "2%",
+          text: "{a|共计}" + `{b|${this.all}}` + "{a|笔}",
+          textStyle: {
+            rich: {
+              a: {
+                fontSize: 12,
+                color: "#fff",
+                fontWeight: "normal",
+              },
+              b: {
+                fontSize: 16,
+                color: "RGBA(77, 174, 244, 1)",
+                fontWeight: "bold",
+                padding: [0, 5, 0, 3],
+              },
             },
           },
         },
-        labelLine: {
+        legend: {
           show: false,
-          length: 10,
-          length2: 0,
         },
-      },
-    ],
-  });
+        tooltip: {
+          show: true,
+          trigger: "axis",
+        },
+        grid: {
+          top: "20%",
+          left: "3%",
+          right: "3%",
+          bottom: "5%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: true,
+          data: results ? results.map((item) => item.name) : [],
+          axisLine: {
+            lineStyle: {
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            color: "rgba(196, 225, 255, 1)",
+            interval: 0,
+            interval: 0,
+            rotate: 35,
+          },
+        },
+        yAxis: {
+          type: "value",
+          axisLine: {
+            show: true,
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+          splitLine: {
+            lineStyle: {
+              type: "dashed",
+              color: "rgba(87, 107, 139, 0.66)",
+            },
+          },
+          axisLabel: {
+            color: "rgba(255, 255, 255, 0.6)",
+            formatter: "{value}%",
+          },
+          max: (value) => {
+            return Number((value.max + value.max * 0.3).toFixed(0));
+          },
+        },
+        series: [
+          {
+            name: "数据",
+            type: "bar",
+            data: results.map((item, index) => {
+              return {
+                value: item.value || 0,
+                itemStyle: {
+                  color: {
+                    type: "linear",
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [
+                      {
+                        offset: 0,
+                        color: colorList1[index], // 0% 处的颜色
+                      },
+                      {
+                        offset: 0.9,
+                        color: colorList2[index], // 100% 处的颜色
+                        opacity: 0,
+                      },
+                    ],
+                    global: false, // 缺省为 false
+                  },
+                },
+              };
+            }),
+            barWidth: 10,
+          },
+          {
+            z: 1,
+            type: "pictorialBar",
+            symbolPosition: "end",
+            symbolRotate: "-90",
+            symbolSize: [10, 10],
+            // color: "rgb(4,128,224)",
+            data: results.map((item, index) => {
+              return {
+                value: item.value || 0,
+                itemStyle: {
+                  color: colorList1[index],
+                },
+              };
+            }),
+            symbol: "triangle",
+            symbolOffset: [0, -5],
+          },
+        ],
+      });
 
-  myChart.on("click", function (param) {
-    localStorage.setItem("租金增长率", param.name);
-    onItemClick("租金收入占比", false);
-  });
-}
+      myChart.getZr().on("click", (params) => {
+        let pointInPixel = [params.offsetX, params.offsetY];
+        if (myChart.containPixel("grid", pointInPixel)) {
+          //点击第几个柱子
+          let pointInGrid = myChart.convertFromPixel(
+            { seriesIndex: 0 },
+            pointInPixel
+          );
+          // 也可以通过params.offsetY 来判断鼠标点击的位置是否是图表展示区里面的位置
+          // 也可以通过name[xIndex] != undefined，name是x轴的坐标名称来判断是否还是点击的图表里面的内容
+          // x轴数据的索引
+          let xIndex = pointInGrid[0];
 
-async function fetchVisualRentalIncomeFun() {
-  const { data } = await fetchVisualRentalIncome({
-    departCode: currentDepart.value.departCode,
-    groupType: 0,
-  });
+          localStorage.setItem("租金增长率", areaName[xIndex]);
+          self.onItemClick("租金收入占比", false);
+        }
+      });
+    },
 
-  console.log("data :>> ", data);
+    async fetchVisualRentalIncomeFun() {
+      const { data } = await fetchVisualRentalIncome({
+        departCode: this.currentDepart.departCode,
+        groupType: 0,
+      });
 
-  initChart(data);
-}
-
-onMounted(() => {
-  bus.on("onDepartChange", (depart) => {
-    currentDepart.value = depart;
-    fetchVisualRentalIncomeFun();
-  });
-
-  const depart = localStorage.getItem("currentDepart")
-    ? JSON.parse(localStorage.getItem("currentDepart"))
-    : "";
-
-  if (depart) {
-    currentDepart.value = depart;
-    fetchVisualRentalIncomeFun();
-  }
-});
-
-onBeforeUnmount(() => {
-  echarts.dispose(document.getElementById("chart3"));
-});
+      this.initChart(data);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
 .proportion_rental_income_root {
   width: 100%;
   flex: 1 0;
+  overflow: hidden;
   margin-top: 11px;
 
   .container {

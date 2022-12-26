@@ -38,7 +38,7 @@ export default {
   name: "RentalInfo",
 
   components: {
-    Box
+    Box,
   },
 
   data() {
@@ -65,15 +65,15 @@ export default {
 
     onItemClick(value, isAll = true) {
       if (isAll) {
-        localStorage.removeItem('出租总收入')
+        localStorage.removeItem("出租总收入");
       }
-      
+
       localStorage.setItem("tableType", value);
       bus.emit("onModalShow");
     },
 
     initChart(data) {
-      const self = this
+      const self = this;
       const myChart = echarts.init(document.getElementById("chart"));
       const { chainlGrowth, yearOnYearGrowth } = data;
       const labels = chainlGrowth.map((item) => item.month + "月");
@@ -181,6 +181,9 @@ export default {
           axisLabel: {
             color: "rgba(255, 255, 255, 0.6)",
           },
+          max: (value) => {
+            return value.max + value.max * 0.5;
+          },
         },
         series: [
           {
@@ -211,8 +214,11 @@ export default {
           // x轴数据的索引
           let xIndex = pointInGrid[0];
 
-          localStorage.setItem('出租总收入', Moment().format(`YYYY-${chainlGrowth[xIndex].month}`))
-          self.onItemClick('出租总收入', false)
+          localStorage.setItem(
+            "出租总收入",
+            Moment().format(`YYYY-${chainlGrowth[xIndex].month}`)
+          );
+          self.onItemClick("出租总收入", false);
         }
       });
     },
@@ -240,7 +246,6 @@ export default {
       border-bottom: 1px solid rgba(23, 154, 255, 0.3);
       display: flex;
       align-items: center;
-      justify-content: center;
 
       .imgs {
         position: relative;
@@ -249,6 +254,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-left: 15%;
 
         .img1 {
           position: absolute;
@@ -261,27 +267,28 @@ export default {
         .img2 {
           position: absolute;
           width: 35px;
-          top: -16px;
+          top: -10px;
           margin-left: 5px;
           animation: move2 2s linear infinite;
         }
 
         @keyframes move2 {
           0% {
-            top: -16px;
+            top: -10px;
           }
 
           50% {
-            top: -24px;
+            top: -15px;
           }
 
           100% {
-            top: -16px;
+            top: -10px;
           }
         }
       }
 
       .info {
+        flex: 1 0;
         display: flex;
         flex-direction: column;
         margin-left: 11px;

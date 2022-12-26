@@ -44,7 +44,7 @@ function initChart(data) {
     legend: {
       show: true,
       right: 0,
-      top: 0,
+      top: '2%',
       icon: "circle",
       itemWidth: 6,
       textStyle: {
@@ -57,7 +57,7 @@ function initChart(data) {
       trigger: "axis",
     },
     grid: {
-      top: "28%",
+      top: "22%",
       left: "3%",
       right: "3%",
       bottom: "5%",
@@ -77,6 +77,8 @@ function initChart(data) {
       },
       axisLabel: {
         color: "rgba(196, 225, 255, 1)",
+        interval: 0,
+        rotate: 35
       },
     },
     yAxis: {
@@ -99,6 +101,9 @@ function initChart(data) {
       },
       axisLabel: {
         color: "rgba(255, 255, 255, 0.6)",
+      },
+      max: (value) => {
+        return Number((value.max + value.max * 0.3).toFixed(0));
       },
     },
     series: [
@@ -206,6 +211,7 @@ onBeforeUnmount(() => {
   width: 100%;
   flex: 1 0;
   margin-top: 11px;
+  overflow: hidden;
 
   .container {
     position: relative;

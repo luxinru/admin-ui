@@ -31,7 +31,7 @@ const props = defineProps({
   decimals: {
     type: Number,
     required: false,
-    default: 0,
+    default: 2,
     validator (value) {
       return value >= 0
     }
@@ -75,7 +75,7 @@ const isNumber = (val) => {
 
 // 格式化数据，返回想要展示的数据格式
 const formatNumber = (val) => {
-  val = val.toFixed(props.default)
+  val = val.toFixed(props.decimals)
   val += ''
   const x = val.split('.')
   let x1 = x[0]

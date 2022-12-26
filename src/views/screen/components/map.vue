@@ -19,6 +19,8 @@ export default {
   mounted() {
     const self = this;
     this.$nextTick(() => {
+      this.initMap();
+
       bus.on("onDepartChange", (depart) => {
         self.fetchVisualListFun(depart);
       });
@@ -26,7 +28,7 @@ export default {
   },
 
   methods: {
-    initMap(list) {
+    initMap() {
       const Bmap = window.BMap;
       this.map = new BMap.Map("map"); // 创建Map实例
       this.map.setMapType(BMAP_HYBRID_MAP);
@@ -43,6 +45,26 @@ export default {
       // this.map.setDisplayOptions({
       //   poi: false,
       // });
+
+      bus.on("onSearchInputClick", (data) => {
+        this.map.centerAndZoom(
+          new Bmap.Point(data.longitude, data.latitude),
+          15
+        );
+      });
+    },
+
+    async fetchVisualListFun(depart) {
+      const { rows } = await fetchVisualList({
+        houseName: "",
+        houseCode: "",
+        departCode: depart.departCode,
+        // departCode: "226010006",
+        assetsCode: "",
+      });
+
+      const list = rows.filter((item) => item.longitude && item.latitude);
+      useScreenStore().setHouseList(list);
 
       // 函数 创建多个标注
       for (let i = 0; i < list.length; i++) {
@@ -86,28 +108,6 @@ export default {
         //   map.addOverlay(markers);
         // }
       }
-
-      bus.on("onSearchInputClick", (data) => {
-        this.map.centerAndZoom(
-          new Bmap.Point(data.longitude, data.latitude),
-          15
-        );
-      });
-    },
-
-    async fetchVisualListFun(depart) {
-      const { rows } = await fetchVisualList({
-        houseName: "",
-        houseCode: "",
-        // departCode: depart.departCode,
-        departCode: "226010006",
-        assetsCode: "",
-      });
-
-      const list = rows.filter((item) => item.longitude && item.latitude);
-      useScreenStore().setHouseList(list);
-
-      this.initMap(list);
     },
   },
 };
