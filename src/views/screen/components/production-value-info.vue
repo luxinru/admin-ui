@@ -68,6 +68,7 @@ onMounted(() => {
 .production_value_info_root {
   width: 100%;
   flex: 290;
+  overflow: hidden;
 
   .container {
     position: relative;

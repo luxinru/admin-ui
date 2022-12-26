@@ -77,6 +77,7 @@ export default {
   width: 100%;
   flex: 209;
   margin-top: 11px;
+  overflow: hidden;
 
   .container {
     width: 100%;

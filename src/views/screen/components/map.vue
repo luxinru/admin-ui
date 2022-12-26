@@ -17,9 +17,7 @@ export default {
   },
 
   mounted() {
-    this.$nextTick(() => {
-      this.initMap();
-    });
+    this.initMap();
   },
 
   methods: {

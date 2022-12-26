@@ -1,6 +1,6 @@
 <template>
   <div class="basic_info_root">
-    <ProductionValueInfo />
+    <ProductionValueInfo/>
 
     <HousingInfo />
 

@@ -232,6 +232,7 @@ export default {
   width: 100%;
   height: 40.17857%;
   margin-top: 11px;
+  overflow: hidden;
 
   .container {
     width: 100%;
