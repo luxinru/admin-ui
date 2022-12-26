@@ -69,7 +69,7 @@
       </section>
 
       <section v-if="type === 2" id="house_table" class="house_table">
-        <HouseTable />
+        <HouseTable v-if="isShowHouseTable" />
       </section>
 
       <section class="modal" v-if="isShowModal">
@@ -97,7 +97,8 @@ const isShowModal = ref(false);
 const type = ref(1);
 const isShowHouseInfo = ref(false);
 const isShowHouseImgs = ref(false);
-const isLoading = ref(false)
+const isShowHouseTable = ref(false);
+const isLoading = ref(false);
 
 bus.on("onModalClose", () => {
   isShowModal.value = false;
@@ -131,6 +132,10 @@ bus.on("onHouseInfoOperate", (show) => {
 
 bus.on("onHouseImgsOperate", (show) => {
   isShowHouseImgs.value = show;
+});
+
+bus.on("onHouseTableOperate", (show) => {
+  isShowHouseTable.value = show;
 });
 
 bus.on("onDepartChange", () => {

@@ -15,62 +15,84 @@
       <div class="tr">
         <div class="item">
           <span class="label">省(直辖市)</span>
-          <span class="value">{{ house.province || "-" }}</span>
+          <span class="value" :title="house.province || '-'">{{
+            house.province || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">市</span>
-          <span class="value">{{ house.city || "-" }}</span>
+          <span class="value" :title="house.city || '-'">{{
+            house.city || "-"
+          }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">区(县)</span>
-          <span class="value">{{ house.county || "-" }}</span>
+          <span class="value" :title="house.county || '-'">{{
+            house.county || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">房屋结构</span>
-          <span class="value">{{ house.houseStructureName || "-" }}</span>
+          <span class="value" :title="house.houseStructureName || '-'">{{
+            house.houseStructureName || "-"
+          }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">建筑面积</span>
-          <span class="value">{{ house.buildArea || "-" }}㎡</span>
+          <span class="value" :title="house.buildArea || '-'"
+            >{{ house.buildArea || "-" }}㎡</span
+          >
         </div>
         <div class="item">
           <span class="label">地上总层</span>
-          <span class="value">{{ house.floorsUpName || "-" }}</span>
+          <span class="value" :title="house.floorsUpName || '-'">{{
+            house.floorsUpName || "-"
+          }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">地下总层</span>
-          <span class="value">{{ house.floorsDownName || "-" }}</span>
+          <span class="value" :title="house.floorsDownName || '-'">{{
+            house.floorsDownName || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">备注</span>
-          <span class="value">{{ house.remark || "-" }}</span>
+          <span class="value" :title="house.remark || '-'">{{
+            house.remark || "-"
+          }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">资产编号</span>
-          <span class="value">{{ house.assetsCode || "-" }}</span>
+          <span class="value" :title="house.assetsCode || '-'">{{
+            house.assetsCode || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">资产名称</span>
-          <span class="value">{{ house.assetsName || "-" }}</span>
+          <span class="value" :title="house.assetsName || '-'">{{
+            house.assetsName || "-"
+          }}</span>
         </div>
       </div>
 
       <div class="tr">
         <div class="item">
           <span class="label">计量单位</span>
-          <span class="value">{{ house.unitCodeName || "-" }}</span>
+          <span class="value" :title="house.unitCodeName || '-'">{{
+            house.unitCodeName || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">贮存数量</span>
@@ -81,91 +103,127 @@
       <div class="tr">
         <div class="item">
           <span class="label">投产日期</span>
-          <span class="value">{{ house.operateDate || "-" }}</span>
+          <span class="value" :title="house.operateDate || '-'">{{
+            house.operateDate || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">规格型号</span>
-          <span class="value">{{ house.assetsStandard || "-" }}</span>
+          <span class="value" :title="house.assetsStandard || '-'">{{
+            house.assetsStandard || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">原值</span>
-          <span class="value">{{ house.originalValue || "-" }}</span>
+          <span class="value" :title="house.originalValue || '-'">{{
+            house.originalValue || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">净值</span>
-          <span class="value">{{ house.nowValue || "-" }}</span>
+          <span class="value" :title="house.nowValue || '-'">{{
+            house.nowValue || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">已提减值准备</span>
-          <span class="value">{{ house.devalueValue || "-" }}</span>
+          <span class="value" :title="house.devalueValue || '-'">{{
+            house.devalueValue || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">宗地编码</span>
-          <span class="value">{{ house.parcelCode || "-" }}</span>
+          <span class="value" :title="house.parcelCode || '-'">{{
+            house.parcelCode || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">权属状况</span>
-          <span class="value">{{ house.ownershipConditionName || "-" }}</span>
+          <span class="value" :title="house.ownershipConditionName || '-'">{{
+            house.ownershipConditionName || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">使用权资产</span>
-          <span class="value">{{ house.usedrightTypeName || "-" }}</span>
+          <span class="value" :title="house.usedrightTypeName || '-'">{{
+            house.usedrightTypeName || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">土地面积</span>
-          <span class="value">{{ house.landArea || "-" }}</span>
+          <span class="value" :title="house.landArea || '-'">{{
+            house.landArea || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">土地证号</span>
-          <span class="value">{{ house.landCertificateNo || "-" }}</span>
+          <span class="value" :title="house.landCertificateNo || '-'">{{
+            house.landCertificateNo || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">土地使用人</span>
-          <span class="value">{{ house.landUsedHolder || "-" }}</span>
+          <span class="value" :title="house.landUsedHolder || '-'">{{
+            house.landUsedHolder || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">房产证号</span>
-          <span class="value">{{ house.houseCertificateNo || "-" }}</span>
+          <span class="value" :title="house.houseCertificateNo || '-'">{{
+            house.houseCertificateNo || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">证载所有权人</span>
-          <span class="value">{{ house.certificateHolder || "-" }}</span>
+          <span class="value" :title="house.certificateHolder || '-'">{{
+            house.certificateHolder || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">办证情况</span>
-          <span class="value">{{ house.certificateHandlingName || "-" }}</span>
+          <span class="value" :title="house.certificateHandlingName || '-'">{{
+            house.certificateHandlingName || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">记账是否相符</span>
-          <span class="value">{{ house.bookkeeping || "-" }}</span>
+          <span class="value" :title="house.bookkeeping || '-'">{{
+            house.bookkeeping || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">无证原因</span>
-          <span class="value">{{ house.noCertificateReason || "-" }}</span>
+          <span class="value" :title="house.noCertificateReason || '-'">{{
+            house.noCertificateReason || "-"
+          }}</span>
         </div>
       </div>
       <div class="tr">
         <div class="item">
           <span class="label">管理单位情况</span>
-          <span class="value">{{ house.managerDepartThreeName || "-" }}</span>
+          <span class="value" :title="house.managerDepartThreeName || '-'">{{
+            house.managerDepartThreeName || "-"
+          }}</span>
         </div>
         <div class="item">
           <span class="label">使用单位情况</span>
-          <span class="value">{{ house.usedDepartThreeName || "-" }}</span>
+          <span class="value" :title="house.usedDepartThreeName || '-'">{{
+            house.usedDepartThreeName || "-"
+          }}</span>
         </div>
       </div>
     </div>
@@ -185,7 +243,7 @@ export default {
   },
 
   mounted() {
-    const self = this
+    const self = this;
     this.house = JSON.parse(localStorage.getItem("currentHouse"));
 
     bus.on("onMapItemClick", async (data) => {
@@ -194,10 +252,10 @@ export default {
   },
 
   methods: {
-    onClose () {
-      bus.emit('onHouseInfoOperate', false)
-    }
-  }
+    onClose() {
+      bus.emit("onHouseInfoOperate", false);
+    },
+  },
 };
 </script>
 
@@ -237,6 +295,7 @@ export default {
     font-weight: bold;
     color: #ffffff;
     text-shadow: 0px 1px 1px rgba(0, 11, 10, 0.43);
+    text-align: center;
   }
 
   .content {

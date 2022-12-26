@@ -84,7 +84,8 @@ export default {
           bus.emit("onTopbarClick", 2);
           bus.emit("onHouseInfoOperate", true);
           bus.emit("onHouseImgsOperate", true);
-          bus.emit("onSearchInputClick", list[i]);
+          bus.emit("onHouseTableOperate", true);
+          // bus.emit("onSearchInputClick", list[i]);
         });
 
         this.map.addOverlay(markers);

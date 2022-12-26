@@ -1,5 +1,12 @@
 <template>
   <div class="house_table_root">
+    <img
+      class="close"
+      src="@/assets/images/screen/close.png"
+      alt=""
+      @click="onClose"
+    />
+
     <section class="title">
       <img class="bac" src="@/assets/images/screen/title-2.png" alt="" />
       <span class="name">房屋取得情况</span>
@@ -261,6 +268,10 @@ export default {
       this.page.pageNum = value;
       this.onTypeClick(this.type);
     },
+
+    onClose() {
+      bus.emit("onHouseTableOperate", false);
+    },
   },
 };
 </script>
@@ -317,6 +328,14 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+
+  .close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 24px;
+    z-index: 1;
+  }
 
   .title {
     position: absolute;

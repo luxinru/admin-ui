@@ -155,6 +155,7 @@ export default {
     font-weight: bold;
     color: #ffffff;
     text-shadow: 0px 1px 1px rgba(0, 11, 10, 0.43);
+    text-align: center;
   }
 
   .main_img {
